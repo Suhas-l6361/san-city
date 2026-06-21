@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+dist/
+build/
+.DS_Store
+Thumbs.db
+*.log
+.cache/
+
+# Large media — GitHub blocks files over 100MB (keep locally or use Git LFS / CDN)
+videos/*.mp4
+*.mp4
+*.mov
+*.avi
+*.mkv

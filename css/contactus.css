@@ -1,0 +1,352 @@
+/* Contact Us — simple split panel */
+
+.cu {
+  padding: clamp(20px, 3vw, 36px) clamp(16px, 4vw, 48px) clamp(40px, 6vw, 64px);
+  background: var(--sand);
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.cu__frame {
+  width: 100%;
+  max-width: 920px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  background: var(--white);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 48px rgba(12, 74, 110, 0.07);
+  overflow: hidden;
+}
+
+/* Left — contact details */
+.cu__info {
+  padding: clamp(28px, 4vw, 40px);
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.cu__info h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.65rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.cu__intro {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  opacity: 0.78;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.cu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 1;
+}
+
+.cu__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cu__key {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.cu__item p {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.cu__item > a:not(.cu__value) {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--green-light);
+  margin-top: 2px;
+}
+
+.cu__item > a:not(.cu__value):hover {
+  color: #fff;
+}
+
+.cu__value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.cu__value:hover {
+  color: var(--green-light);
+}
+
+.cu__quick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  align-self: flex-start;
+  transition: background 0.2s;
+}
+
+.cu__quick:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.cu__quick i {
+  color: #25d366;
+  font-size: 1.1rem;
+}
+
+/* Right — form */
+.cu__form {
+  padding: clamp(28px, 4vw, 40px);
+}
+
+.cu__form h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.cu-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cu-form__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cu-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cu-field label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.cu-field input,
+.cu-field textarea {
+  width: 100%;
+  padding: 11px 0;
+  border: none;
+  border-bottom: 1.5px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--ink);
+  transition: border-color 0.25s var(--ease);
+}
+
+.cu-field textarea {
+  min-height: 100px;
+  resize: vertical;
+  padding-top: 8px;
+  line-height: 1.55;
+}
+
+.cu-field input::placeholder,
+.cu-field textarea::placeholder {
+  color: rgba(92, 107, 115, 0.5);
+}
+
+.cu-field input:focus,
+.cu-field textarea:focus {
+  outline: none;
+  border-bottom-color: var(--green);
+}
+
+.cu-form__send {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 13px 32px;
+  border: none;
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s var(--ease);
+}
+
+.cu-form__send:hover {
+  background: var(--green-mid);
+  transform: translateY(-1px);
+}
+
+.cu-form__send:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+/* Success modal */
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), visibility 0.35s var(--ease);
+}
+
+.contact-modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.contact-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 21, 32, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.contact-modal__box {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 400px);
+  padding: 32px 28px;
+  border-radius: 16px;
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(6, 16, 24, 0.22);
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.35s var(--ease);
+}
+
+.contact-modal.open .contact-modal__box {
+  transform: translateY(0) scale(1);
+}
+
+.contact-modal__icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  font-size: 1.75rem;
+}
+
+.contact-modal__box h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.contact-modal__box p {
+  font-size: 0.94rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.contact-modal__btn {
+  margin-top: 24px;
+  padding: 13px 32px;
+  border: none;
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s var(--ease);
+}
+
+.contact-modal__btn:hover {
+  background: var(--green-mid);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .cu {
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .cu__frame {
+    grid-template-columns: 1fr;
+  }
+
+  .cu-form__pair {
+    grid-template-columns: 1fr;
+  }
+
+  .cu-form__send {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact-modal {
+    padding: 16px;
+  }
+
+  .contact-modal__box {
+    width: min(100%, calc(100vw - 32px));
+    padding: 24px 20px;
+  }
+
+  .contact-modal__icon {
+    width: 64px;
+    height: 64px;
+    font-size: 1.6rem;
+  }
+
+  .contact-modal__box h3 {
+    font-size: 1.2rem;
+  }
+
+  .contact-modal__btn {
+    width: 100%;
+    padding: 14px 20px;
+  }
+}

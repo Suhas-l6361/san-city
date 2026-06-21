@@ -1,0 +1,95 @@
+/* Home — Quick Browse awards strip */
+
+.home-awards-browse {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.home-awards-browse__stage {
+  position: relative;
+}
+
+.home-awards-browse__label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.home-awards-browse__viewport {
+  overflow: hidden;
+  padding: 4px 0 6px;
+  mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+
+.home-awards-browse__track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  will-change: transform;
+  animation: homeAwardsMarquee var(--marquee-duration, 48s) linear infinite;
+}
+
+.home-awards-browse__track.is-paused {
+  animation-play-state: paused;
+}
+
+@keyframes homeAwardsMarquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.home-awards-browse__thumb {
+  flex: 0 0 auto;
+  width: 88px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--white);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.home-awards-browse__thumb:hover,
+.home-awards-browse__thumb:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 24px rgba(154, 123, 46, 0.28);
+}
+
+.home-awards-browse__thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.home-awards-browse__thumb span {
+  display: block;
+  padding: 5px 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink);
+  background: var(--white);
+}
+
+@media (max-width: 768px) {
+  .home-awards-browse {
+    padding-right: 56px;
+  }
+  .home-awards-browse__thumb {
+    width: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-awards-browse__track {
+    animation: none;
+  }
+}
