@@ -3,6 +3,7 @@
 .hc {
   padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 48px) clamp(48px, 7vw, 72px);
   background: var(--sand);
+  scroll-margin-top: 78px;
 }
 
 .hc-hero {
@@ -362,12 +363,34 @@
     border-left: none;
     border-top: 1px solid var(--border);
   }
+
+  .hc-hero__intro {
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hc-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .hc-grid-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
 
 @media (max-width: 640px) {
   .hc-hero {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .hc-feature__row {
+    grid-template-columns: 1fr;
   }
 
   .hc-feature {

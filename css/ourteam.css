@@ -4,6 +4,7 @@
 .team-hero {
   position: relative;
   padding: clamp(20px, 4vw, 40px) clamp(20px, 4vw, 48px) clamp(48px, 7vw, 72px);
+  scroll-margin-top: 78px;
   background:
     radial-gradient(ellipse 80% 60% at 10% 20%, rgba(56, 189, 248, 0.22) 0%, transparent 55%),
     radial-gradient(ellipse 60% 50% at 90% 10%, rgba(196, 163, 90, 0.18) 0%, transparent 50%),
@@ -229,11 +230,6 @@
   min-width: 0;
 }
 .team-gallery__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
   margin-bottom: clamp(32px, 5vw, 48px);
 }
 .team-gallery__head-copy { max-width: 560px; min-width: 0; }
@@ -250,32 +246,6 @@
   color: var(--muted);
   line-height: 1.7;
   max-width: 48ch;
-}
-.team-gallery__head-accent {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 16px 22px;
-  border-radius: 18px;
-  background: linear-gradient(145deg, var(--green) 0%, var(--green-mid) 100%);
-  color: #fff;
-  box-shadow: 0 16px 40px rgba(12, 74, 110, 0.2);
-  flex-shrink: 0;
-}
-.team-gallery__head-accent span {
-  font-family: 'Fraunces', serif;
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--gold-light);
-}
-.team-gallery__head-accent small {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.8;
-  margin-top: 4px;
 }
 
 .team-gallery__bento {
@@ -533,23 +503,14 @@
     grid-row: auto;
     min-height: 240px;
   }
-  .team-shot--01 { grid-column: 1 / -1; min-height: 300px; }
+  .team-shot--01 { grid-column: 1 / -1; min-height: 240px; }
   .team-shot--08 { grid-column: 1 / -1; }
-  .team-gallery__head-accent { align-self: flex-start; }
 }
 
 @media (max-width: 768px) {
   .team-hero,
   .team-intro,
   .team-gallery { padding-inline: 16px; }
-  .team-gallery__head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  .team-gallery__head-accent {
-    align-self: flex-start;
-  }
   .team-hero__stats { gap: 10px; }
   .team-hero__stat { padding: 10px 14px; }
   .team-hero__stat strong { font-size: 1.15rem; }

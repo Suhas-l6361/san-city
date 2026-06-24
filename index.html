@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="css/home-awards-browse.css" />
+  <link rel="stylesheet" href="css/butterfly-fly.css" />
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module"></script>
+  <link rel="stylesheet" href="css/float-contact.css" />
   <link rel="stylesheet" href="css/site-footer.css" />
   <style>
     :root {
@@ -287,6 +290,7 @@
     .main {
       margin-left: var(--sidebar);
       min-height: 100vh;
+      min-height: 100dvh;
     }
 
     /* Mobile header */
@@ -320,7 +324,11 @@
       inset: 0;
       z-index: 2000;
       background: var(--green);
-      padding: 72px 24px 32px;
+      padding:
+        max(72px, calc(env(safe-area-inset-top) + 56px))
+        max(24px, env(safe-area-inset-right))
+        max(32px, env(safe-area-inset-bottom))
+        max(24px, env(safe-area-inset-left));
       transform: translateX(100%);
       transition: transform 0.4s var(--ease);
       overflow-y: auto;
@@ -450,7 +458,7 @@
       background: var(--sage);
     }
     .float-contact-email {
-      margin-bottom: 50px;
+      margin-bottom: 0;
     }
     .float-contact-brochure {
       width: auto;
@@ -1062,7 +1070,7 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px 12px;
+      padding: 24px 14px;
       text-align: center;
       transition: all 0.35s var(--ease);
     }
@@ -1072,17 +1080,32 @@
       box-shadow: 0 8px 20px rgba(12,74,110,0.08);
     }
     .amenity-icon {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
       display: block;
-      margin: 0 auto 8px;
+      margin: 0 auto 12px;
+      border-radius: 10px;
     }
-    .amenity span {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--muted);
+    video.amenity-icon {
+      pointer-events: none;
+      border: none;
+      background: transparent;
+    }
+    .amenity-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--ink);
       display: block;
+      margin-bottom: 5px;
+      line-height: 1.25;
+    }
+    .amenity-desc {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 0;
     }
     .amenities-tap-hint,
     .amenities-dots,
@@ -1420,38 +1443,30 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold-light);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+    }
+    .stage-plaque-label {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.88);
+      margin: 0 0 8px;
+      letter-spacing: 0.04em;
     }
     .stage-plaque-name {
       font-family: 'Fraunces', serif;
-      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
       font-weight: 700;
       color: #fff;
       line-height: 1.2;
+      margin: 0;
       transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
     }
     .stage-plaque-name.is-changing {
       opacity: 0;
       transform: translateY(8px);
     }
-    .stage-plaque-meta {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.45);
-    }
-    .stage-plaque-meta strong { color: var(--gold-light); }
-    .stage-plaque-meta span {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--gold);
+    .stage-plaque-name[hidden] {
+      display: none;
     }
     .nav-anchor {
       scroll-margin-top: 100px;
@@ -2130,6 +2145,12 @@
       }
     }
 
+    @media (max-width: 900px) {
+      .amenities {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     /* Tablet — hide sidebar, use top mobile bar */
     @media (max-width: 1024px) {
       :root { --sidebar: 0px; }
@@ -2191,6 +2212,27 @@
 
     /* Mobile */
     @media (max-width: 768px) {
+      .main {
+        padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+      }
+      .float-contact {
+        right: 12px;
+        bottom: max(14px, env(safe-area-inset-bottom));
+        gap: 10px;
+      }
+      .float-contact-btn {
+        width: 48px;
+        height: 48px;
+      }
+      .float-contact-btn img {
+        width: 24px;
+        height: 24px;
+      }
+      .float-contact-brochure {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 0.72rem;
+      }
       .hero-visual img {
         min-height: 220px;
         max-height: 300px;
@@ -2267,7 +2309,7 @@
         gap: 14px;
         text-align: left;
         padding: 16px 18px;
-        min-height: 86px;
+        min-height: 100px;
         background: linear-gradient(135deg, var(--sage) 0%, #f0f7ff 100%);
         border-color: rgba(12, 74, 110, 0.1);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -2278,20 +2320,31 @@
         border-color: rgba(12, 74, 110, 0.1);
       }
       .amenities.is-slider .amenity-icon {
-        width: 50px;
-        height: 50px;
+        width: 66px;
+        height: 66px;
         margin: 0;
-        padding: 8px;
+        padding: 0;
         flex-shrink: 0;
         background: var(--white);
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(12, 74, 110, 0.08);
+        object-fit: cover;
       }
-      .amenities.is-slider .amenity span {
-        font-size: 0.94rem;
+      .amenities.is-slider .amenity-copy {
+        flex: 1;
+        min-width: 0;
+      }
+      .amenities.is-slider .amenity-title {
+        font-size: 1rem;
         font-weight: 700;
         color: var(--ink);
-        line-height: 1.35;
+        line-height: 1.3;
+        margin-bottom: 5px;
+      }
+      .amenities.is-slider .amenity-desc {
+        font-size: 0.84rem;
+        line-height: 1.4;
+        color: var(--muted);
       }
       .amenities-nav {
         display: flex;
@@ -2399,7 +2452,13 @@
       .spec-cell span { font-size: 0.6rem; }
       .about-point { padding: 14px; }
       .tab-btn { padding: 10px 14px; font-size: 0.75rem; }
-      .plot-grid { grid-template-columns: repeat(6, 1fr); }
+      .plot-grid { grid-template-columns: repeat(4, 1fr); }
+      .float-contact-brochure {
+        max-width: calc(100vw - 80px);
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+      }
     }
 
     /* Landscape phones */
@@ -2414,7 +2473,7 @@
 
   <!-- Sidebar — sales office always open -->
   <aside class="sidebar">
-    <div class="sidebar-logo">
+    <div class="sidebar-logo" id="sidebarLogo">
       <img src="images/Sancity logo.jpg" alt="San City" />
       <div class="sidebar-tag">India's Leading Developer</div>
     </div>
@@ -2532,7 +2591,7 @@
           <div class="loc"><img src="icons/location.png" alt="" class="hero-loc-icon" /><span id="heroLoc">Bangalore, Karnataka</span></div>
           <h1>Premium <em>Townships</em> & Plotted Land for Your Dream Home</h1>
           <div class="hero-specs">
-            <div class="spec-cell"><strong>15+</strong><span>Years</span></div>
+            <div class="spec-cell"><strong>20+</strong><span>Years</span></div>
             <div class="spec-cell"><strong>25+</strong><span>Projects</span></div>
             <div class="spec-cell"><strong>5000+</strong><span>Families</span></div>
           </div>
@@ -2612,12 +2671,48 @@
       <div class="amenities" id="amenitiesSlider" aria-label="Amenities carousel">
         <div class="amenities-viewport" id="amenitiesViewport">
           <div class="amenities-track" id="amenitiesTrack">
-            <div class="amenity"><img src="icons/wide road.png" alt="" class="amenity-icon" /><span>Wide Roads</span></div>
-            <div class="amenity"><img src="icons/pars &amp; greens.png" alt="" class="amenity-icon" /><span>Parks &amp; Green</span></div>
-            <div class="amenity"><img src="icons/water supply.png" alt="" class="amenity-icon" /><span>Water Supply</span></div>
-            <div class="amenity"><img src="icons/power backup.png" alt="" class="amenity-icon" /><span>Power Backup</span></div>
-            <div class="amenity"><img src="icons/security.png" alt="" class="amenity-icon" /><span>24/7 Security</span></div>
-            <div class="amenity"><img src="icons/club house.png" alt="" class="amenity-icon" /><span>Clubhouse</span></div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/roadway.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">Wide Roads</span>
+                <p class="amenity-desc">Spacious boulevards for smooth traffic flow.<br>Safe, well-lit drives through the township.</p>
+              </div>
+            </div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/city-park.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">Parks &amp; Green</span>
+                <p class="amenity-desc">Landscaped parks and tree-lined avenues.<br>Open green lungs for every resident.</p>
+              </div>
+            </div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/water.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">Water Supply</span>
+                <p class="amenity-desc">Reliable borewell and municipal water lines.<br>Round-the-clock supply for daily living.</p>
+              </div>
+            </div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/power.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">Power Backup</span>
+                <p class="amenity-desc">DG backup and underground cabling.<br>Uninterrupted power when you need it.</p>
+              </div>
+            </div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/24-7%20security.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">24/7 Security</span>
+                <p class="amenity-desc">Gated entry with CCTV and patrol teams.<br>Peace of mind, day and night.</p>
+              </div>
+            </div>
+            <div class="amenity">
+              <video class="amenity-icon" src="videos/club%20house.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <div class="amenity-copy">
+                <span class="amenity-title">Clubhouse</span>
+                <p class="amenity-desc">Recreation hub with indoor and outdoor spaces.<br>Fitness, leisure, and community under one roof.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2628,7 +2723,7 @@
       </div>
     </div>
 
-    <!-- Welcome · 18 Years Legacy -->
+    <!-- Welcome · 20+ Years Legacy -->
     <section class="legacy-section" id="welcome">
       <div class="legacy-wrap reveal">
         <div class="legacy-visual">
@@ -2636,18 +2731,18 @@
           <div class="legacy-portal">
             <span class="legacy-portal-ring" aria-hidden="true"></span>
             <div class="legacy-portal-inner">
-              <img src="images/img4.jpg" alt="San City grand entrance gateway" />
+              <img src="images/t3.jpg" alt="San City — premium township development" />
             </div>
           </div>
           <div class="legacy-badge">
-            <strong>18</strong>
+            <strong>20+</strong>
             <span>Years<br />Experience</span>
           </div>
         </div>
         <div class="legacy-body">
-          <span class="legacy-watermark" aria-hidden="true">18</span>
+          <span class="legacy-watermark" aria-hidden="true">20+</span>
           <p class="legacy-eyebrow">Welcome to SAN CITY</p>
-          <h2 class="legacy-title">18 Years <em>Experience</em></h2>
+          <h2 class="legacy-title">20+ Years <em>Experience</em></h2>
           <div class="legacy-copy">
             <p>San Group Real Estate incorporates proven selling of new luxury sites, developed land, commercial and investment opportunities.</p>
             <p>Once properties are acquired or developed, the Company will provide all of the adjunct services, skills and systems necessary to maintain each property to the highest standards of quality.</p>
@@ -2732,9 +2827,9 @@
           <button type="button" class="stage-zone stage-zone--next" id="stageNext" aria-label="Next customer"></button>
         </div>
         <div class="stage-plaque">
-          <span class="stage-plaque-tag">Congratulations · Delighted Customer</span>
+          <span class="stage-plaque-tag">Congratulations</span>
+          <p class="stage-plaque-label">Delighted Customer</p>
           <h3 class="stage-plaque-name" id="stageName">Susheela H V</h3>
-          <p class="stage-plaque-meta"><strong id="stageNum">01</strong> <span></span> of 07 families</p>
         </div>
       </div>
     </section>
@@ -2770,8 +2865,8 @@
             <input type="tel" id="visitPhone" name="phone" placeholder="+91 98765 43210" required autocomplete="tel" />
           </div>
           <div class="visit-field">
-            <label for="visitCity">City</label>
-            <input type="text" id="visitCity" name="city" placeholder="Your city" required autocomplete="address-level2" />
+            <label for="visitCity">Area</label>
+            <input type="text" id="visitCity" name="area" placeholder="Your area" required autocomplete="address-level2" />
           </div>
         </div>
         <button type="submit" class="btn btn-gold visit-submit">Book Now <i class="fa-solid fa-arrow-right"></i></button>
@@ -3094,18 +3189,17 @@
       const customers = [
         { src: 'images/happy-customer1.jpg', alt: 'Susheela H V — San City delighted customer', name: 'Susheela H V' },
         { src: 'images/happy-customer2.jpg', alt: 'Eshwarappa & Yogamba — San City delighted customer', name: 'Eshwarappa & Yogamba' },
-        { src: 'images/happy-customer3.jpg', alt: 'San City delighted customer', name: 'Delighted Customer' },
-        { src: 'images/happy-customer4.jpg', alt: 'San City delighted customer', name: 'Delighted Customer' },
-        { src: 'images/happy-customer5.jpg', alt: 'San City delighted customer', name: 'Delighted Customer' },
-        { src: 'images/happy-customer6.jpg', alt: 'San City delighted customer', name: 'Delighted Customer' },
-        { src: 'images/happy-customer7.jpg', alt: 'San City delighted customer', name: 'Delighted Customer' }
+        { src: 'images/happy-customer3.jpg', alt: 'Kumar M — San City delighted customer', name: 'Kumar M' },
+        { src: 'images/happy-customer4.jpg', alt: 'Narasimha Reddy H — San City delighted customer', name: 'Narasimha Reddy H' },
+        { src: 'images/happy-customer5.jpg', alt: 'Nagaratna & Parvathi — San City delighted customer', name: 'Nagaratna & Parvathi' },
+        { src: 'images/happy-customer6.jpg', alt: 'Susheela H V — San City delighted customer', name: 'Susheela H V' },
+        { src: 'images/happy-customer7.jpg', alt: 'Eshwarappa & Yogamba — San City delighted customer', name: 'Eshwarappa & Yogamba' }
       ];
       const theater = document.getElementById('stageTheater');
       const ambient = document.getElementById('stageAmbient');
       const card = document.getElementById('stageCard');
       const img = document.getElementById('stageImg');
       const nameEl = document.getElementById('stageName');
-      const numEl = document.getElementById('stageNum');
       const bars = document.querySelectorAll('.stage-bar');
       const prev = document.getElementById('stagePrev');
       const next = document.getElementById('stageNext');
@@ -3134,7 +3228,6 @@
         busy = true;
         idx = nextIdx;
         const c = customers[idx];
-        const pad = String(idx + 1).padStart(2, '0');
 
         card.classList.remove('is-flip-in');
         card.classList.add('is-flip-out');
@@ -3144,8 +3237,13 @@
           img.src = c.src;
           img.alt = c.alt;
           if (ambient) ambient.style.backgroundImage = `url('${c.src}')`;
-          nameEl.textContent = c.name;
-          if (numEl) numEl.textContent = pad;
+          if (c.name) {
+            nameEl.textContent = c.name;
+            nameEl.hidden = false;
+          } else {
+            nameEl.textContent = '';
+            nameEl.hidden = true;
+          }
           card.classList.remove('is-flip-out');
           card.classList.add('is-flip-in');
           nameEl.classList.remove('is-changing');
@@ -3258,7 +3356,9 @@
       setMode();
     })();
   </script>
+  <script src="js/butterfly-fly.js"></script>
   <script src="js/home-awards-browse.js"></script>
+  <script src="js/float-contact.js"></script>
   <script src="js/site-footer.js"></script>
 </body>
 </html>

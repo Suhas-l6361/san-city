@@ -4,6 +4,7 @@
   padding: clamp(24px, 4vw, 40px) clamp(20px, 4vw, 48px) clamp(56px, 8vw, 88px);
   background: var(--sand);
   overflow-x: clip;
+  scroll-margin-top: 78px;
 }
 .career-apply__grid {
   max-width: 1180px;
@@ -11,7 +12,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(32px, 5vw, 56px);
-  align-items: stretch;
+  align-items: start;
   min-width: 0;
 }
 .career-apply__aside {
@@ -101,6 +102,19 @@
   border: 1px solid var(--border);
   background: var(--white);
   box-shadow: 0 16px 40px rgba(12, 74, 110, 0.1);
+}
+.career-apply__lottie {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.career-apply__lottie dotlottie-wc {
+  width: 300px;
+  height: 300px;
+  max-width: 100%;
+  display: block;
 }
 .career-apply__visual img {
   width: 100%;
@@ -408,6 +422,13 @@
     flex: none;
     aspect-ratio: 16 / 10;
     max-height: 340px;
+  }
+  .career-apply__lottie {
+    margin-top: 24px;
+  }
+  .career-apply__lottie dotlottie-wc {
+    width: min(300px, 88vw);
+    height: min(300px, 88vw);
   }
 }
 

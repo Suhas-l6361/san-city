@@ -114,14 +114,40 @@
 
   const AUTOPLAY_MS = 2000;
 
-  const ERAS = [
-    { id: 'all', label: 'All Honors' },
-    { id: '2016-2019', label: '2016 – 2019' },
-    { id: '2020-2023', label: '2020 – 2023' },
-  ];
-
   function padNum(n) {
     return String(n).padStart(2, '0');
+  }
+
+  function syncIndexHeight() {
+    if (!indexEl || !featureEl) return;
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      indexEl.style.height = '';
+      indexEl.style.maxHeight = '';
+      return;
+    }
+    const card = featureEl.querySelector('.awards-feature__card');
+    if (!card) return;
+    const h = Math.round(card.getBoundingClientRect().height);
+    if (h > 0) {
+      indexEl.style.height = `${h}px`;
+      indexEl.style.maxHeight = `${h}px`;
+    }
+  }
+
+  function scheduleSyncIndexHeight() {
+    requestAnimationFrame(() => {
+      syncIndexHeight();
+      requestAnimationFrame(syncIndexHeight);
+    });
+  }
+
+  let indexHeightObserver = null;
+
+  function watchFeatureHeight() {
+    const card = featureEl.querySelector('.awards-feature__card');
+    if (!card || indexHeightObserver) return;
+    indexHeightObserver = new ResizeObserver(scheduleSyncIndexHeight);
+    indexHeightObserver.observe(card);
   }
 
   function awardImage(i) {
@@ -163,26 +189,7 @@
   }
 
   function renderFilters() {
-    if (!filtersEl) return;
-    filtersEl.innerHTML = ERAS.map((era) => {
-      const count =
-        era.id === 'all'
-          ? AWARDS.length
-          : AWARDS.filter((a) => a.era === era.id).length;
-      const active = era.id === activeEra ? ' is-active' : '';
-      return `<button type="button" class="awards-filter${active}" data-era="${era.id}">${era.label} (${count})</button>`;
-    }).join('');
-
-    filtersEl.querySelectorAll('.awards-filter').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        activeEra = btn.dataset.era;
-        filtersEl.querySelectorAll('.awards-filter').forEach((b) => {
-          b.classList.toggle('is-active', b === btn);
-        });
-        rebuildLists();
-        resetAutoplay();
-      });
-    });
+    filtersEl?.closest('.awards-toolbar')?.setAttribute('hidden', '');
   }
 
   function buildFeatureShell() {
@@ -275,11 +282,18 @@
     const nextSrc = awardImage(index);
     if (img.getAttribute('src') !== nextSrc) {
       img.classList.add('is-swapping');
-      img.onload = () => img.classList.remove('is-swapping');
-      img.onerror = () => img.classList.remove('is-swapping');
+      img.onload = () => {
+        img.classList.remove('is-swapping');
+        scheduleSyncIndexHeight();
+      };
+      img.onerror = () => {
+        img.classList.remove('is-swapping');
+        scheduleSyncIndexHeight();
+      };
       img.src = nextSrc;
     }
     img.alt = `${award.title} — ${award.year}`;
+    scheduleSyncIndexHeight();
   }
 
   function renderIndexList(visible) {
@@ -374,9 +388,11 @@
     }
 
     buildFeatureShell();
+    watchFeatureHeight();
     renderIndexList(visible);
     renderStripList(visible);
     selectAward(selectedIndex, { scrollList: false });
+    scheduleSyncIndexHeight();
   }
 
   function renderLightbox(index) {
@@ -476,4 +492,8 @@
   renderFilters();
   rebuildLists();
   startAutoplay();
+  window.addEventListener('resize', scheduleSyncIndexHeight);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleSyncIndexHeight);
+  }
 })();

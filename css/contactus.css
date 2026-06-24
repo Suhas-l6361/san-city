@@ -4,6 +4,7 @@
   padding: clamp(20px, 3vw, 36px) clamp(16px, 4vw, 48px) clamp(40px, 6vw, 64px);
   background: var(--sand);
   min-height: calc(100vh - 72px);
+  min-height: calc(100dvh - 72px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -11,14 +12,15 @@
 
 .cu__frame {
   width: 100%;
-  max-width: 920px;
+  max-width: 980px;
   display: grid;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.52fr);
   background: var(--white);
   border-radius: 20px;
   border: 1px solid var(--border);
   box-shadow: 0 16px 48px rgba(12, 74, 110, 0.07);
   overflow: hidden;
+  align-items: stretch;
 }
 
 /* Left — contact details */
@@ -50,8 +52,45 @@
 .cu__list {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   flex: 1;
+}
+
+.cu__item--offices {
+  gap: 10px;
+}
+
+.cu-offices {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 14px;
+}
+
+.cu-office {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cu-office strong {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.cu-office p {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  opacity: 0.88;
+  margin: 0;
 }
 
 .cu__item {
@@ -94,31 +133,6 @@
 
 .cu__value:hover {
   color: var(--green-light);
-}
-
-.cu__quick {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 28px;
-  padding: 11px 18px;
-  border-radius: 10px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #fff;
-  align-self: flex-start;
-  transition: background 0.2s;
-}
-
-.cu__quick:hover {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.cu__quick i {
-  color: #25d366;
-  font-size: 1.1rem;
 }
 
 /* Right — form */
@@ -307,17 +321,33 @@
   transform: translateY(-2px);
 }
 
+@media (max-width: 900px) {
+  .cu__frame {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .cu {
     min-height: 0;
     align-items: stretch;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   }
 
   .cu__frame {
     grid-template-columns: 1fr;
   }
 
+  .cu-field input,
+  .cu-field textarea {
+    font-size: 16px;
+  }
+
   .cu-form__pair {
+    grid-template-columns: 1fr;
+  }
+
+  .cu-offices {
     grid-template-columns: 1fr;
   }
 
@@ -348,5 +378,24 @@
   .contact-modal__btn {
     width: 100%;
     padding: 14px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cu {
+    padding: 16px 12px 28px;
+  }
+
+  .cu__info,
+  .cu__form {
+    padding: 20px 16px;
+  }
+
+  .cu__info h1 {
+    font-size: 1.5rem;
+  }
+
+  .cu-office p {
+    font-size: 0.72rem;
   }
 }

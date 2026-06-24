@@ -498,37 +498,7 @@
   }
 
   function renderFilters() {
-    if (formatFiltersEl) {
-      formatFiltersEl.innerHTML = FORMATS.map((f) => {
-        const active = f.id === activeFormat ? ' is-active' : '';
-        return `<button type="button" class="blog-filter${active}" data-format="${f.id}">${f.label}</button>`;
-      }).join('');
-      formatFiltersEl.onclick = (e) => {
-        const btn = e.target.closest('[data-format]');
-        if (!btn) return;
-        activeFormat = btn.dataset.format;
-        formatFiltersEl.querySelectorAll('.blog-filter').forEach((b) => {
-          b.classList.toggle('is-active', b.dataset.format === activeFormat);
-        });
-        rebuild();
-      };
-    }
-
-    if (catFiltersEl) {
-      catFiltersEl.innerHTML = CATEGORIES.map((c) => {
-        const active = c.id === activeCategory ? ' is-active' : '';
-        return `<button type="button" class="blog-chip${active}" data-category="${c.id}">${c.label}</button>`;
-      }).join('');
-      catFiltersEl.onclick = (e) => {
-        const btn = e.target.closest('[data-category]');
-        if (!btn) return;
-        activeCategory = btn.dataset.category;
-        catFiltersEl.querySelectorAll('.blog-chip').forEach((b) => {
-          b.classList.toggle('is-active', b.dataset.category === activeCategory);
-        });
-        rebuild();
-      };
-    }
+    formatFiltersEl?.closest('.blog-toolbar')?.setAttribute('hidden', '');
   }
 
   function setScreenOrientation(i) {

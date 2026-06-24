@@ -52,12 +52,12 @@
   background: var(--white);
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
 .home-awards-browse__thumb:hover,
-.home-awards-browse__thumb:focus-visible {
-  transform: translateY(-4px);
+.home-awards-browse__thumb:focus-visible,
+.home-awards-browse__thumb.is-active {
   border-color: var(--gold);
   box-shadow: 0 8px 24px rgba(154, 123, 46, 0.28);
 }
@@ -79,6 +79,71 @@
   background: var(--white);
 }
 
+/* Compact floating preview — fixed to viewport, aligned to hovered card */
+.home-awards-browse__preview {
+  position: fixed;
+  width: 220px;
+  z-index: 880;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s var(--ease, ease), visibility 0.2s var(--ease, ease);
+}
+
+.home-awards-browse__preview.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.home-awards-browse__preview-card {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(12, 74, 110, 0.2);
+}
+
+.home-awards-browse__preview-media {
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--sand);
+  aspect-ratio: 1;
+}
+
+.home-awards-browse__preview-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-awards-browse__preview-meta {
+  padding: 10px 4px 2px;
+  text-align: center;
+}
+
+.home-awards-browse__preview-meta strong {
+  display: block;
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.home-awards-browse__preview-meta span {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--sage);
+  color: var(--green);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 @media (max-width: 768px) {
   .home-awards-browse {
     padding-right: 56px;
@@ -86,10 +151,16 @@
   .home-awards-browse__thumb {
     width: 80px;
   }
+  .home-awards-browse__preview {
+    width: min(190px, calc(100vw - 24px));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-awards-browse__track {
     animation: none;
+  }
+  .home-awards-browse__preview {
+    transition: none;
   }
 }
