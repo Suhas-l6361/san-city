@@ -215,30 +215,11 @@
   padding: 8px;
 }
 .who-chapter__lottie dotlottie-wc {
-  width: min(340px, 100%);
-  height: min(340px, 100%);
+  width: min(300px, 100%);
+  height: min(300px, 100%);
   max-width: 100%;
+  min-height: 200px;
   display: block;
-}
-.who-chapter__node {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 2px solid var(--gold);
-  display: grid;
-  place-items: center;
-  font-family: 'Fraunces', serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--green);
-  box-shadow: 0 4px 16px rgba(12, 74, 110, 0.12);
-  flex-shrink: 0;
-}
-.who-chapter__card--motto .who-chapter__node {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: var(--gold-light);
 }
 .who-chapter__card {
   background: var(--white);
@@ -342,8 +323,8 @@
   max-width: 1180px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 4vw, 44px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 56px);
   align-items: center;
   min-width: 0;
 }
@@ -375,36 +356,41 @@
   color: var(--green-mid);
 }
 .about-office__visual {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   width: 100%;
+  margin: 0;
   border-radius: clamp(22px, 3vw, 30px);
   overflow: hidden;
   box-shadow: 0 32px 80px rgba(12, 74, 110, 0.16);
   background: var(--white);
+  border: 1px solid var(--border);
+}
+.about-office__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 2.5vw, 28px);
+  background: linear-gradient(180deg, var(--sage) 0%, var(--sand) 100%);
+  min-height: clamp(260px, 36vw, 420px);
 }
 .about-office__visual img {
   width: 100%;
   height: auto;
+  max-height: min(460px, 58vh);
   display: block;
   object-fit: contain;
   object-position: center;
 }
-.about-office__visual::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(10, 21, 32, 0.55) 100%);
-  pointer-events: none;
-}
 .about-office__caption {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  z-index: 1;
-  color: #fff;
+  padding: 16px 20px;
+  text-align: center;
+  color: var(--green-mid);
+  background: var(--white);
+  border-top: 1px solid var(--border);
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -470,11 +456,6 @@
     object-position: top center;
     height: auto;
   }
-  .about-office__visual img {
-    aspect-ratio: 16 / 11;
-    object-fit: cover;
-    height: auto;
-  }
 }
 
 /* Who We Are — medium desktop: slightly smaller lotties so cards breathe */
@@ -500,10 +481,15 @@
   }
   .about-founder__content { min-width: 0; }
   .about-office__wrap { align-items: stretch; }
-  .about-office__copy { min-width: 0; }
+  .about-office__copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .about-office__visual {
-    max-width: 100%;
-    order: 1;
+    max-width: min(100%, 680px);
+    margin-inline: auto;
   }
   .about-stats__row { grid-template-columns: repeat(2, 1fr); }
   .who-we-are__journey { gap: clamp(18px, 4vw, 24px); }
@@ -552,11 +538,6 @@
     gap: 10px;
     margin-bottom: 12px;
   }
-  .who-chapter__node {
-    width: 36px;
-    height: 36px;
-    font-size: 0.72rem;
-  }
 }
 
 @media (max-width: 768px) {
@@ -582,8 +563,7 @@
     font-size: 0.65rem;
   }
   .about-office__caption {
-    left: 14px;
-    bottom: 14px;
+    padding: 12px 16px;
     font-size: 0.72rem;
   }
   .who-we-are__quote-band {
@@ -621,8 +601,9 @@
     border-radius: 16px;
     box-shadow: 0 20px 48px rgba(12, 74, 110, 0.12);
   }
-  .about-office__visual::after {
-    background: linear-gradient(180deg, transparent 65%, rgba(10, 21, 32, 0.5) 100%);
+  .about-office__frame {
+    min-height: 220px;
+    padding: 14px;
   }
   .about-office__chips { gap: 8px; }
   .about-office__chip {
@@ -695,11 +676,6 @@
   }
   .who-chapter__card p {
     font-size: 0.86rem;
-  }
-  .who-chapter__node {
-    width: 34px;
-    height: 34px;
-    font-size: 0.68rem;
   }
   .who-chapter__head .who-chapter__icon {
     width: 36px;

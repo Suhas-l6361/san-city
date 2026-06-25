@@ -198,6 +198,13 @@
   position: relative;
   padding-left: 52px;
   min-width: 0;
+  scroll-margin-top: 24px;
+  scroll-margin-bottom: 24px;
+}
+.proj-row.is-targeted::before {
+  transform: translateY(-50%) scale(1.25);
+  background: var(--gold-light);
+  border-color: var(--green);
 }
 .proj-row::before {
   content: '';

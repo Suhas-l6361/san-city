@@ -353,6 +353,48 @@
   line-height: 1.4;
 }
 
+/* Show more — YouTube */
+.hc-more {
+  max-width: 1180px;
+  margin: clamp(28px, 4vw, 40px) auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.hc-more__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 clamp(22px, 4vw, 32px);
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #c4302b 0%, #e62117 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 28px rgba(196, 48, 43, 0.28);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), filter 0.25s var(--ease);
+}
+
+.hc-more__btn i {
+  font-size: 1.15rem;
+}
+
+.hc-more__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(196, 48, 43, 0.35);
+  filter: brightness(1.05);
+}
+
+.hc-more__btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
 @media (max-width: 900px) {
   .hc-feature {
     grid-template-columns: 1fr;

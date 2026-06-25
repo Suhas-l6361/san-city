@@ -1,15 +1,16 @@
-/* San City — decorative butterfly (index trial, performance-safe) */
+/* San City — decorative butterfly (deferred, performance-safe) */
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const FLY_MS = 5000;
-  const REST_ON_LOGO_MS = 8000;
+  const REST_ON_LOGO_MS = 25000;
   const DIAGONAL_ROUTES = [
     { from: 'bottom-right', to: 'top-left' },
     { from: 'top-right', to: 'bottom-left' },
   ];
   const LOTTIE_SRC =
     'https://lottie.host/92897528-f300-4039-ad68-e98e0c72ff58/1b17q9GiCs.lottie';
+  const MOBILE_MQ = window.matchMedia('(max-width: 768px)');
 
   let routeIndex = 0;
   let flying = false;
@@ -20,6 +21,7 @@
   let lottieEl = null;
   let cachedLogo = null;
   let scrollRefreshTimer = null;
+  let flightResolve = null;
 
   function padTop() {
     return window.innerWidth <= 1024 ? 64 : 16;
@@ -91,7 +93,7 @@
   function setLottieActive(active) {
     if (!lottieEl) return;
     try {
-      lottieEl.setAttribute('speed', active ? '1' : '0.45');
+      lottieEl.setAttribute('speed', active ? '1' : '0.4');
       if (active) lottieEl.play?.();
       else lottieEl.pause?.();
     } catch {
@@ -99,13 +101,28 @@
     }
   }
 
+  function stopFlight() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    flying = false;
+    rootEl?.classList.remove('is-flying');
+    setLottieActive(false);
+    if (flightResolve) {
+      flightResolve();
+      flightResolve = null;
+    }
+  }
+
   function fly(from, to, duration) {
     return new Promise((resolve) => {
-      if (!bodyEl) {
+      if (!bodyEl || document.hidden || MOBILE_MQ.matches) {
         resolve();
         return;
       }
 
+      flightResolve = resolve;
       flying = true;
       rootEl?.classList.add('is-flying');
       bodyEl.classList.remove('is-perched');
@@ -115,8 +132,14 @@
       const start = performance.now();
 
       function frame(now) {
+        if (!flying || !bodyEl) {
+          stopFlight();
+          return;
+        }
+
         if (document.hidden) {
-          rafId = requestAnimationFrame(frame);
+          stopFlight();
+          perchOnLogo();
           return;
         }
 
@@ -131,8 +154,9 @@
         if (t < 1) {
           rafId = requestAnimationFrame(frame);
         } else {
-          flying = false;
           rafId = null;
+          flying = false;
+          flightResolve = null;
           rootEl?.classList.remove('is-flying');
           resolve();
         }
@@ -148,7 +172,12 @@
   }
 
   async function runCycle() {
-    if (flying || !bodyEl) return;
+    if (flying || !bodyEl || document.hidden) return;
+
+    if (MOBILE_MQ.matches) {
+      perchOnLogo();
+      return;
+    }
 
     const route = DIAGONAL_ROUTES[routeIndex % DIAGONAL_ROUTES.length];
     routeIndex += 1;
@@ -179,7 +208,7 @@
     clearTimeout(scrollRefreshTimer);
     scrollRefreshTimer = setTimeout(() => {
       if (!flying && bodyEl) perchOnLogo();
-    }, 120);
+    }, 200);
   }
 
   function onResize() {
@@ -191,7 +220,8 @@
     if (document.getElementById('butterflyFly')) return;
 
     try {
-      await customElements.whenDefined('dotlottie-wc');
+      if (!window.SanCityDotLottie) return;
+      await window.SanCityDotLottie.load();
     } catch {
       return;
     }
@@ -208,7 +238,7 @@
     lottieEl.setAttribute('src', LOTTIE_SRC);
     lottieEl.setAttribute('autoplay', '');
     lottieEl.setAttribute('loop', '');
-    lottieEl.setAttribute('speed', '0.45');
+    lottieEl.setAttribute('speed', '0.4');
 
     bodyEl.appendChild(lottieEl);
     rootEl.appendChild(bodyEl);
@@ -217,28 +247,48 @@
     refreshLogoPoint();
     perchOnLogo();
 
-    setTimeout(() => {
-      runCycle().then(scheduleNextFlight);
-    }, REST_ON_LOGO_MS);
+    if (!MOBILE_MQ.matches) {
+      setTimeout(() => {
+        runCycle().then(scheduleNextFlight);
+      }, REST_ON_LOGO_MS);
+    }
 
     window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
+    MOBILE_MQ.addEventListener('change', () => {
+      stopFlight();
+      clearTimeout(cycleTimer);
+      if (MOBILE_MQ.matches) {
+        perchOnLogo();
+      } else {
+        scheduleNextFlight();
+      }
+    });
+
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         clearTimeout(cycleTimer);
-        if (rafId) cancelAnimationFrame(rafId);
-        setLottieActive(false);
+        stopFlight();
       } else {
         refreshLogoPoint();
         perchOnLogo();
-        scheduleNextFlight();
+        if (!MOBILE_MQ.matches) scheduleNextFlight();
       }
     });
   }
 
+  function scheduleInit() {
+    const run = () => init();
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      setTimeout(run, 1200);
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', scheduleInit);
   } else {
-    init();
+    scheduleInit();
   }
 })();

@@ -73,7 +73,7 @@
     drop-shadow(0 3px 12px rgba(245, 158, 11, 0.28));
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .butterfly-fly__body {
     width: 76px;
     height: 76px;
@@ -82,6 +82,10 @@
   .butterfly-fly__body.is-perched {
     width: 44px;
     height: 44px;
+  }
+
+  .butterfly-fly.is-flying .butterfly-fly__body::after {
+    display: none;
   }
 }
 

@@ -10,11 +10,12 @@
   <link rel="apple-touch-icon" href="images/Sancity logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://lottie.host" />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="css/home-awards-browse.css" />
   <link rel="stylesheet" href="css/butterfly-fly.css" />
-  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module"></script>
   <link rel="stylesheet" href="css/float-contact.css" />
   <link rel="stylesheet" href="css/site-footer.css" />
   <style>
@@ -723,7 +724,7 @@
 
     /* ═══ HERO — Property listing style ═══ */
     .hero {
-      padding: 36px 48px 12px;
+      padding: 36px 48px 24px;
     }
     .hero-card {
       background: var(--white);
@@ -733,27 +734,114 @@
       border: 1px solid var(--border);
       display: grid;
       grid-template-columns: 1.3fr 1fr;
-      min-height: 520px;
+      align-items: stretch;
+      min-height: auto;
     }
     .hero-visual {
       position: relative;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(165deg, #e8eef4 0%, #dbe6f0 100%);
+      min-height: clamp(300px, 38vh, 440px);
     }
     .hero-visual img {
       width: 100%;
       height: 100%;
-      min-height: 520px;
-      object-fit: cover;
-      transition: transform 8s ease, opacity 0.6s ease;
+      object-fit: contain;
+      object-position: center;
+      transition: opacity 0.6s ease;
     }
-    .hero-visual:hover img { transform: scale(1.04); }
+    .hero-visual img.hero-img--wide-crop {
+      clip-path: inset(0 3px);
+    }
+    .hero-visual:hover img { transform: none; }
     .hero-badges {
-      position: absolute;
-      top: 20px;
-      left: 20px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    .hero-visual-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      background: linear-gradient(180deg, rgba(232, 238, 244, 0.96) 0%, rgba(232, 238, 244, 0.72) 65%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-visual-top > * {
+      pointer-events: auto;
+    }
+    .hero-visual-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      background: linear-gradient(0deg, rgba(232, 238, 244, 0.96) 0%, rgba(232, 238, 244, 0.72) 65%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-visual-bottom > * {
+      pointer-events: auto;
+    }
+    .hero-project-name {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+      padding-right: 12px;
+      text-align: left;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hero-view-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(12, 74, 110, 0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+    .hero-view-btn i {
+      font-size: 0.82rem;
+    }
+    .hero-view-btn:hover {
+      background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-light) 100%);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(12, 74, 110, 0.28);
     }
     .badge {
       padding: 6px 14px;
@@ -767,11 +855,9 @@
     .badge-gold { background: var(--gold); color: var(--ink); }
     .badge-white { background: rgba(255,255,255,0.92); color: var(--ink); backdrop-filter: blur(8px); }
     .hero-slide-nav {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
       display: flex;
       gap: 6px;
+      flex-shrink: 0;
     }
     .hero-slide-nav button {
       width: 40px;
@@ -903,14 +989,14 @@
     .spark-head { margin-bottom: clamp(18px, 3vw, 24px); }
     .spark-grid {
       display: grid;
-      grid-template-columns: 1fr 1.22fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(18px, 2.5vw, 26px);
       align-items: stretch;
     }
     .spark-card {
       --border: 3px;
       --rounded: 16px;
-      --h-card: clamp(280px, 32vh, 340px);
+      --h-card: clamp(320px, 34vh, 380px);
       --spark-1: #c4a35a;
       --spark-2: #38bdf8;
       --spark-3: #0c4a6e;
@@ -919,6 +1005,7 @@
       --tag-color: #dbc68a;
       position: relative;
       width: 100%;
+      height: 100%;
       min-height: var(--h-card);
       border-radius: var(--rounded);
       padding: var(--border);
@@ -1026,6 +1113,32 @@
       line-height: 1.62;
       color: rgba(248, 244, 235, 0.78);
       margin: 0;
+    }
+    .spark-list {
+      list-style: none;
+      margin: auto 0 0;
+      padding: 12px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .spark-list li {
+      position: relative;
+      padding-left: 14px;
+      font-size: calc(0.76rem + 1px);
+      line-height: 1.5;
+      color: rgba(248, 244, 235, 0.72);
+    }
+    .spark-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--tag-color);
     }
     .spark-card--vision {
       --spark-1: #b8a05a;
@@ -2093,9 +2206,8 @@
         grid-template-columns: 1fr;
         min-height: auto;
       }
-      .hero-visual img {
-        min-height: clamp(240px, 45vw, 400px);
-        max-height: 420px;
+      .hero-visual {
+        min-height: clamp(200px, 52vw, 380px);
       }
       .hero-info { padding: 32px 28px 36px; }
       .spark-grid {
@@ -2160,7 +2272,7 @@
         margin-left: 0;
         padding-top: 70px;
       }
-      .hero { padding: 20px clamp(16px, 4vw, 32px) 0; }
+      .hero { padding: 20px clamp(16px, 4vw, 32px) 16px; }
       .spark-section { padding: 4px clamp(16px, 4vw, 32px) 8px; }
       .amenities {
         padding: 20px clamp(16px, 4vw, 32px);
@@ -2213,6 +2325,9 @@
     /* Mobile */
     @media (max-width: 768px) {
       .main {
+        padding-bottom: 0;
+      }
+      .main:not(:has(.footer)) {
         padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
       }
       .float-contact {
@@ -2229,17 +2344,41 @@
         height: 24px;
       }
       .float-contact-brochure {
-        min-height: 44px;
-        padding: 10px 14px;
-        font-size: 0.72rem;
+        width: 48px;
+        height: 48px;
+        min-height: 48px;
+        max-width: none;
+        padding: 0;
+        border-radius: 50%;
+        gap: 0;
       }
-      .hero-visual img {
-        min-height: 220px;
-        max-height: 300px;
+      .float-contact-brochure span {
+        display: none;
       }
-      .hero-badges { top: 12px; left: 12px; gap: 6px; }
+      .float-contact-brochure i {
+        font-size: 1rem;
+      }
+      .hero-visual {
+        min-height: clamp(180px, 48vw, 300px);
+      }
+      .hero-visual-top,
+      .hero-visual-bottom {
+        padding: 12px;
+        gap: 8px;
+      }
+      .hero-badges { gap: 6px; }
+      .hero-project-name {
+        font-size: 0.82rem;
+        padding-right: 8px;
+      }
+      .hero-view-btn {
+        min-height: 32px;
+        padding: 6px 10px;
+        font-size: 0.6rem;
+        gap: 6px;
+      }
+      .hero-view-btn span { display: none; }
       .badge { font-size: 0.62rem; padding: 5px 10px; }
-      .hero-slide-nav { bottom: 12px; right: 12px; }
       .hero-slide-nav button { width: 36px; height: 36px; }
       .hero-info { padding: 24px 20px 28px; }
       .hero-info h1 { font-size: 1.65rem; }
@@ -2453,18 +2592,12 @@
       .about-point { padding: 14px; }
       .tab-btn { padding: 10px 14px; font-size: 0.75rem; }
       .plot-grid { grid-template-columns: repeat(4, 1fr); }
-      .float-contact-brochure {
-        max-width: calc(100vw - 80px);
-        white-space: normal;
-        text-align: center;
-        line-height: 1.2;
-      }
     }
 
     /* Landscape phones */
     @media (max-width: 900px) and (max-height: 500px) {
       .main { padding-top: 60px; }
-      .hero-visual img { min-height: 180px; max-height: 220px; }
+      .hero-visual { min-height: clamp(150px, 42vw, 200px); }
       .mobile-drawer { padding-top: 60px; }
     }
   </style>
@@ -2577,22 +2710,31 @@
     <section class="hero" id="home">
       <div class="hero-card reveal">
         <div class="hero-visual">
-          <img src="images/img1.jpg" alt="San City" id="heroImg" />
-          <div class="hero-badges">
-            <span class="badge badge-green">Now Selling</span>
-            <span class="badge badge-gold">RERA Approved</span>
+          <img src="images/img1.jpg" alt="San City New Town" id="heroImg" class="hero-img--wide-crop" />
+          <div class="hero-visual-top">
+            <div class="hero-badges">
+              <span class="badge badge-green">Now Selling</span>
+              <span class="badge badge-gold">RERA Approved</span>
+            </div>
+            <a href="sancity/projects.html#project-san-city-new-town" class="hero-view-btn" id="heroViewProjectBtn" aria-label="View project">
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              <span>View Project</span>
+            </a>
           </div>
-          <div class="hero-slide-nav">
-            <button id="hPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
-            <button id="hNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+          <div class="hero-visual-bottom">
+            <h2 class="hero-project-name" id="heroProjectName">San City New Town</h2>
+            <div class="hero-slide-nav">
+              <button id="hPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+              <button id="hNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
           </div>
         </div>
         <div class="hero-info">
           <div class="loc"><img src="icons/location.png" alt="" class="hero-loc-icon" /><span id="heroLoc">Bangalore, Karnataka</span></div>
           <h1>Premium <em>Townships</em> & Plotted Land for Your Dream Home</h1>
           <div class="hero-specs">
-            <div class="spec-cell"><strong>20+</strong><span>Years</span></div>
-            <div class="spec-cell"><strong>25+</strong><span>Projects</span></div>
+            <div class="spec-cell"><strong>20</strong><span>Years</span></div>
+            <div class="spec-cell"><strong>30+</strong><span>Projects</span></div>
             <div class="spec-cell"><strong>5000+</strong><span>Families</span></div>
           </div>
           <p class="hero-desc" id="heroDesc">San City New Town — a sprawling integrated township with wide roads, green boulevards, and modern community amenities.</p>
@@ -2625,9 +2767,14 @@
           <article class="spark-card spark-card--vision">
             <div class="spark-content">
               <span class="spark-icon"><img src="icons/vision.png" alt="" /></span>
-              <p class="spark-tag">01 · Our North Star</p>
+              <p class="spark-tag">Our North Star</p>
               <p class="spark-heading">Vision</p>
-              <p class="spark-text">Our vision is to be the ultimate authority in strategic tenant portfolio management of real estate. Driven by passion and strengthening the financial future of organizations with experienced professionals.</p>
+              <p class="spark-text">Our vision is to be Karnataka&rsquo;s most trusted name in plotted developments and integrated townships — building communities where families create lasting wealth through strategic real estate.</p>
+              <ul class="spark-list">
+                <li>Premium townships across Bangalore, Mysore &amp; beyond</li>
+                <li>Transparent dealings backed by 20 years of trust</li>
+                <li>Long-term value for homeowners and investors</li>
+              </ul>
             </div>
             <div class="spark-points" aria-hidden="true">
               <i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i>
@@ -2637,9 +2784,14 @@
           <article class="spark-card spark-card--chairman">
             <div class="spark-content">
               <span class="spark-icon"><img src="icons/leadership.png" alt="" /></span>
-              <p class="spark-tag">02 · Leadership</p>
+              <p class="spark-tag">Leadership</p>
               <p class="spark-heading">Chairman's Message</p>
-              <p class="spark-text">Our mission is to constantly go beyond our client's expectations providing the Wow factor in everything we do, while continuously growing a fun, top notch Real Estate Company. San City incorporates proven selling of new luxury sites, developed land, commercial and investment opportunities. Once properties are acquired or developed, the Company will provide all of the adjunct services, skills and systems necessary to maintain each property to the highest standards of quality.</p>
+              <p class="spark-text">Our mission is to exceed every client&rsquo;s expectations — delivering the wow factor in everything we do while growing a world-class real estate company rooted in integrity and excellence.</p>
+              <ul class="spark-list">
+                <li>Luxury sites, developed land &amp; commercial opportunities</li>
+                <li>End-to-end support from acquisition to handover</li>
+                <li>Every property maintained to the highest standards</li>
+              </ul>
             </div>
             <div class="spark-points" aria-hidden="true">
               <i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i>
@@ -2649,9 +2801,14 @@
           <article class="spark-card spark-card--approach">
             <div class="spark-content">
               <span class="spark-icon"><img src="icons/how we build.png" alt="" /></span>
-              <p class="spark-tag">03 · How We Build</p>
+              <p class="spark-tag">How We Build</p>
               <p class="spark-heading">Unique Approach</p>
-              <p class="spark-text">We are a company that everyone wants to be a part of. San City is a place where everyone is winning, from customers to the agents. It's a world big enough that there are no ceilings and the opportunities are endless.</p>
+              <p class="spark-text">San City is a company everyone wants to be part of — a place where customers, partners, and our team all win together, with no ceilings on growth and endless room to succeed.</p>
+              <ul class="spark-list">
+                <li>Customer-first culture at every touchpoint</li>
+                <li>500+ professionals united across all divisions</li>
+                <li>Career paths with real opportunities to lead</li>
+              </ul>
             </div>
             <div class="spark-points" aria-hidden="true">
               <i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i><i class="spark-point"></i>
@@ -2672,42 +2829,42 @@
         <div class="amenities-viewport" id="amenitiesViewport">
           <div class="amenities-track" id="amenitiesTrack">
             <div class="amenity">
-              <video class="amenity-icon" src="videos/roadway.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/roadway.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">Wide Roads</span>
                 <p class="amenity-desc">Spacious boulevards for smooth traffic flow.<br>Safe, well-lit drives through the township.</p>
               </div>
             </div>
             <div class="amenity">
-              <video class="amenity-icon" src="videos/city-park.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/city-park.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">Parks &amp; Green</span>
                 <p class="amenity-desc">Landscaped parks and tree-lined avenues.<br>Open green lungs for every resident.</p>
               </div>
             </div>
             <div class="amenity">
-              <video class="amenity-icon" src="videos/water.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/water.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">Water Supply</span>
                 <p class="amenity-desc">Reliable borewell and municipal water lines.<br>Round-the-clock supply for daily living.</p>
               </div>
             </div>
             <div class="amenity">
-              <video class="amenity-icon" src="videos/power.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/power.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">Power Backup</span>
                 <p class="amenity-desc">DG backup and underground cabling.<br>Uninterrupted power when you need it.</p>
               </div>
             </div>
             <div class="amenity">
-              <video class="amenity-icon" src="videos/24-7%20security.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/24-7%20security.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">24/7 Security</span>
                 <p class="amenity-desc">Gated entry with CCTV and patrol teams.<br>Peace of mind, day and night.</p>
               </div>
             </div>
             <div class="amenity">
-              <video class="amenity-icon" src="videos/club%20house.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true"></video>
+              <video class="amenity-icon" data-src="videos/club%20house.mp4" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"></video>
               <div class="amenity-copy">
                 <span class="amenity-title">Clubhouse</span>
                 <p class="amenity-desc">Recreation hub with indoor and outdoor spaces.<br>Fitness, leisure, and community under one roof.</p>
@@ -2723,7 +2880,7 @@
       </div>
     </div>
 
-    <!-- Welcome · 20+ Years Legacy -->
+    <!-- Welcome · 20 Years Legacy -->
     <section class="legacy-section" id="welcome">
       <div class="legacy-wrap reveal">
         <div class="legacy-visual">
@@ -2735,14 +2892,14 @@
             </div>
           </div>
           <div class="legacy-badge">
-            <strong>20+</strong>
+            <strong>20</strong>
             <span>Years<br />Experience</span>
           </div>
         </div>
         <div class="legacy-body">
-          <span class="legacy-watermark" aria-hidden="true">20+</span>
+          <span class="legacy-watermark" aria-hidden="true">20</span>
           <p class="legacy-eyebrow">Welcome to SAN CITY</p>
-          <h2 class="legacy-title">20+ Years <em>Experience</em></h2>
+          <h2 class="legacy-title">20 Years <em>Experience</em></h2>
           <div class="legacy-copy">
             <p>San Group Real Estate incorporates proven selling of new luxury sites, developed land, commercial and investment opportunities.</p>
             <p>Once properties are acquired or developed, the Company will provide all of the adjunct services, skills and systems necessary to maintain each property to the highest standards of quality.</p>
@@ -2787,7 +2944,7 @@
           <article class="impact-stat">
             <div class="impact-icon"><img src="icons/projects.png" alt="" /></div>
             <div>
-              <div class="impact-num"><span class="impact-counter" data-t="27" data-suffix="+">0</span></div>
+              <div class="impact-num"><span class="impact-counter" data-t="30" data-suffix="+">0</span></div>
               <p class="impact-label">Projects</p>
             </div>
           </article>
@@ -2961,6 +3118,10 @@
       const downloadBtn = document.getElementById('brochureDownloadBtn');
       let closeTimer;
 
+      function setBrochureButtonsDisabled(disabled) {
+        if (downloadBtn) downloadBtn.disabled = disabled;
+      }
+
       function setModalState(state, message, percent) {
         icon.classList.remove('is-success', 'is-error');
         if (state === 'loading') {
@@ -3022,8 +3183,8 @@
       }
 
       async function downloadBrochure() {
-        if (downloadBtn.disabled) return;
-        downloadBtn.disabled = true;
+        if (downloadBtn && downloadBtn.disabled) return;
+        setBrochureButtonsDisabled(true);
         openModal();
 
         try {
@@ -3068,11 +3229,11 @@
             closeTimer = setTimeout(closeModal, 2800);
           }
         } finally {
-          downloadBtn.disabled = false;
+          setBrochureButtonsDisabled(false);
         }
       }
 
-      downloadBtn.addEventListener('click', downloadBrochure);
+      if (downloadBtn) downloadBtn.addEventListener('click', downloadBrochure);
       backdrop.addEventListener('click', () => {
         if (!downloadBtn.disabled) closeModal();
       });
@@ -3114,19 +3275,27 @@
 
     /* Hero slider */
     const heroData = [
-      { img: 'images/img1.jpg', loc: 'Bangalore, Karnataka', desc: 'San City New Town — a sprawling integrated township with wide roads, green boulevards, and modern community amenities.' },
-      { img: 'images/img2.jpg', loc: 'Bangalore Outskirts', desc: 'Kalpatharu Green City — premium plotted development surrounded by lush greenery and fine infrastructure.' },
-      { img: 'images/img3.jpg', loc: 'Bangalore, Karnataka', desc: 'San City Corporate Hub — visit our experience center to explore the full San City vision.' }
+      { img: 'images/img1.jpg', name: 'San City New Town', cropWide: true, projectId: 'project-san-city-new-town', loc: 'Bangalore, Karnataka', desc: 'San City New Town — a sprawling integrated township with wide roads, green boulevards, and modern community amenities.' },
+      { img: 'images/img2.jpg', name: 'Kalpatharu Green City', projectId: 'project-san-city-kalpatharu', loc: 'Bangalore Outskirts', desc: 'Kalpatharu Green City — premium plotted development surrounded by lush greenery and fine infrastructure.' },
+      { img: 'images/img3.jpg', name: 'San City Corporate Hub', projectId: 'projects-catalog', loc: 'Bangalore, Karnataka', desc: 'San City Corporate Hub — visit our experience center to explore the full San City vision.' }
     ];
     let hIdx = 0;
     const heroImg = document.getElementById('heroImg');
+    const heroViewProjectBtn = document.getElementById('heroViewProjectBtn');
     function setHero(i) {
       hIdx = (i + 3) % 3;
       heroImg.style.opacity = '0';
       setTimeout(() => {
         heroImg.src = heroData[hIdx].img;
+        heroImg.alt = heroData[hIdx].name;
+        heroImg.classList.toggle('hero-img--wide-crop', !!heroData[hIdx].cropWide);
+        document.getElementById('heroProjectName').textContent = heroData[hIdx].name;
         document.getElementById('heroLoc').textContent = heroData[hIdx].loc;
         document.getElementById('heroDesc').textContent = heroData[hIdx].desc;
+        if (heroViewProjectBtn) {
+          heroViewProjectBtn.href = `sancity/projects.html#${heroData[hIdx].projectId}`;
+          heroViewProjectBtn.setAttribute('aria-label', `View ${heroData[hIdx].name}`);
+        }
         heroImg.style.transition = 'opacity 0.5s';
         heroImg.style.opacity = '1';
       }, 300);
@@ -3136,11 +3305,17 @@
     setInterval(() => setHero(hIdx + 1), 6000);
 
     /* Reveal */
+    let revealIndex = 0;
     const obs = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 50); obs.unobserve(e.target); }
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const delay = Math.min(revealIndex, 6) * 35;
+          revealIndex += 1;
+          setTimeout(() => e.target.classList.add('visible'), delay);
+          obs.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
     /* Impact counters */
@@ -3356,9 +3531,12 @@
       setMode();
     })();
   </script>
-  <script src="js/butterfly-fly.js"></script>
-  <script src="js/home-awards-browse.js"></script>
-  <script src="js/float-contact.js"></script>
-  <script src="js/site-footer.js"></script>
+  <script src="js/dotlottie-loader.js" defer></script>
+  <script src="js/amenity-videos.js" defer></script>
+  <script src="js/butterfly-fly.js" defer></script>
+  <script src="js/home-awards-browse.js" defer></script>
+  <script src="js/float-contact.js" defer></script>
+  <script src="js/office-locations.js" defer></script>
+  <script src="js/site-footer.js" defer></script>
 </body>
 </html>

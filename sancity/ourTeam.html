@@ -10,12 +10,13 @@
   <link rel="apple-touch-icon" href="../images/Sancity logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://lottie.host" />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="../css/site-shell.css" />
   <link rel="stylesheet" href="../css/float-contact.css" />
   <link rel="stylesheet" href="../css/butterfly-fly.css" />
-  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.14/dist/dotlottie-wc.js" type="module"></script>
   <link rel="stylesheet" href="../css/site-footer.css" />
   <link rel="stylesheet" href="../css/ourteam.css" />
 </head>
@@ -107,6 +108,33 @@
     </div>
   </div>
 
+  <div class="team-lightbox" id="teamLightbox" role="dialog" aria-modal="true" aria-labelledby="teamLightboxTitle" aria-hidden="true">
+    <div class="team-lightbox__backdrop" id="teamLightboxBackdrop"></div>
+    <div class="team-lightbox__dialog">
+      <button type="button" class="team-lightbox__close" id="teamLightboxClose" aria-label="Close image view">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="team-lightbox__img-wrap">
+        <img id="teamLightboxImg" src="" alt="" />
+      </div>
+      <div class="team-lightbox__caption">
+        <span class="team-lightbox__tag" id="teamLightboxTag"></span>
+        <strong id="teamLightboxTitle"></strong>
+      </div>
+      <footer class="team-lightbox__footer">
+        <button type="button" class="team-lightbox__nav" id="teamLightboxPrev" aria-label="Previous image">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span>Prev</span>
+        </button>
+        <span class="team-lightbox__counter" id="teamLightboxCounter"></span>
+        <button type="button" class="team-lightbox__nav" id="teamLightboxNext" aria-label="Next image">
+          <span>Next</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </footer>
+    </div>
+  </div>
+
   <div class="main">
 
     <header class="team-hero reveal">
@@ -117,11 +145,11 @@
           <p class="team-hero__lead">Welcome to our dynamic real estate team!</p>
           <div class="team-hero__stats">
             <div class="team-hero__stat">
-              <strong>20+</strong>
+              <strong>20</strong>
               <span>Years</span>
             </div>
             <div class="team-hero__stat">
-              <strong>25+</strong>
+              <strong>30+</strong>
               <span>Projects</span>
             </div>
             <div class="team-hero__stat">
@@ -177,53 +205,47 @@
         </header>
 
         <div class="team-gallery__bento">
-          <article class="team-shot team-shot--01">
-            <span class="team-shot__num" aria-hidden="true">01</span>
-            <div class="team-shot__frame">
-              <img src="../images/t1.jpg" alt="San City team gathering" loading="lazy" />
+          <article class="team-group team-group--gathering">
+            <div class="team-group__photos">
+              <div class="team-group__photo team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 01">
+                <span class="team-shot__num" aria-hidden="true">01</span>
+                <img src="../images/t1.jpg" alt="San City team gathering" loading="lazy" />
+              </div>
+              <div class="team-group__photo team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 08">
+                <span class="team-shot__num" aria-hidden="true">08</span>
+                <img src="../images/t8.jpg" alt="San City team gathering" loading="lazy" />
+              </div>
             </div>
-            <div class="team-shot__meta">
+            <div class="team-group__meta">
               <span class="team-shot__tag">Gathering</span>
               <h3>Team Gathering</h3>
             </div>
           </article>
 
-          <article class="team-shot team-shot--02">
-            <span class="team-shot__num" aria-hidden="true">02</span>
-            <div class="team-shot__frame">
-              <img src="../images/t2.jpg" alt="San City sales team" loading="lazy" />
+          <article class="team-group team-group--sales">
+            <div class="team-group__photos team-group__photos--triple">
+              <div class="team-group__photo team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 02">
+                <span class="team-shot__num" aria-hidden="true">02</span>
+                <img src="../images/t2.jpg" alt="San City sales meet" loading="lazy" />
+              </div>
+              <div class="team-group__photo team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 03">
+                <span class="team-shot__num" aria-hidden="true">03</span>
+                <img src="../images/t3.jpg" alt="San City sales meet" loading="lazy" />
+              </div>
+              <div class="team-group__photo team-group__photo--wide team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 04">
+                <span class="team-shot__num" aria-hidden="true">04</span>
+                <img src="../images/t4.jpg" alt="San City sales meet" loading="lazy" />
+              </div>
             </div>
-            <div class="team-shot__meta">
+            <div class="team-group__meta">
               <span class="team-shot__tag">Sales</span>
-              <h3>Sales Team</h3>
-            </div>
-          </article>
-
-          <article class="team-shot team-shot--03">
-            <span class="team-shot__num" aria-hidden="true">03</span>
-            <div class="team-shot__frame">
-              <img src="../images/t3.jpg" alt="San City project team" loading="lazy" />
-            </div>
-            <div class="team-shot__meta">
-              <span class="team-shot__tag">Projects</span>
-              <h3>Project Team</h3>
-            </div>
-          </article>
-
-          <article class="team-shot team-shot--04">
-            <span class="team-shot__num" aria-hidden="true">04</span>
-            <div class="team-shot__frame">
-              <img src="../images/t4.jpg" alt="San City office team" loading="lazy" />
-            </div>
-            <div class="team-shot__meta">
-              <span class="team-shot__tag">Office</span>
-              <h3>Office Team</h3>
+              <h3>Sales Meet</h3>
             </div>
           </article>
 
           <article class="team-shot team-shot--05">
             <span class="team-shot__num" aria-hidden="true">05</span>
-            <div class="team-shot__frame">
+            <div class="team-shot__frame team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 05">
               <img src="../images/t5.jpg" alt="San City team at exhibition" loading="lazy" />
             </div>
             <div class="team-shot__meta">
@@ -234,34 +256,12 @@
 
           <article class="team-shot team-shot--06">
             <span class="team-shot__num" aria-hidden="true">06</span>
-            <div class="team-shot__frame">
-              <img src="../images/t6.jpg" alt="San City team celebration" loading="lazy" />
+            <div class="team-shot__frame team-gallery__trigger" tabindex="0" role="button" aria-label="View photo 06">
+              <img src="../images/t6.jpg" alt="San City spoort event" loading="lazy" />
             </div>
             <div class="team-shot__meta">
-              <span class="team-shot__tag">Culture</span>
-              <h3>Team Celebration</h3>
-            </div>
-          </article>
-
-          <article class="team-shot team-shot--07">
-            <span class="team-shot__num" aria-hidden="true">07</span>
-            <div class="team-shot__frame">
-              <img src="../images/t7.jpg" alt="San City field team" loading="lazy" />
-            </div>
-            <div class="team-shot__meta">
-              <span class="team-shot__tag">Field</span>
-              <h3>Field Team</h3>
-            </div>
-          </article>
-
-          <article class="team-shot team-shot--08">
-            <span class="team-shot__num" aria-hidden="true">08</span>
-            <div class="team-shot__frame">
-              <img src="../images/t8.jpg" alt="San City team at project site" loading="lazy" />
-            </div>
-            <div class="team-shot__meta">
-              <span class="team-shot__tag">On Site</span>
-              <h3>Project Site</h3>
+              <span class="team-shot__tag">Spoort</span>
+              <h3>Spoort Event</h3>
             </div>
           </article>
         </div>
@@ -280,10 +280,12 @@
 
   </div>
 
-  <script src="../js/site-shell.js"></script>
-  <script src="../js/butterfly-fly.js"></script>
-  <script src="../js/float-contact.js"></script>
-  <script src="../js/site-footer.js"></script>
-  <script src="../js/ourteam.js"></script>
+  <script src="../js/dotlottie-loader.js" defer></script>
+  <script src="../js/site-shell.js" defer></script>
+  <script src="../js/butterfly-fly.js" defer></script>
+  <script src="../js/float-contact.js" defer></script>
+  <script src="../js/office-locations.js" defer></script>
+  <script src="../js/site-footer.js" defer></script>
+  <script src="../js/ourteam.js" defer></script>
 </body>
 </html>

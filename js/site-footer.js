@@ -6,6 +6,17 @@
   const inSancity = /\/sancity\//i.test(window.location.pathname);
   const page = inSancity ? '' : 'sancity/';
   const asset = inSancity ? '../' : '';
+  const offices = window.SanCityOffices || [];
+
+  function officeMapLink(office) {
+    return `<a href="${office.map}" class="footer-office-map" target="_blank" rel="noopener noreferrer" aria-label="Open ${office.name} office in Google Maps"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${office.address}</a>`;
+  }
+
+  const officeListHtml = offices.map((office) => `
+            <li>
+              <strong>${office.name}</strong>
+              <span>${officeMapLink(office)}</span>
+            </li>`).join('');
 
   root.innerHTML = `
     <div class="footer-wrap">
@@ -27,28 +38,15 @@
         <div class="footer-offices">
           <h4 class="footer-heading">Our Offices</h4>
           <ul class="footer-office-list">
-            <li>
-              <strong>Sheshadripuram</strong>
-              <span>#11 &amp; 12, 2nd Floor, PS Plaza, Jawaharlal Street, Bangalore 560020</span>
-            </li>
-            <li>
-              <strong>Magadi Road</strong>
-              <span>#2/177, Byadarahalli College Stop, Vishvadeenam Post, Bangalore 560091</span>
-            </li>
-            <li>
-              <strong>Mysore</strong>
-              <span>#1, 1st St, Vijay Nagar 2nd Stage, Mysuru 570017</span>
-            </li>
-            <li>
-              <strong>Bylakuppe</strong>
-              <span>#115, 1st Floor, Bylsan City Complex, Kushalnagar 571104</span>
-            </li>
+            ${officeListHtml}
           </ul>
         </div>
 
         <div class="footer-connect">
           <h4 class="footer-heading">Contact</h4>
           <a href="tel:+919731901111" class="footer-link"><i class="fa-solid fa-phone" aria-hidden="true"></i> +91 97319 01111</a>
+          <a href="tel:+918023469234" class="footer-link"><i class="fa-solid fa-phone" aria-hidden="true"></i> +91 80 2346 9234</a>
+          <a href="tel:+918023562346" class="footer-link"><i class="fa-solid fa-phone" aria-hidden="true"></i> +91 80 2356 2346</a>
           <a href="mailto:admin@sancity1.com" class="footer-link email-link"><i class="fa-solid fa-envelope" aria-hidden="true"></i> admin@sancity1.com</a>
         </div>
       </div>
@@ -59,6 +57,8 @@
           <a href="${page}aboutus.html">About</a>
           <a href="${page}projects.html">Projects</a>
           <a href="${page}contactus.html">Contact</a>
+          <a href="${page}terms.html">Terms</a>
+          <a href="${page}privacy.html">Privacy</a>
           <a href="${asset}index.html#visit">Book Visit</a>
         </nav>
       </div>

@@ -33,6 +33,14 @@
   }
 
   if (!document.getElementById('chatbotPanel')) {
+    const backdrop = document.createElement('button');
+    backdrop.type = 'button';
+    backdrop.className = 'chatbot-backdrop';
+    backdrop.id = 'chatbotBackdrop';
+    backdrop.setAttribute('aria-label', 'Close chat bot');
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+
     const panel = document.createElement('div');
     panel.className = 'chatbot-panel';
     panel.id = 'chatbotPanel';
@@ -46,7 +54,7 @@
           <div class="chatbot-panel__avatar"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
           <div>
             <strong id="chatbotPanelTitle">San City Assistant</strong>
-            <span>Typically replies instantly</span>
+            <span>Online · replies instantly</span>
           </div>
         </div>
         <button type="button" class="chatbot-panel__close" id="chatbotClose" aria-label="Close chat bot">
@@ -71,6 +79,7 @@
 
   const toggle = document.getElementById('chatbotToggle');
   const panel = document.getElementById('chatbotPanel');
+  const backdrop = document.getElementById('chatbotBackdrop');
   const closeBtn = document.getElementById('chatbotClose');
   const messagesEl = document.getElementById('chatbotMessages');
   const form = document.getElementById('chatbotForm');
@@ -133,6 +142,8 @@
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
     toggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('chatbot-open');
+    if (backdrop) backdrop.hidden = false;
     if (input) window.setTimeout(() => input.focus(), 280);
   }
 
@@ -140,6 +151,8 @@
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
     toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('chatbot-open');
+    if (backdrop) backdrop.hidden = true;
   }
 
   toggle.addEventListener('click', () => {
@@ -148,6 +161,7 @@
   });
 
   if (closeBtn) closeBtn.addEventListener('click', closeChat);
+  if (backdrop) backdrop.addEventListener('click', closeChat);
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closeChat();

@@ -200,16 +200,23 @@
 
   const revealEls = document.querySelectorAll('.reveal');
   if (revealEls.length) {
+    let revealIndex = 0;
     const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e, i) => {
+        entries.forEach((e) => {
           if (e.isIntersecting) {
-            setTimeout(() => e.target.classList.add('visible'), i * 50);
+            const delay = Math.min(revealIndex, 6) * 35;
+            revealIndex += 1;
+            if (delay) {
+              setTimeout(() => e.target.classList.add('visible'), delay);
+            } else {
+              e.target.classList.add('visible');
+            }
             obs.unobserve(e.target);
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
     revealEls.forEach((el) => obs.observe(el));
   }

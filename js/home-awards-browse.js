@@ -1,19 +1,33 @@
 /* Home — Quick Browse awards carousel */
 (function () {
+  function yearSortKey(yearStr) {
+    const s = String(yearStr).trim();
+    if (s.includes('-')) {
+      const [startPart, endPart] = s.split('-');
+      const start = parseInt(startPart, 10);
+      let end = parseInt(endPart, 10);
+      if (endPart.length <= 2 && start >= 100) {
+        end = Math.floor(start / 100) * 100 + end;
+      }
+      return end;
+    }
+    return parseInt(s, 10) || 0;
+  }
+
   const AWARDS = [
-    { title: 'Business Excellence in Real Estate', year: '2019' },
-    { title: 'Achievers of Bengaluru', year: '2023' },
-    { title: 'Bengaluru Pride Award', year: '2022-23' },
-    { title: 'Economic Times Achievers', year: '2023' },
-    { title: 'Bengaluru City Icon Award', year: '2018-19' },
-    { title: 'Mother Teresa National Award', year: '2020' },
-    { title: 'Business Excellence in Real Estate', year: '2023' },
-    { title: 'Times Icon For Human Excellence', year: '2021' },
-    { title: 'Most Promising Infrastructure Company', year: '2018' },
-    { title: 'Emerging Plot Developer of the Year', year: '2023' },
-    { title: "Bengaluru's Best Plotted Projects", year: '2022-23' },
-    { title: 'Dr. A.P.J. Abdul Kalam Excellence Award', year: '2016' },
-  ];
+    { image: 1, title: 'Business Excellence in Real Estate', year: '2019' },
+    { image: 2, title: 'Achievers of Bengaluru', year: '2023' },
+    { image: 3, title: 'Bengaluru Pride Award', year: '2022-23' },
+    { image: 4, title: 'Economic Times Achievers', year: '2023' },
+    { image: 5, title: 'Bengaluru City Icon Award', year: '2018-19' },
+    { image: 6, title: 'Mother Teresa National Award', year: '2020' },
+    { image: 7, title: 'Business Excellence in Real Estate', year: '2023' },
+    { image: 8, title: 'Times Icon For Human Excellence', year: '2021' },
+    { image: 9, title: 'Most Promising Infrastructure Company', year: '2018' },
+    { image: 10, title: 'Emerging Plot Developer of the Year', year: '2023' },
+    { image: 11, title: "Bengaluru's Best Plotted Projects", year: '2022-23' },
+    { image: 12, title: 'Dr. A.P.J. Abdul Kalam Excellence Award', year: '2016' },
+  ].sort((a, b) => yearSortKey(b.year) - yearSortKey(a.year));
 
   const section = document.getElementById('homeAwardsBrowse');
   const stage = section ? section.querySelector('.home-awards-browse__stage') : null;
@@ -29,13 +43,14 @@
   let activeThumb = null;
 
   function awardImage(i) {
-    return `images/award${i + 1}.jpg`;
+    const num = AWARDS[i]?.image ?? i + 1;
+    return `images/award${num}.jpg`;
   }
 
   function cardHtml(i, award) {
     return `
       <button type="button" class="home-awards-browse__thumb" data-index="${i}" aria-label="${award.title}">
-        <img src="${awardImage(i)}" alt="" loading="lazy" width="88" height="88" />
+        <img src="${awardImage(i)}" alt="" loading="lazy" />
         <span>${award.year}</span>
       </button>
     `;

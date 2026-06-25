@@ -1,7 +1,22 @@
 /* San City — Awards spotlight index & lightbox */
 (function () {
+  function yearSortKey(yearStr) {
+    const s = String(yearStr).trim();
+    if (s.includes('-')) {
+      const [startPart, endPart] = s.split('-');
+      const start = parseInt(startPart, 10);
+      let end = parseInt(endPart, 10);
+      if (endPart.length <= 2 && start >= 100) {
+        end = Math.floor(start / 100) * 100 + end;
+      }
+      return end;
+    }
+    return parseInt(s, 10) || 0;
+  }
+
   const AWARDS = [
     {
+      image: 1,
       title: 'Business Excellence in Real Estate',
       presenter: 'Sonu Sood (Indian Actor)',
       org: 'The Economic Times',
@@ -9,6 +24,7 @@
       era: '2016-2019',
     },
     {
+      image: 2,
       title: 'Achievers of Bengaluru',
       presenter: 'Golden Star Ganesh (Sandalwood Actor)',
       org: 'Vijay Karnataka',
@@ -16,6 +32,7 @@
       era: '2020-2023',
     },
     {
+      image: 3,
       title: 'Bengaluru Pride Award',
       presenter: 'Kushi (Sandalwood Actress)',
       org: 'Radio City',
@@ -23,6 +40,7 @@
       era: '2020-2023',
     },
     {
+      image: 4,
       title: 'Economic Times Achievers',
       presenter: 'Raveena Tandon (Indian Actress)',
       org: 'The Economic Times',
@@ -30,6 +48,7 @@
       era: '2020-2023',
     },
     {
+      image: 5,
       title: 'Bengaluru City Icon Award',
       presenter: 'Ragini Dwivedi (Indian Actress)',
       org: 'Radio City',
@@ -37,6 +56,7 @@
       era: '2016-2019',
     },
     {
+      image: 6,
       title: 'Mother Teresa National Award',
       presenter: 'The National Press Council of India',
       org: 'National Recognition',
@@ -44,6 +64,7 @@
       era: '2020-2023',
     },
     {
+      image: 7,
       title: 'Business Excellence in Real Estate',
       presenter: 'Maneka Sanjay Gandhi (Politician)',
       org: 'The Economic Times',
@@ -51,6 +72,7 @@
       era: '2020-2023',
     },
     {
+      image: 8,
       title: 'Times Icon For Human Excellence',
       presenter: 'The Times Group',
       org: 'Times Icons',
@@ -58,6 +80,7 @@
       era: '2020-2023',
     },
     {
+      image: 9,
       title: 'Most Promising Infrastructure Company',
       presenter: 'International Achievers Conference',
       org: 'Bangkok Summit',
@@ -65,6 +88,7 @@
       era: '2016-2019',
     },
     {
+      image: 10,
       title: 'Emerging Plot Developer of the Year',
       presenter: 'ET Achievers Karnataka',
       org: 'The Economic Times',
@@ -72,6 +96,7 @@
       era: '2020-2023',
     },
     {
+      image: 11,
       title: "Bengaluru's Best Plotted Projects",
       presenter: 'The Big Bengaluru Pride Award',
       org: '92.7 BIG FM',
@@ -79,13 +104,14 @@
       era: '2020-2023',
     },
     {
+      image: 12,
       title: 'Dr. A.P.J. Abdul Kalam Excellence Award',
       presenter: 'Presented to B. S. Vishwa Cariappa',
       org: 'National Honour',
       year: '2016',
       era: '2016-2019',
     },
-  ];
+  ].sort((a, b) => yearSortKey(b.year) - yearSortKey(a.year));
 
   const stageEl = document.getElementById('awardsStage');
   const indexEl = document.getElementById('awardsIndex');
@@ -151,7 +177,9 @@
   }
 
   function awardImage(i) {
-    return `../images/award${i + 1}.jpg`;
+    const award = AWARDS[i];
+    const num = award?.image ?? i + 1;
+    return `../images/award${num}.jpg`;
   }
 
   function getVisibleIndices() {

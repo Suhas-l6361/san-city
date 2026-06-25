@@ -39,6 +39,7 @@
   const prevBtn = document.getElementById('hcPrev');
   const nextBtn = document.getElementById('hcNext');
   const featureEl = document.getElementById('hcFeature');
+  const showMoreEl = document.getElementById('hcShowMore');
 
   if (!gridEl || !iframeEl || !titleEl) return;
 
@@ -70,6 +71,10 @@
   function watchUrl(index) {
     const video = VIDEOS[index];
     return `https://www.youtube.com/watch?v=${video.id}&list=${PLAYLIST_ID}&index=${index + 1}`;
+  }
+
+  function playlistUrl() {
+    return `https://www.youtube.com/playlist?list=${PLAYLIST_ID}`;
   }
 
   function scrollToFeature() {
@@ -140,4 +145,5 @@
 
   renderGrid();
   setActive(0, false);
+  if (showMoreEl) showMoreEl.href = playlistUrl();
 })();

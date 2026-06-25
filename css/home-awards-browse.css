@@ -3,11 +3,13 @@
 .home-awards-browse {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 48px);
+  padding: 16px clamp(16px, 4vw, 48px) 28px;
+  overflow: visible;
 }
 
 .home-awards-browse__stage {
   position: relative;
+  overflow: visible;
 }
 
 .home-awards-browse__label {
@@ -16,19 +18,21 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .home-awards-browse__viewport {
-  overflow: hidden;
-  padding: 4px 0 6px;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding: 6px 0 10px;
   mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
 }
 
 .home-awards-browse__track {
   display: flex;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
   width: max-content;
   will-change: transform;
   animation: homeAwardsMarquee var(--marquee-duration, 48s) linear infinite;
@@ -45,14 +49,17 @@
 
 .home-awards-browse__thumb {
   flex: 0 0 auto;
-  width: 88px;
+  width: 104px;
+  display: flex;
+  flex-direction: column;
   padding: 0;
-  border: 2px solid transparent;
+  border: 2px solid var(--border);
   border-radius: 12px;
   background: var(--white);
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  box-shadow: 0 4px 14px rgba(12, 74, 110, 0.08);
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
 }
 
 .home-awards-browse__thumb:hover,
@@ -60,23 +67,29 @@
 .home-awards-browse__thumb.is-active {
   border-color: var(--gold);
   box-shadow: 0 8px 24px rgba(154, 123, 46, 0.28);
+  transform: translateY(-2px);
 }
 
 .home-awards-browse__thumb img {
   display: block;
   width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
+  height: 78px;
+  object-fit: contain;
+  object-position: center;
+  background: #f4f0e8;
+  padding: 4px;
 }
 
 .home-awards-browse__thumb span {
   display: block;
-  padding: 5px 6px;
-  font-size: 0.62rem;
+  padding: 6px 8px;
+  font-size: 0.64rem;
   font-weight: 700;
   text-align: center;
   color: var(--ink);
   background: var(--white);
+  border-top: 1px solid var(--border);
+  line-height: 1.2;
 }
 
 /* Compact floating preview — fixed to viewport, aligned to hovered card */
@@ -116,7 +129,9 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background: #f4f0e8;
 }
 
 .home-awards-browse__preview-meta {
@@ -147,9 +162,13 @@
 @media (max-width: 768px) {
   .home-awards-browse {
     padding-right: 56px;
+    padding-bottom: 24px;
   }
   .home-awards-browse__thumb {
-    width: 80px;
+    width: 92px;
+  }
+  .home-awards-browse__thumb img {
+    height: 70px;
   }
   .home-awards-browse__preview {
     width: min(190px, calc(100vw - 24px));

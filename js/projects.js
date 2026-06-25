@@ -6,8 +6,8 @@
       status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
-      location: 'Periyapattana (Mysore)',
-      size: '12.9 Acres (205 Plots)',
+      location: 'Mysore District',
+      size: '205 Plots',
       highlights: ['DC Converted', 'DTCP Approved', 'Club-House', 'Swimming Pool'],
     },
     {
@@ -15,8 +15,8 @@
       status: 'ongoing',
       city: 'Mysore',
       region: 'Mysore',
-      location: 'Mysore',
-      size: '600 Acres Est. (10,000 Plots)',
+      location: 'Mysore District',
+      size: 'Est. 10,000 Plots',
       highlights: ['DC Converted', 'DTCP Approved', 'Under Development'],
     },
     {
@@ -24,8 +24,8 @@
       status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
-      location: 'Periyapattana Taluk, Mysore Dist.',
-      size: '12 Acres (150+ Plots)',
+      location: 'Mysore District',
+      size: '150+ Plots',
       highlights: ['DC Converted', 'DTCP Approved', 'Club-House', 'Indoor Games', 'Swimming Pool'],
     },
     {
@@ -33,8 +33,8 @@
       status: 'completed',
       city: 'Bangalore',
       region: 'Bangalore',
-      location: 'Bangalore',
-      size: '34 Acres (480 Plots)',
+      location: 'Bangalore District',
+      size: '480 Plots',
       highlights: ['BMRDA Approved', 'DC Converted', 'DTCP Approved'],
     },
     {
@@ -42,8 +42,8 @@
       status: 'completed',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
-      location: 'Bagepalli Taluk, Chikkaballapur Dist.',
-      size: '22 Acres (385 Plots)',
+      location: 'Chikkaballapur District',
+      size: '385 Plots',
       highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed', 'World-Class Amenities'],
     },
     {
@@ -51,8 +51,8 @@
       status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
-      location: 'Periyapattana (Mysore)',
-      size: '7.11 Acres (100+ Plots)',
+      location: 'Mysore District',
+      size: '100+ Plots',
       highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed', 'Basic Amenities'],
     },
     {
@@ -60,8 +60,8 @@
       status: 'ongoing',
       city: 'Tumkur',
       region: 'Tumkur',
-      location: 'Sira, Tumkur',
-      size: '30 Acres (600 Plots)',
+      location: 'Tumkur District',
+      size: '600 Plots',
       highlights: ['DTCP Approved', 'DC Converted'],
     },
     {
@@ -69,8 +69,8 @@
       status: 'ongoing',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
-      location: 'Gowribidanuru Taluk, Chikkaballapura Dist.',
-      size: '9.15 Acres (160+ Plots)',
+      location: 'Chikkaballapur District',
+      size: '160+ Plots',
       highlights: ['DC Converted', 'DTCP Approved'],
     },
     {
@@ -78,8 +78,8 @@
       status: 'ongoing',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
-      location: 'Gowribidanuru Taluk, Chikkaballapura Dist.',
-      size: '9.15 Acres (160+ Plots)',
+      location: 'Chikkaballapur District',
+      size: '160+ Plots',
       highlights: ['DC Converted', 'DTCP Approved'],
     },
     {
@@ -87,8 +87,8 @@
       status: 'ongoing',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
-      location: 'Bagepalli, Chikkaballapura Dist.',
-      size: '24 Acres',
+      location: 'Chikkaballapur District',
+      size: 'Under Development',
       highlights: ['DC Converted', 'DTCP Approved'],
     },
     {
@@ -96,8 +96,8 @@
       status: 'completed',
       city: 'Gowribidanur',
       region: 'Gowribidanur',
-      location: 'Gowribidanur',
-      size: '120 Acres (2300+ Plots)',
+      location: 'Chikkaballapur District',
+      size: '2300+ Plots',
       highlights: ['Fully Developed'],
     },
     {
@@ -105,8 +105,8 @@
       status: 'ongoing',
       city: 'Mysore',
       region: 'Mysore',
-      location: 'Mysore',
-      size: '16 Acres (2300+ Plots)',
+      location: 'Mysore District',
+      size: '2300+ Plots',
       highlights: ['DTCP Approved', 'DC Converted'],
     },
   ];
@@ -152,6 +152,48 @@
 
   function detailImage(i) {
     return `../images/pp${i + 1}.jpg`;
+  }
+
+  function projectSlug(name) {
+    return 'project-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  function resetFiltersForDeepLink() {
+    activeStatus = 'all';
+    activeCity = 'all';
+    if (citySelect) citySelect.value = 'all';
+    renderStatusFilters();
+    applyFilter();
+  }
+
+  function highlightProjectRow(row) {
+    if (!row) return;
+    row.classList.remove('is-targeted');
+    void row.offsetWidth;
+    row.classList.add('is-targeted');
+    window.setTimeout(() => row.classList.remove('is-targeted'), 2400);
+  }
+
+  function focusProjectFromHash() {
+    const id = window.location.hash.replace(/^#/, '');
+    if (!id) return;
+
+    if (id === 'projects-catalog') {
+      document.getElementById('projects-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    const row = document.getElementById(id);
+    if (!row || !row.classList.contains('proj-row')) return;
+
+    resetFiltersForDeepLink();
+
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        highlightProjectRow(row);
+      }, 80);
+    });
   }
 
   function projectMatchesFilters(project) {
@@ -250,7 +292,7 @@
         .join('');
 
       return `
-        <article class="proj-row reveal${flip}" data-index="${i}" data-status="${project.status}" data-city="${project.city}">
+        <article class="proj-row reveal${flip}" id="${projectSlug(project.name)}" data-index="${i}" data-status="${project.status}" data-city="${project.city}">
           <button type="button" class="proj-row__btn" aria-label="View details for ${project.name}">
             <div class="proj-row__visual">
               <img src="${cardImage(i)}" alt="${project.name}" loading="lazy" width="720" height="440" />
@@ -354,4 +396,9 @@
   renderCitySelect();
   renderStatusFilters();
   renderShowcase();
+
+  window.addEventListener('hashchange', focusProjectFromHash);
+  if (window.location.hash) {
+    window.requestAnimationFrame(() => window.setTimeout(focusProjectFromHash, 120));
+  }
 })();
