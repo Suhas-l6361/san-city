@@ -81,16 +81,11 @@
     const img = trigger.querySelector('img');
     const card = trigger.closest('.team-group, .team-shot');
     const meta = card?.querySelector('.team-group__meta, .team-shot__meta');
-    const num = trigger.querySelector('.team-shot__num')?.textContent?.trim()
-      || card?.querySelector('.team-shot__num')?.textContent?.trim()
-      || '';
-
     return {
       src: img?.currentSrc || img?.src || '',
       alt: img?.alt || '',
       tag: meta?.querySelector('.team-shot__tag')?.textContent?.trim() || '',
       title: meta?.querySelector('h3')?.textContent?.trim() || img?.alt || '',
-      num,
     };
   });
 

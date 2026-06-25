@@ -2735,7 +2735,7 @@
           <div class="hero-specs">
             <div class="spec-cell"><strong>20</strong><span>Years</span></div>
             <div class="spec-cell"><strong>30+</strong><span>Projects</span></div>
-            <div class="spec-cell"><strong>5000+</strong><span>Families</span></div>
+            <div class="spec-cell"><strong>12000+</strong><span>Families</span></div>
           </div>
           <p class="hero-desc" id="heroDesc">San City New Town — a sprawling integrated township with wide roads, green boulevards, and modern community amenities.</p>
           <div class="hero-btns">
@@ -3014,12 +3014,12 @@
             <input type="text" id="visitName" name="name" placeholder="Enter your name" required autocomplete="name" />
           </div>
           <div class="visit-field">
-            <label for="visitEmail">Email Address</label>
-            <input type="email" id="visitEmail" name="email" placeholder="you@email.com" required autocomplete="email" />
+            <label for="visitEmail">Email Address <span aria-hidden="true">(optional)</span></label>
+            <input type="email" id="visitEmail" name="email" placeholder="you@email.com" autocomplete="email" />
           </div>
           <div class="visit-field">
             <label for="visitPhone">Phone Number</label>
-            <input type="tel" id="visitPhone" name="phone" placeholder="+91 98765 43210" required autocomplete="tel" />
+            <input type="tel" id="visitPhone" name="phone" placeholder="+91 98765 43210" required autocomplete="tel" inputmode="tel" title="Enter a valid 10-digit Indian mobile number" />
           </div>
           <div class="visit-field">
             <label for="visitCity">Area</label>
@@ -3073,6 +3073,13 @@
       const message = document.getElementById('visitModalMessage');
       if (!form || !modal) return;
 
+      const INDIAN_PHONE_RE = /^(?:\+?91[\s-]?)?[6-9]\d{9}$/;
+
+      function isValidIndianPhone(value) {
+        const normalized = String(value || '').replace(/[\s-]/g, '');
+        return INDIAN_PHONE_RE.test(normalized);
+      }
+
       function openVisitModal(name) {
         message.textContent = name
           ? `Thank you, ${name}! Our team will contact you shortly to confirm your free site visit.`
@@ -3092,7 +3099,32 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const nameInput = form.querySelector('[name="name"]');
+        const phoneInput = form.querySelector('[name="phone"]');
+        const emailInput = form.querySelector('[name="email"]');
         const name = nameInput ? nameInput.value.trim() : '';
+
+        if (phoneInput) phoneInput.setCustomValidity('');
+        if (emailInput) emailInput.setCustomValidity('');
+
+        if (!phoneInput || !isValidIndianPhone(phoneInput.value.trim())) {
+          if (phoneInput) {
+            phoneInput.setCustomValidity('Please enter a valid 10-digit Indian mobile number (e.g. 9876543210 or +91 9876543210).');
+            phoneInput.reportValidity();
+          }
+          return;
+        }
+
+        const email = emailInput ? emailInput.value.trim() : '';
+        if (email && emailInput && !emailInput.checkValidity()) {
+          emailInput.reportValidity();
+          return;
+        }
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
         form.reset();
         openVisitModal(name);
       });

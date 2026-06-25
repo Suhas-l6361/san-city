@@ -637,12 +637,78 @@
       padding-left: clamp(16px, 4vw, 48px);
       padding-right: clamp(16px, 4vw, 48px);
     }
+
+    /* Floating — Free Site Visit promo (subpages only, via site-shell.js) */
+    .float-site-visit {
+      position: fixed;
+      top: max(18px, env(safe-area-inset-top));
+      right: max(22px, env(safe-area-inset-right));
+      z-index: 948;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 22px 11px;
+      background: linear-gradient(180deg, #f5e6a8 0%, #e2c56a 38%, #c9a23a 100%);
+      color: #0a1520;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+
+    .float-site-visit:hover {
+      color: #0a1520;
+      transform: translateY(-2px);
+      box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .float-site-visit__badge {
+      position: absolute;
+      top: -11px;
+      right: 12px;
+      padding: 4px 10px;
+      background: #0a1520;
+      border: 1px solid #d4b04a;
+      color: #e8c96a;
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      white-space: nowrap;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .float-site-visit__label {
+      position: relative;
+      z-index: 1;
+    }
+
 /* Shell responsive */
 @media (max-width: 1024px) {
   :root { --sidebar: 0px; }
   .sidebar { display: none; }
   .mobile-bar { display: flex; }
   .main { margin-left: 0; padding-top: 70px; }
+  .float-site-visit {
+    top: calc(max(10px, env(safe-area-inset-top)) + 64px);
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .float-site-visit:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
 }
 @media (max-width: 768px) {
   .main {
@@ -685,4 +751,17 @@
   .mobile-bar { padding: 12px 16px; }
   .mobile-bar img { height: 36px; }
   .main { padding-top: 62px; }
+  .float-site-visit {
+    top: calc(max(8px, env(safe-area-inset-top)) + 58px);
+    min-height: 36px;
+    padding: 8px 16px 9px;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+  }
+  .float-site-visit__badge {
+    top: -9px;
+    right: 8px;
+    padding: 3px 8px;
+    font-size: 0.48rem;
+  }
 }

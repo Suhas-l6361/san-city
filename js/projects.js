@@ -12,12 +12,12 @@
     },
     {
       name: 'San City Kaveri',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
       size: 'Est. 10,000 Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Under Development'],
+      highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed'],
     },
     {
       name: 'San City Rachana',
@@ -29,7 +29,7 @@
       highlights: ['DC Converted', 'DTCP Approved', 'Club-House', 'Indoor Games', 'Swimming Pool'],
     },
     {
-      name: 'San City WonderWoods',
+      name: 'Wonder Woods',
       status: 'completed',
       city: 'Bangalore',
       region: 'Bangalore',
@@ -66,7 +66,7 @@
     },
     {
       name: 'San City Prakruthi',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
@@ -293,12 +293,14 @@
 
       return `
         <article class="proj-row reveal${flip}" id="${projectSlug(project.name)}" data-index="${i}" data-status="${project.status}" data-city="${project.city}">
-          <button type="button" class="proj-row__btn" aria-label="View details for ${project.name}">
-            <div class="proj-row__visual">
-              <img src="${cardImage(i)}" alt="${project.name}" loading="lazy" width="720" height="440" />
-              <span class="proj-row__num" aria-hidden="true">${num}</span>
-              <span class="proj-row__status proj-row__status--${project.status}">${statusLabel}</span>
-            </div>
+          <div class="proj-row__btn">
+            <button type="button" class="proj-row__visual-btn" aria-label="View details for ${project.name}">
+              <div class="proj-row__visual">
+                <img src="${cardImage(i)}" alt="${project.name}" loading="lazy" width="720" height="440" />
+                <span class="proj-row__num" aria-hidden="true">${num}</span>
+                <span class="proj-row__status proj-row__status--${project.status}">${statusLabel}</span>
+              </div>
+            </button>
             <div class="proj-row__panel">
               <span class="proj-row__region">${project.city}</span>
               <h3>${project.name}</h3>
@@ -307,16 +309,24 @@
                 <span><i class="fa-solid fa-chart-area" aria-hidden="true"></i>${project.size}</span>
               </div>
               <div class="proj-row__chips">${chips}</div>
-              <span class="proj-row__cta">View Project <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+              <div class="proj-row__actions">
+                <button type="button" class="proj-row__cta">View Project <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+                <a href="../index.html#visit" class="proj-row__visit">Free Site Visit</a>
+              </div>
             </div>
-          </button>
+          </div>
         </article>
       `;
     }).join('');
 
-    showcase.querySelectorAll('.proj-row__btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        openModal(Number(btn.closest('.proj-row').dataset.index));
+    showcase.querySelectorAll('.proj-row').forEach((row) => {
+      const index = Number(row.dataset.index);
+      const openProject = () => openModal(index);
+
+      row.querySelector('.proj-row__visual-btn')?.addEventListener('click', openProject);
+      row.querySelector('.proj-row__cta')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openProject();
       });
     });
 

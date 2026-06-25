@@ -517,4 +517,26 @@
       if (e.key === 'Escape' && contactModal.classList.contains('open')) closeContactModal();
     });
   }
+
+  /* Floating Free Site Visit — all subpages except Contact */
+  (function initFloatSiteVisit() {
+    const page = (window.location.pathname.split('/').pop() || '').toLowerCase();
+    if (page === 'contactus.html' || page === 'career.html' || page === 'terms.html' || page === 'privacy.html' || page === 'projects.html') return;
+
+    const inSancity = /\/sancity\//i.test(window.location.pathname);
+    const visitHref = inSancity ? '../index.html#visit' : 'index.html#visit';
+
+    if (document.getElementById('floatSiteVisit')) return;
+
+    const link = document.createElement('a');
+    link.id = 'floatSiteVisit';
+    link.className = 'float-site-visit';
+    link.href = visitHref;
+    link.setAttribute('aria-label', 'Book a free site visit from San City');
+    link.innerHTML = `
+      <span class="float-site-visit__badge">From Us</span>
+      <span class="float-site-visit__label">Free Site Visit</span>
+    `;
+    document.body.appendChild(link);
+  })();
 })();
