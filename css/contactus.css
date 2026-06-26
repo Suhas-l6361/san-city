@@ -15,6 +15,9 @@
   max-width: 980px;
   display: grid;
   grid-template-columns: minmax(0, 0.48fr) minmax(0, 0.52fr);
+  grid-template-areas:
+    "head form"
+    "details form";
   background: var(--white);
   border-radius: 20px;
   border: 1px solid var(--border);
@@ -23,16 +26,24 @@
   align-items: stretch;
 }
 
-/* Left — contact details */
-.cu__info {
-  padding: clamp(28px, 4vw, 40px);
+/* Left — heading + contact details */
+.cu__head,
+.cu__details {
   background: var(--green);
   color: #fff;
-  display: flex;
-  flex-direction: column;
 }
 
-.cu__info h1 {
+.cu__head {
+  grid-area: head;
+  padding: clamp(28px, 4vw, 40px) clamp(28px, 4vw, 40px) 0;
+}
+
+.cu__details {
+  grid-area: details;
+  padding: 0 clamp(28px, 4vw, 40px) clamp(28px, 4vw, 40px);
+}
+
+.cu__head h1 {
   font-family: 'Fraunces', serif;
   font-size: clamp(1.65rem, 3vw, 2rem);
   font-weight: 600;
@@ -49,7 +60,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.cu__list {
+.cu__details .cu__list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -155,6 +166,8 @@
 
 /* Right — form */
 .cu__form {
+  grid-area: form;
+  grid-row: 1 / -1;
   padding: clamp(28px, 4vw, 40px);
 }
 
@@ -342,6 +355,29 @@
 @media (max-width: 900px) {
   .cu__frame {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "form"
+      "details";
+  }
+
+  .cu__form {
+    grid-row: auto;
+  }
+
+  .cu__head {
+    padding: clamp(28px, 4vw, 40px) clamp(28px, 4vw, 40px) clamp(20px, 3vw, 28px);
+  }
+
+  .cu__intro {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .cu__details {
+    padding: clamp(20px, 3vw, 28px) clamp(28px, 4vw, 40px) clamp(28px, 4vw, 40px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 }
 
@@ -350,10 +386,6 @@
     min-height: 0;
     align-items: stretch;
     padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .cu__frame {
-    grid-template-columns: 1fr;
   }
 
   .cu-field input,
@@ -404,12 +436,13 @@
     padding: 16px 12px 28px;
   }
 
-  .cu__info,
+  .cu__head,
+  .cu__details,
   .cu__form {
     padding: 20px 16px;
   }
 
-  .cu__info h1 {
+  .cu__head h1 {
     font-size: 1.5rem;
   }
 

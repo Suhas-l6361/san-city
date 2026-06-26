@@ -1265,321 +1265,324 @@
       margin-bottom: 8px;
     }
 
-    /* Impact stats — split ledger above About */
+    /* Impact stats — unified metric cards */
     .impact-section {
-      padding: clamp(40px, 5vw, 56px) clamp(16px, 4vw, 48px);
+      padding: clamp(48px, 6vw, 72px) clamp(16px, 4vw, 48px);
+      background: linear-gradient(180deg, var(--white) 0%, var(--sand) 100%);
     }
-    .impact-panel {
-      max-width: 1140px;
+    .impact-head {
+      max-width: 640px;
+      margin: 0 auto clamp(28px, 4vw, 40px);
+      text-align: center;
+    }
+    .impact-eyebrow {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .impact-grid {
+      max-width: 1080px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-radius: 22px;
-      overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 28px 64px rgba(12, 74, 110, 0.14),
-        0 0 0 1px rgba(12, 74, 110, 0.06);
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(14px, 2vw, 20px);
     }
-    .impact-panel::after {
+    .impact-card {
+      position: relative;
+      text-align: center;
+      padding: clamp(24px, 3vw, 32px) clamp(16px, 2vw, 20px);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(12, 74, 110, 0.06);
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
+    }
+    .impact-card::before {
       content: '';
       position: absolute;
-      top: 8%;
-      bottom: 8%;
+      top: 0;
       left: 50%;
-      width: 2px;
       transform: translateX(-50%);
-      background: linear-gradient(180deg, transparent, var(--gold-light), var(--gold), transparent);
-      z-index: 2;
-      pointer-events: none;
+      width: 40px;
+      height: 3px;
+      border-radius: 0 0 4px 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
     }
-    .impact-half {
-      padding: clamp(28px, 4vw, 42px) clamp(24px, 3.5vw, 40px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: clamp(22px, 3vw, 32px);
+    .impact-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(196, 163, 90, 0.35);
+      box-shadow: 0 20px 48px rgba(12, 74, 110, 0.1);
     }
-    .impact-half--trust {
-      background:
-        radial-gradient(circle at 12% 88%, rgba(196, 163, 90, 0.18) 0%, transparent 42%),
-        linear-gradient(155deg, #0c1a30 0%, var(--green) 52%, var(--green-mid) 100%);
-      color: #fff;
-    }
-    .impact-half--scale {
-      background:
-        radial-gradient(circle at 88% 12%, rgba(196, 163, 90, 0.22) 0%, transparent 40%),
-        linear-gradient(155deg, #faf7f1 0%, var(--sand) 55%, #ebe4d6 100%);
-      color: var(--ink);
-    }
-    .impact-stat {
-      display: flex;
-      align-items: center;
-      gap: clamp(14px, 2vw, 18px);
-    }
-    .impact-icon {
-      width: 54px;
-      height: 54px;
-      flex-shrink: 0;
-      border-radius: 16px;
+    .impact-card__icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
-    .impact-half--scale .impact-icon {
-      background: var(--white);
-      border-color: var(--border);
-      box-shadow: 0 6px 18px rgba(12, 74, 110, 0.08);
-    }
-    .impact-icon img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-    .impact-icon i {
-      font-size: 1.25rem;
-      color: var(--gold-light);
-    }
-    .impact-half--scale .impact-icon i {
+      background: linear-gradient(145deg, var(--sage) 0%, rgba(224, 242, 254, 0.4) 100%);
       color: var(--green);
+      font-size: 1.15rem;
     }
     .impact-num {
       font-family: 'Fraunces', serif;
-      font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+      font-size: clamp(1.75rem, 2.8vw, 2.35rem);
       font-weight: 700;
       line-height: 1;
-      color: var(--gold-light);
     }
-    .impact-half--scale .impact-num {
-      color: var(--green);
+    .impact-num,
+    .impact-num .impact-counter {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .impact-label {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-top: 6px;
-      opacity: 0.88;
-    }
-    .impact-half--scale .impact-label {
+      margin-top: 10px;
       color: var(--muted);
-      opacity: 1;
     }
 
-    /* Happy customers — cinematic theater reel (one at a time) */
-    .stage-section {
-      padding: clamp(56px, 7vw, 88px) clamp(16px, 4vw, 48px);
-      background: var(--sand);
-    }
-    .stage-theater {
+    /* Happy customers — stacked deck carousel */
+    .hc-deck {
+      padding: clamp(40px, 5vw, 68px) clamp(16px, 4vw, 48px);
+      background: var(--white);
       position: relative;
-      max-width: min(680px, 100%);
-      margin: 0 auto;
-      border-radius: clamp(20px, 3vw, 28px);
       overflow: hidden;
-      background: linear-gradient(168deg, #0e2a48 0%, #0a1f38 48%, #061220 100%);
-      box-shadow:
-        0 0 0 1px rgba(196, 163, 90, 0.2),
-        0 32px 80px rgba(6, 22, 18, 0.35);
-      min-height: min(640px, 88vh);
-      display: flex;
-      flex-direction: column;
+      scroll-margin-top: 88px;
     }
-    .stage-ambient {
-      position: absolute;
-      inset: -20%;
-      background-size: cover;
-      background-position: center;
-      filter: blur(48px) saturate(1.2);
-      opacity: 0.35;
-      transform: scale(1.15);
-      transition: background-image 0.6s ease;
-      pointer-events: none;
-    }
-    .stage-ambient::after {
+    .hc-deck::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(6, 22, 18, 0.5) 0%, rgba(6, 22, 18, 0.85) 100%);
-    }
-    .stage-spotlight {
-      position: absolute;
-      top: -10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120%;
-      height: 55%;
-      background: radial-gradient(ellipse at 50% 0%, rgba(196, 163, 90, 0.22) 0%, transparent 65%);
+      width: clamp(300px, 42vw, 460px);
+      height: clamp(300px, 42vw, 460px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196, 163, 90, 0.1) 0%, transparent 70%);
+      top: 50%;
+      left: 28%;
+      transform: translate(-50%, -50%);
       pointer-events: none;
+    }
+    .hc-deck__wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
       z-index: 1;
     }
-    .stage-stories {
-      position: relative;
-      z-index: 3;
+    .hc-deck__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: clamp(28px, 5vw, 56px);
+      align-items: center;
+    }
+    .hc-deck__visual {
       display: flex;
-      gap: 5px;
-      padding: clamp(16px, 2.5vw, 22px) clamp(16px, 3vw, 24px) 0;
-    }
-    .stage-bar {
-      flex: 1;
-      height: 4px;
-      border: none;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      padding: 0;
-      cursor: pointer;
-      overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .stage-bar-fill {
-      display: block;
-      height: 100%;
-      width: 0;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--gold-light), var(--gold));
-    }
-    .stage-bar.done .stage-bar-fill {
+      flex-direction: column;
+      align-items: center;
       width: 100%;
-      background: rgba(255, 255, 255, 0.55);
+      max-width: 100%;
+      overflow-x: clip;
     }
-    .stage-bar.active .stage-bar-fill { width: 100%; }
-    .stage-bar.active.is-timing .stage-bar-fill {
-      width: 0;
-      animation: stage-bar-fill 6s linear forwards;
-    }
-    @keyframes stage-bar-fill { to { width: 100%; } }
-    .stage-viewport {
-      position: relative;
-      z-index: 2;
-      flex: 1;
+    .hc-deck__zone {
+      width: 100%;
+      max-width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(20px, 4vw, 36px) clamp(12px, 3vw, 24px);
-      min-height: clamp(380px, 52vh, 480px);
+      touch-action: pan-y;
+      overflow-x: clip;
+      padding: 8px 0 4px;
     }
-    .stage-zone {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 28%;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      z-index: 4;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .stage-zone--prev { left: 0; }
-    .stage-zone--next { right: 0; }
-    .stage-zone::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: rgba(255, 255, 255, 0.08);
-      opacity: 0;
-      transition: opacity 0.3s, background 0.3s;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 10px;
-    }
-    .stage-theater:hover .stage-zone::after { opacity: 1; }
-    .stage-zone:hover::after { background-color: rgba(196, 163, 90, 0.25); border-color: var(--gold-light); }
-    .stage-zone--prev::after {
-      left: clamp(8px, 2vw, 16px);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M15 19l-7-7 7-7'/%3E%3C/svg%3E");
-    }
-    .stage-zone--next::after {
-      right: clamp(8px, 2vw, 16px);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
-    }
-    .stage-stack {
+    .hc-deck__stack {
       position: relative;
-      width: min(320px, 78vw);
-      perspective: 1200px;
+      width: min(100%, clamp(280px, 38vw, 460px));
+      max-width: 460px;
+      aspect-ratio: 5 / 5.4;
+      height: auto;
     }
-    .stage-ghost {
+    .hc-deck__card {
       position: absolute;
-      inset: 8px -8px -8px 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transform: rotate(3deg) scale(0.96);
+      inset: 0;
+      margin: 0;
+      padding: 5px;
+      background: var(--white);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 48px rgba(12, 74, 110, 0.12);
+      transition: transform 0.55s var(--ease), opacity 0.45s ease;
+      transform-origin: center bottom;
+      will-change: transform, opacity;
+      overflow: hidden;
+    }
+    .hc-deck__card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 8px;
+      background: #faf8f4;
+      display: block;
+    }
+    .hc-deck__card[data-pos="0"] {
+      transform: translate(0, 0) rotate(0deg) scale(1);
+      z-index: 5;
+      opacity: 1;
+    }
+    .hc-deck__card[data-pos="1"] {
+      transform: translate(18px, 16px) rotate(5deg) scale(0.95);
+      z-index: 4;
+      opacity: 0.88;
+    }
+    .hc-deck__card[data-pos="2"] {
+      transform: translate(36px, 32px) rotate(9deg) scale(0.9);
+      z-index: 3;
+      opacity: 0.65;
+    }
+    .hc-deck__card[data-pos="hidden"] {
+      transform: translate(54px, 48px) rotate(12deg) scale(0.85);
+      opacity: 0;
+      z-index: 0;
       pointer-events: none;
     }
-    .stage-card {
-      position: relative;
-      background: #fff;
-      padding: clamp(8px, 1.5vw, 12px);
-      border-radius: 10px;
-      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
-      transform-style: preserve-3d;
-      transition: transform 0.55s var(--ease);
+    .hc-deck__card.is-exit-next {
+      transform: translateX(-125%) rotate(-14deg) scale(0.9) !important;
+      opacity: 0 !important;
+      z-index: 6;
     }
-    .stage-card.is-flip-out {
-      transform: rotateY(-88deg) scale(0.94);
-      opacity: 0;
+    .hc-deck__card.is-exit-prev {
+      transform: translateX(125%) rotate(14deg) scale(0.9) !important;
+      opacity: 0 !important;
+      z-index: 6;
     }
-    .stage-card.is-flip-in {
-      animation: stage-flip-in 0.65s var(--ease) forwards;
+    .hc-deck__foot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 24px);
+      margin-top: clamp(20px, 3vw, 28px);
     }
-    @keyframes stage-flip-in {
-      from { transform: rotateY(88deg) scale(0.94); opacity: 0; }
-      to { transform: rotateY(0deg) scale(1); opacity: 1; }
+    .hc-deck__btn {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--sand);
+      color: var(--green);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 0.88rem;
+      transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .stage-card img {
-      width: 100%;
-      display: block;
-      aspect-ratio: 3 / 4;
-      object-fit: contain;
-      background: #f8f6f2;
-      border-radius: 6px;
-    }
-    .stage-plaque {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-      padding: clamp(18px, 3vw, 26px) clamp(20px, 4vw, 32px) clamp(22px, 3.5vw, 30px);
-      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.25) 100%);
-      border-top: 1px solid rgba(196, 163, 90, 0.25);
-    }
-    .stage-plaque-tag {
-      display: block;
-      font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-light);
-      margin-bottom: 4px;
-    }
-    .stage-plaque-label {
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.88);
-      margin: 0 0 8px;
-      letter-spacing: 0.04em;
-    }
-    .stage-plaque-name {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
-      font-weight: 700;
+    .hc-deck__btn:hover {
+      background: var(--green);
+      border-color: var(--green);
       color: #fff;
+      transform: scale(1.06);
+    }
+    .hc-deck__dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hc-deck__dot {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s, width 0.3s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hc-deck__dot.is-active {
+      background: var(--gold);
+      width: 22px;
+      border-radius: 999px;
+    }
+    .hc-deck__info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(24px, 4vw, 40px) 0 clamp(24px, 4vw, 40px) clamp(28px, 4vw, 40px);
+      border-left: 3px solid var(--gold);
+      min-height: clamp(280px, 38vw, 360px);
+      position: relative;
+    }
+    .hc-deck__quote-icon {
+      font-size: 1.4rem;
+      color: var(--gold);
+      opacity: 0.45;
+      margin-bottom: 10px;
+    }
+    .hc-deck__label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .hc-deck__name {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.75rem, 3.2vw, 2.45rem);
+      font-weight: 700;
+      color: var(--green);
       line-height: 1.2;
       margin: 0;
       transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
     }
-    .stage-plaque-name.is-changing {
+    .hc-deck__name::after {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 2px;
+      margin-top: 14px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      border-radius: 2px;
+    }
+    .hc-deck__name.is-changing {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .hc-deck__desc {
+      margin: 16px 0 0;
+      font-size: clamp(0.88rem, 1.1vw, 0.95rem);
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 38ch;
+      transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+    }
+    .hc-deck__desc.is-changing {
       opacity: 0;
       transform: translateY(8px);
     }
-    .stage-plaque-name[hidden] {
-      display: none;
+    .hc-deck__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: var(--sand);
+      border: 1px solid var(--border);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--green);
+      width: fit-content;
+    }
+    .hc-deck__badge i {
+      color: #16a34a;
+      font-size: 0.95rem;
     }
     .nav-anchor {
       scroll-margin-top: 100px;
@@ -2199,6 +2202,9 @@
       .hero-info h1 { font-size: clamp(1.75rem, 4vw, 2.4rem); }
       .projects { margin-left: 32px; margin-right: 32px; padding: 36px; }
       .visit-cta { margin-left: 32px; margin-right: 32px; padding: 44px 36px; }
+      .hc-deck__layout { gap: clamp(20px, 4vw, 40px); }
+      .hc-deck__stack { width: min(100%, clamp(260px, 36vw, 420px)); }
+      .hc-deck__info { padding-left: clamp(20px, 3vw, 32px); min-height: 0; }
     }
 
     @media (max-width: 1100px) {
@@ -2292,6 +2298,38 @@
       .visit-cta {
         margin: 0 clamp(16px, 4vw, 32px) 64px;
         padding: 40px clamp(24px, 4vw, 40px);
+      }
+      .hc-deck {
+        padding: clamp(36px, 5vw, 56px) clamp(16px, 4vw, 32px);
+      }
+      .hc-deck__layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .hc-deck__info {
+        border-left: none;
+        border-top: 3px solid var(--gold);
+        padding: 28px 0 0;
+        min-height: 0;
+        text-align: center;
+        align-items: center;
+      }
+      .hc-deck__name::after {
+        margin-inline: auto;
+      }
+      .hc-deck__desc { max-width: 42rem; }
+      .hc-deck__stack {
+        width: min(100%, clamp(300px, 72vw, 400px));
+        max-width: 400px;
+      }
+      .hc-deck__card[data-pos="1"] {
+        transform: translate(12px, 12px) rotate(4deg) scale(0.95);
+      }
+      .hc-deck__card[data-pos="2"] {
+        transform: translate(24px, 22px) rotate(7deg) scale(0.9);
+      }
+      .hc-deck__card[data-pos="hidden"] {
+        transform: translate(36px, 32px) rotate(10deg) scale(0.85);
       }
       #career {
         margin-left: clamp(16px, 4vw, 32px) !important;
@@ -2536,24 +2574,65 @@
         width: 18px;
         background: var(--green);
       }
-      .impact-panel {
-        grid-template-columns: 1fr;
+      .impact-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .impact-panel::after { display: none; }
-      .impact-half {
-        gap: 20px;
-        padding: 24px 20px;
+      .impact-card {
+        padding: 22px 16px;
       }
-      .impact-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
+      .impact-card__icon {
+        width: 46px;
+        height: 46px;
+        font-size: 1rem;
+        margin-bottom: 12px;
       }
       .impact-num { font-size: 1.55rem; }
-      .stage-theater { min-height: auto; border-radius: 18px; }
-      .stage-viewport { min-height: clamp(340px, 55vh, 420px); }
-      .stage-stack { width: min(280px, 82vw); }
-      .stage-zone::after { opacity: 0.6; }
+      .hc-deck {
+        padding: 36px 16px 44px;
+      }
+      .hc-deck::before {
+        width: min(90vw, 320px);
+        height: min(90vw, 320px);
+        left: 50%;
+        top: 32%;
+      }
+      .hc-deck__layout { gap: 22px; }
+      .hc-deck__info {
+        padding: 22px 8px 0;
+      }
+      .hc-deck__name { font-size: clamp(1.5rem, 6vw, 1.85rem); }
+      .hc-deck__desc {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        max-width: 100%;
+        padding: 0 4px;
+      }
+      .hc-deck__stack {
+        width: min(100%, clamp(280px, 88vw, 360px));
+        max-width: 360px;
+      }
+      .hc-deck__card[data-pos="1"] {
+        transform: translate(8px, 8px) rotate(3deg) scale(0.95);
+      }
+      .hc-deck__card[data-pos="2"] {
+        transform: translate(16px, 14px) rotate(6deg) scale(0.9);
+      }
+      .hc-deck__card[data-pos="hidden"] {
+        transform: translate(24px, 20px) rotate(8deg) scale(0.85);
+      }
+      .hc-deck__zone { padding: 4px 0; }
+      .hc-deck__foot {
+        margin-top: 16px;
+        gap: 14px;
+        width: 100%;
+        max-width: min(100%, 360px);
+      }
+      .hc-deck__btn {
+        width: 42px;
+        height: 42px;
+        font-size: 0.82rem;
+      }
+      .hc-deck__dot.is-active { width: 18px; }
       .section { padding: 48px 16px; }
       .section-title { font-size: 1.65rem; }
       .masterplan { padding: 20px 16px; }
@@ -2592,6 +2671,41 @@
       .about-point { padding: 14px; }
       .tab-btn { padding: 10px 14px; font-size: 0.75rem; }
       .plot-grid { grid-template-columns: repeat(4, 1fr); }
+      .impact-grid { grid-template-columns: 1fr; }
+      .hc-deck { padding: 32px 14px 40px; }
+      .hc-deck__stack {
+        width: min(100%, clamp(260px, 92vw, 320px));
+        max-width: 320px;
+      }
+      .hc-deck__name { font-size: 1.45rem; }
+      .hc-deck__label { font-size: 0.62rem; letter-spacing: 0.14em; }
+      .hc-deck__badge { font-size: 0.68rem; padding: 8px 14px; }
+      .hc-deck__foot { max-width: 320px; }
+      .hc-deck__btn { width: 38px; height: 38px; }
+    }
+
+    /* Landscape phones — side-by-side compact */
+    @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+      .hc-deck__layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 20px;
+        align-items: center;
+      }
+      .hc-deck__info {
+        border-top: none;
+        border-left: 3px solid var(--gold);
+        padding: 0 0 0 20px;
+        text-align: left;
+        align-items: flex-start;
+      }
+      .hc-deck__name::after { margin-inline: 0; }
+      .hc-deck__stack {
+        width: min(100%, 220px);
+        max-width: 220px;
+      }
+      .hc-deck__desc { font-size: 0.82rem; margin-top: 10px; }
+      .hc-deck__badge { margin-top: 12px; }
+      .hc-deck__foot { margin-top: 10px; }
     }
 
     /* Landscape phones */
@@ -2916,77 +3030,54 @@
 
     <!-- Impact stats -->
     <section class="impact-section" id="impact">
-      <div class="impact-panel reveal">
-        <div class="impact-half impact-half--trust">
-          <article class="impact-stat">
-            <div class="impact-icon"><img src="icons/team.png" alt="" /></div>
-            <div>
-              <div class="impact-num"><span class="impact-counter" data-t="500" data-suffix="+">0</span></div>
-              <p class="impact-label">Experts</p>
-            </div>
-          </article>
-          <article class="impact-stat">
-            <div class="impact-icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></div>
-            <div>
-              <div class="impact-num"><span class="impact-counter" data-t="11000" data-suffix="+" data-comma="true">0</span></div>
-              <p class="impact-label">Happy Clients</p>
-            </div>
-          </article>
-        </div>
-        <div class="impact-half impact-half--scale">
-          <article class="impact-stat">
-            <div class="impact-icon"><img src="icons/location.png" alt="" /></div>
-            <div>
-              <div class="impact-num"><span class="impact-counter" data-t="100" data-suffix=" Lakh+">0</span></div>
-              <p class="impact-label">Registered Sq.Ft</p>
-            </div>
-          </article>
-          <article class="impact-stat">
-            <div class="impact-icon"><img src="icons/projects.png" alt="" /></div>
-            <div>
-              <div class="impact-num"><span class="impact-counter" data-t="30" data-suffix="+">0</span></div>
-              <p class="impact-label">Projects</p>
-            </div>
-          </article>
-        </div>
+      <div class="impact-head reveal">
+        <span class="impact-eyebrow">Our Impact</span>
+      </div>
+      <div class="impact-grid reveal">
+        <article class="impact-card">
+          <div class="impact-card__icon"><i class="fa-solid fa-user-tie" aria-hidden="true"></i></div>
+          <div class="impact-num"><span class="impact-counter" data-t="500" data-suffix="+">0</span></div>
+          <p class="impact-label">Experts</p>
+        </article>
+        <article class="impact-card">
+          <div class="impact-card__icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></div>
+          <div class="impact-num"><span class="impact-counter" data-t="11000" data-suffix="+" data-comma="true">0</span></div>
+          <p class="impact-label">Happy Clients</p>
+        </article>
+        <article class="impact-card">
+          <div class="impact-card__icon"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i></div>
+          <div class="impact-num"><span class="impact-counter" data-t="100" data-suffix=" Lakh+">0</span></div>
+          <p class="impact-label">Registered Sq.Ft</p>
+        </article>
+        <article class="impact-card">
+          <div class="impact-card__icon"><i class="fa-solid fa-building" aria-hidden="true"></i></div>
+          <div class="impact-num"><span class="impact-counter" data-t="30" data-suffix="+">0</span></div>
+          <p class="impact-label">Projects</p>
+        </article>
       </div>
     </section>
 
     <!-- Our Happy Customer -->
-    <section class="stage-section" id="happy-customers">
-      <div class="section-head reveal">
-        <div>
-          <div class="section-label">Success Stories</div>
-          <h2 class="section-title">Our Happy Customer</h2>
-        </div>
-        <div class="section-line"></div>
-      </div>
-      <div class="stage-theater reveal" id="stageTheater">
-        <div class="stage-ambient" id="stageAmbient" style="background-image:url('images/happy-customer1.jpg')"></div>
-        <div class="stage-spotlight" aria-hidden="true"></div>
-        <div class="stage-stories" id="stageStories">
-          <button type="button" class="stage-bar active" data-i="0" aria-label="Customer 1"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="1" aria-label="Customer 2"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="2" aria-label="Customer 3"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="3" aria-label="Customer 4"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="4" aria-label="Customer 5"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="5" aria-label="Customer 6"><span class="stage-bar-fill"></span></button>
-          <button type="button" class="stage-bar" data-i="6" aria-label="Customer 7"><span class="stage-bar-fill"></span></button>
-        </div>
-        <div class="stage-viewport">
-          <button type="button" class="stage-zone stage-zone--prev" id="stagePrev" aria-label="Previous customer"></button>
-          <div class="stage-stack">
-            <div class="stage-ghost" aria-hidden="true"></div>
-            <div class="stage-card" id="stageCard">
-              <img id="stageImg" src="images/happy-customer1.jpg" alt="Susheela H V — San City delighted customer" />
+    <section class="hc-deck" id="happy-customers">
+      <div class="hc-deck__wrap reveal">
+        <div class="hc-deck__layout">
+          <div class="hc-deck__visual">
+            <div class="hc-deck__zone" id="hcDeck">
+              <div class="hc-deck__stack" id="hcStack"></div>
+            </div>
+            <div class="hc-deck__foot">
+              <button type="button" class="hc-deck__btn" id="hcPrev" aria-label="Previous customer"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+              <div class="hc-deck__dots" id="hcDots"></div>
+              <button type="button" class="hc-deck__btn" id="hcNext" aria-label="Next customer"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
             </div>
           </div>
-          <button type="button" class="stage-zone stage-zone--next" id="stageNext" aria-label="Next customer"></button>
-        </div>
-        <div class="stage-plaque">
-          <span class="stage-plaque-tag">Congratulations</span>
-          <p class="stage-plaque-label">Delighted Customer</p>
-          <h3 class="stage-plaque-name" id="stageName">Susheela H V</h3>
+          <div class="hc-deck__info" aria-live="polite">
+            <i class="fa-solid fa-quote-left hc-deck__quote-icon" aria-hidden="true"></i>
+            <span class="hc-deck__label">Our Delighted Customer</span>
+            <h2 class="hc-deck__name" id="hcName">Susheela H V</h2>
+            <p class="hc-deck__desc" id="hcDesc">Successfully registered her dream plot with San City and joined our growing family of happy homeowners.</p>
+            <span class="hc-deck__badge"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Registered with San City</span>
+          </div>
         </div>
       </div>
     </section>
@@ -3014,7 +3105,7 @@
             <input type="text" id="visitName" name="name" placeholder="Enter your name" required autocomplete="name" />
           </div>
           <div class="visit-field">
-            <label for="visitEmail">Email Address <span aria-hidden="true">(optional)</span></label>
+            <label for="visitEmail">Email Address</label>
             <input type="email" id="visitEmail" name="email" placeholder="you@email.com" autocomplete="email" />
           </div>
           <div class="visit-field">
@@ -3391,95 +3482,111 @@
       cObs.observe(section);
     })();
 
-    /* Happy customer — cinematic theater reel */
+    /* Happy customer — stacked deck carousel */
     (function () {
       const customers = [
-        { src: 'images/happy-customer1.jpg', alt: 'Susheela H V — San City delighted customer', name: 'Susheela H V' },
-        { src: 'images/happy-customer2.jpg', alt: 'Eshwarappa & Yogamba — San City delighted customer', name: 'Eshwarappa & Yogamba' },
-        { src: 'images/happy-customer3.jpg', alt: 'Kumar M — San City delighted customer', name: 'Kumar M' },
-        { src: 'images/happy-customer4.jpg', alt: 'Narasimha Reddy H — San City delighted customer', name: 'Narasimha Reddy H' },
-        { src: 'images/happy-customer5.jpg', alt: 'Nagaratna & Parvathi — San City delighted customer', name: 'Nagaratna & Parvathi' },
-        { src: 'images/happy-customer6.jpg', alt: 'Susheela H V — San City delighted customer', name: 'Susheela H V' },
-        { src: 'images/happy-customer7.jpg', alt: 'Eshwarappa & Yogamba — San City delighted customer', name: 'Eshwarappa & Yogamba' }
+        { src: 'images/happy-customer1.jpg', alt: 'Susheela H V — San City delighted customer', name: 'Susheela H V', desc: 'Successfully registered her dream plot with San City and joined our growing family of happy homeowners.' },
+        { src: 'images/happy-customer2.jpg', alt: 'Eshwarappa & Yogamba — San City delighted customer', name: 'Eshwarappa & Yogamba', desc: 'A delighted couple who chose San City for their family\u2019s future and registered with complete confidence.' },
+        { src: 'images/happy-customer3.jpg', alt: 'Kumar M — San City delighted customer', name: 'Kumar M', desc: 'Turned his aspiration into ownership by registering a premium site at one of our trusted San City developments.' },
+        { src: 'images/happy-customer4.jpg', alt: 'Narasimha Reddy H — San City delighted customer', name: 'Narasimha Reddy H', desc: 'Proud to be part of the San City community \u2014 his registration marks a new chapter of growth and prosperity.' },
+        { src: 'images/happy-customer5.jpg', alt: 'Nagaratna & Parvathi — San City delighted customer', name: 'Nagaratna & Parvathi', desc: 'Celebrated their registration with San City, taking a confident step toward building their dream home together.' }
       ];
-      const theater = document.getElementById('stageTheater');
-      const ambient = document.getElementById('stageAmbient');
-      const card = document.getElementById('stageCard');
-      const img = document.getElementById('stageImg');
-      const nameEl = document.getElementById('stageName');
-      const bars = document.querySelectorAll('.stage-bar');
-      const prev = document.getElementById('stagePrev');
-      const next = document.getElementById('stageNext');
-      if (!theater || !img || !card || !bars.length) return;
+      const deck = document.getElementById('hcDeck');
+      const stack = document.getElementById('hcStack');
+      const dotsEl = document.getElementById('hcDots');
+      const nameEl = document.getElementById('hcName');
+      const descEl = document.getElementById('hcDesc');
+      const prev = document.getElementById('hcPrev');
+      const next = document.getElementById('hcNext');
+      if (!deck || !stack || !dotsEl || !nameEl || !descEl) return;
 
+      const total = customers.length;
+      const DURATION = 2000;
+      const ANIM = 400;
+
+      stack.innerHTML = customers.map((c, i) =>
+        `<figure class="hc-deck__card" data-i="${i}" data-pos="hidden">
+          <img src="${c.src}" alt="${c.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" />
+        </figure>`
+      ).join('');
+
+      dotsEl.innerHTML = customers.map((_, i) =>
+        `<button type="button" class="hc-deck__dot${i === 0 ? ' is-active' : ''}" data-i="${i}" aria-label="${customers[i].name}"></button>`
+      ).join('');
+
+      const cards = stack.querySelectorAll('.hc-deck__card');
+      const dots = dotsEl.querySelectorAll('.hc-deck__dot');
       let idx = 0;
       let timer = null;
       let touchX = 0;
       let busy = false;
-      const DURATION = 6000;
 
-      function resetBars() {
-        bars.forEach((b, i) => {
-          b.classList.remove('is-timing', 'active', 'done');
-          if (i < idx) b.classList.add('done');
-        });
-        bars[idx].classList.add('active');
-        void bars[idx].offsetWidth;
-        bars[idx].classList.add('is-timing');
+      function wrap(n) {
+        return (n + total) % total;
       }
 
-      function show(n) {
+      function stackPos(i) {
+        const p = wrap(i - idx);
+        return p > 2 ? 'hidden' : String(p);
+      }
+
+      function updateInfo() {
+        nameEl.classList.add('is-changing');
+        descEl.classList.add('is-changing');
+        setTimeout(() => {
+          nameEl.textContent = customers[idx].name;
+          descEl.textContent = customers[idx].desc;
+          nameEl.classList.remove('is-changing');
+          descEl.classList.remove('is-changing');
+        }, 200);
+      }
+
+      function layout() {
+        cards.forEach((card, i) => {
+          card.dataset.pos = stackPos(i);
+          card.classList.remove('is-exit-next', 'is-exit-prev');
+        });
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+        updateInfo();
+      }
+
+      function go(n, dir) {
         if (busy) return;
-        const nextIdx = (n + customers.length) % customers.length;
+        const nextIdx = wrap(n);
         if (nextIdx === idx) return;
         busy = true;
-        idx = nextIdx;
-        const c = customers[idx];
-
-        card.classList.remove('is-flip-in');
-        card.classList.add('is-flip-out');
-        nameEl.classList.add('is-changing');
-
+        const top = cards[idx];
+        const direction = dir || (nextIdx === wrap(idx + 1) ? 1 : -1);
+        top.classList.add(direction > 0 ? 'is-exit-next' : 'is-exit-prev');
+        clearTimeout(timer);
         setTimeout(() => {
-          img.src = c.src;
-          img.alt = c.alt;
-          if (ambient) ambient.style.backgroundImage = `url('${c.src}')`;
-          if (c.name) {
-            nameEl.textContent = c.name;
-            nameEl.hidden = false;
-          } else {
-            nameEl.textContent = '';
-            nameEl.hidden = true;
-          }
-          card.classList.remove('is-flip-out');
-          card.classList.add('is-flip-in');
-          nameEl.classList.remove('is-changing');
+          idx = nextIdx;
+          layout();
           busy = false;
-        }, 280);
-
-        resetBars();
-        startAuto();
+          startAuto();
+        }, ANIM);
       }
 
       function startAuto() {
         clearTimeout(timer);
-        timer = setTimeout(() => show(idx + 1), DURATION);
+        timer = setTimeout(() => go(idx + 1, 1), DURATION);
       }
 
-      bars.forEach(b => b.addEventListener('click', () => show(+b.dataset.i)));
-      prev?.addEventListener('click', () => show(idx - 1));
-      next?.addEventListener('click', () => show(idx + 1));
+      dots.forEach((d) => d.addEventListener('click', () => go(+d.dataset.i)));
+      prev?.addEventListener('click', () => go(idx - 1, -1));
+      next?.addEventListener('click', () => go(idx + 1, 1));
 
-      theater.addEventListener('mouseenter', () => clearTimeout(timer));
-      theater.addEventListener('mouseleave', startAuto);
+      deck.addEventListener('mouseenter', () => clearTimeout(timer));
+      deck.addEventListener('mouseleave', startAuto);
 
-      theater.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
-      theater.addEventListener('touchend', e => {
+      deck.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+      deck.addEventListener('touchend', (e) => {
         const dx = e.changedTouches[0].clientX - touchX;
-        if (Math.abs(dx) > 40) show(dx < 0 ? idx + 1 : idx - 1);
+        if (Math.abs(dx) > 40) go(dx < 0 ? idx + 1 : idx - 1, dx < 0 ? 1 : -1);
       }, { passive: true });
 
-      resetBars();
+      cards.forEach((card, i) => { card.dataset.pos = stackPos(i); });
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === 0));
       startAuto();
     })();
 

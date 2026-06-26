@@ -28,9 +28,9 @@
           <p class="footer-brand__tag">Premium townships &amp; plotted developments across Karnataka.</p>
           <div class="footer-social" aria-label="Social links">
             <a href="#" class="footer-social__link footer-social__link--facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
-            <a href="#" class="footer-social__link footer-social__link--linkedin" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
-            <a href="#" class="footer-social__link footer-social__link--instagram" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-            <a href="#" class="footer-social__link footer-social__link--youtube" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/company/vsan-infrastructure-private-limited/" class="footer-social__link footer-social__link--linkedin" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+            <a href="https://www.instagram.com/vsaninfrastructurepvt/" class="footer-social__link footer-social__link--instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://www.youtube.com/@sancity01" class="footer-social__link footer-social__link--youtube" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
             <a href="https://wa.me/919731901111?text=Hello%20San%20City%2C%20I%20would%20like%20to%20know%20more%20about%20your%20projects." class="footer-social__link footer-social__link--whatsapp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
           </div>
         </div>
