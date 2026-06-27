@@ -263,11 +263,43 @@
       });
     }
 
-    function openCareerModal(firstName, job) {
+    function normalizeCareerPhoneDigits(value) {
+      let digits = String(value || '').replace(/\D/g, '');
+      if (digits.startsWith('91') && digits.length >= 12) digits = digits.slice(-10);
+      if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
+      return digits;
+    }
+
+    function isValidCareerIndianPhone(value) {
+      const digits = normalizeCareerPhoneDigits(value);
+      return /^[6-9]\d{9}$/.test(digits);
+    }
+
+    const careerPhoneInput = careerForm.querySelector('[name="phone"]');
+    if (careerPhoneInput) {
+      careerPhoneInput.addEventListener('input', () => careerPhoneInput.setCustomValidity(''));
+    }
+
+    function openCareerModal(firstName, job, success) {
       if (!careerMessage) return;
-      const name = firstName ? `, ${firstName}` : '';
-      const role = job ? ` for the ${job} role` : '';
-      careerMessage.textContent = `Thank you${name}! Your application${role} has been received. Our HR team will review your profile and get in touch soon.`;
+      const iconEl = careerModal.querySelector('.career-modal__icon i');
+      const titleEl = document.getElementById('careerModalTitle');
+
+      if (success) {
+        careerModal.classList.remove('is-error');
+        if (iconEl) iconEl.className = 'fa-solid fa-circle-check';
+        if (titleEl) titleEl.textContent = 'Application Submitted!';
+        const name = firstName ? `, ${firstName}` : '';
+        const role = job ? ` for the ${job} role` : '';
+        careerMessage.textContent = `Thank you${name}! Your application${role} has been received. Our HR team will review your profile and get in touch soon.`;
+      } else {
+        careerModal.classList.add('is-error');
+        if (iconEl) iconEl.className = 'fa-solid fa-circle-xmark';
+        if (titleEl) titleEl.textContent = 'Submission Failed';
+        careerMessage.textContent =
+          'Your application could not be sent. In Google Forms, open the career form, turn OFF "Required" on the Resume question, publish the form, and set access to "Anyone with the link". Then try again, or contact us by phone or email.';
+      }
+
       careerModal.classList.add('open');
       careerModal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
@@ -275,19 +307,66 @@
     }
 
     function closeCareerModal() {
-      careerModal.classList.remove('open');
+      careerModal.classList.remove('open', 'is-error');
       careerModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
 
+    /* Career page ONLY — not the free site visit form.
+       Form: Sancity Job Offer
+       Sheet: https://docs.google.com/spreadsheets/d/19no2WM3t-1ATjRKfNXXf_0_9KKro6F9fb2yb_7Q2uzE/edit */
+    const GOOGLE_CAREER_FORM_ACTION =
+      'https://docs.google.com/forms/d/e/1FAIpQLScxa9ZQdAolZGLp_stDVgg6PNLzf0INs3xcIjhg0cqG7gdCDg/formResponse';
+    const GOOGLE_CAREER_FORM_ENTRIES = {
+      firstName: 'entry.774737236',
+      lastName: 'entry.1360407889',
+      email: 'entry.654780690',
+      phone: 'entry.1807259512',
+      job: 'entry.871267023',
+      about: 'entry.882166686',
+    };
+
+    function sendToGoogleCareerForm({ firstName, lastName, email, phone, job, about }) {
+      if (!window.postGoogleForm) return Promise.resolve({ ok: false });
+      return window.postGoogleForm(GOOGLE_CAREER_FORM_ACTION, {
+        [GOOGLE_CAREER_FORM_ENTRIES.firstName]: firstName,
+        [GOOGLE_CAREER_FORM_ENTRIES.lastName]: lastName,
+        [GOOGLE_CAREER_FORM_ENTRIES.email]: email,
+        [GOOGLE_CAREER_FORM_ENTRIES.phone]: phone,
+        [GOOGLE_CAREER_FORM_ENTRIES.job]: job,
+        [GOOGLE_CAREER_FORM_ENTRIES.about]: about,
+      });
+    }
+
     careerForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const phoneInput = careerForm.querySelector('[name="phone"]');
+      if (phoneInput) phoneInput.setCustomValidity('');
+
+      if (!phoneInput || !isValidCareerIndianPhone(phoneInput.value.trim())) {
+        if (phoneInput) {
+          phoneInput.setCustomValidity('Please enter a valid Indian mobile number — 10 digits (e.g. 9876543210) or with +91 (e.g. +91 9876543210).');
+          phoneInput.reportValidity();
+        }
+        return;
+      }
+
       if (!careerForm.checkValidity()) {
         careerForm.reportValidity();
         return;
       }
 
       const firstName = careerForm.querySelector('[name="firstName"]')?.value.trim() || '';
+      const lastName = careerForm.querySelector('[name="lastName"]')?.value.trim() || '';
+      const email = careerForm.querySelector('[name="email"]')?.value.trim() || '';
+      const phone = normalizeCareerPhoneDigits(phoneInput.value.trim());
+      const aboutText = careerForm.querySelector('[name="about"]')?.value.trim() || '';
+      const resumeFile = fileInput?.files?.[0];
+      const resumeName = resumeFile ? resumeFile.name : '';
+      const about = resumeName
+        ? `${aboutText}\n\n---\nResume uploaded on website: ${resumeName}\n(Contact applicant at ${email || phone} to request the file.)`
+        : aboutText;
       const jobSelect = careerForm.querySelector('[name="job"]');
       const job = jobSelect && jobSelect.value ? jobSelect.options[jobSelect.selectedIndex].text : '';
       const submitLabel = careerSubmitBtn ? careerSubmitBtn.innerHTML : '';
@@ -297,20 +376,23 @@
         careerSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Submitting...';
       }
 
-      setTimeout(() => {
-        careerForm.reset();
-        setFileDisplay(null);
-        if (jobSelect) {
-          jobSelect.selectedIndex = 0;
-          updateJobTriggerLabel();
-        }
-        closeJobPanel();
-        if (careerSubmitBtn) {
-          careerSubmitBtn.disabled = false;
-          careerSubmitBtn.innerHTML = submitLabel;
-        }
-        openCareerModal(firstName, job);
-      }, 500);
+      sendToGoogleCareerForm({ firstName, lastName, email, phone, job, about })
+        .then((result) => {
+          if (careerSubmitBtn) {
+            careerSubmitBtn.disabled = false;
+            careerSubmitBtn.innerHTML = submitLabel;
+          }
+          if (result && result.ok) {
+            careerForm.reset();
+            setFileDisplay(null);
+            if (jobSelect) {
+              jobSelect.selectedIndex = 0;
+              updateJobTriggerLabel();
+            }
+            closeJobPanel();
+          }
+          openCareerModal(firstName, job, !!(result && result.ok));
+        });
     });
 
     if (careerCloseBtn) careerCloseBtn.addEventListener('click', closeCareerModal);

@@ -3,7 +3,7 @@
 .home-awards-browse {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 16px clamp(16px, 4vw, 48px) 28px;
+  padding: 20px clamp(16px, 4vw, 48px) 32px;
   overflow: visible;
 }
 
@@ -13,18 +13,18 @@
 }
 
 .home-awards-browse__label {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: 0 0 10px;
+  margin: 0 0 14px;
 }
 
 .home-awards-browse__viewport {
   overflow-x: clip;
   overflow-y: visible;
-  padding: 6px 0 10px;
+  padding: 8px 0 12px;
   mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
 }
@@ -32,7 +32,7 @@
 .home-awards-browse__track {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   width: max-content;
   will-change: transform;
   animation: homeAwardsMarquee var(--marquee-duration, 48s) linear infinite;
@@ -49,12 +49,12 @@
 
 .home-awards-browse__thumb {
   flex: 0 0 auto;
-  width: 104px;
+  width: 136px;
   display: flex;
   flex-direction: column;
   padding: 0;
   border: 2px solid var(--border);
-  border-radius: 12px;
+  border-radius: 15px;
   background: var(--white);
   cursor: pointer;
   overflow: hidden;
@@ -73,17 +73,17 @@
 .home-awards-browse__thumb img {
   display: block;
   width: 100%;
-  height: 78px;
+  height: 104px;
   object-fit: contain;
   object-position: center;
   background: #f4f0e8;
-  padding: 4px;
+  padding: 6px;
 }
 
 .home-awards-browse__thumb span {
   display: block;
-  padding: 6px 8px;
-  font-size: 0.64rem;
+  padding: 8px 10px;
+  font-size: 0.78rem;
   font-weight: 700;
   text-align: center;
   color: var(--ink);
@@ -162,13 +162,13 @@
 @media (max-width: 768px) {
   .home-awards-browse {
     padding-right: 56px;
-    padding-bottom: 24px;
+    padding-bottom: 28px;
   }
   .home-awards-browse__thumb {
-    width: 92px;
+    width: 114px;
   }
   .home-awards-browse__thumb img {
-    height: 70px;
+    height: 90px;
   }
   .home-awards-browse__preview {
     width: min(190px, calc(100vw - 24px));

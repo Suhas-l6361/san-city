@@ -412,6 +412,10 @@
   background: var(--gold-light);
   transform: translateY(-2px);
 }
+.career-modal.is-error .career-modal__icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
 
 /* Responsive */
 @media (max-width: 1024px) {

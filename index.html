@@ -667,6 +667,10 @@
       background: var(--gold-light);
       transform: translateY(-2px);
     }
+    .visit-modal.is-error .visit-modal-icon {
+      background: #fee2e2;
+      color: #dc2626;
+    }
 
     /* Mobile submenu */
     .mob-dropdown-toggle {
@@ -1173,6 +1177,28 @@
     }
 
     /* Amenities strip */
+    .amenities-wrap {
+      margin-top: 8px;
+    }
+    .amenities-head {
+      text-align: center;
+      padding: 32px 48px 16px;
+    }
+    .amenities-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--ink);
+      margin: 0;
+    }
+    .amenities-title em {
+      font-style: italic;
+      color: var(--green);
+    }
+    .amenities-count {
+      display: none;
+    }
     .amenities {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1222,7 +1248,6 @@
     }
     .amenities-tap-hint,
     .amenities-dots,
-    .amenities-mobile-head,
     .amenities-nav {
       display: none;
     }
@@ -2439,21 +2464,20 @@
         border-radius: 20px;
         box-shadow: 0 10px 32px rgba(12, 74, 110, 0.07);
       }
-      .amenities-mobile-head {
+      .amenities-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 14px;
+        text-align: left;
+        padding: 0 0 14px;
         gap: 12px;
       }
-      .amenities-label {
-        font-size: 0.68rem;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--green-mid);
+      .amenities-title {
+        font-size: 1.05rem;
+        line-height: 1.25;
       }
       .amenities-count {
+        display: block;
         font-family: 'Fraunces', serif;
         font-size: 0.82rem;
         font-weight: 700;
@@ -2849,7 +2873,7 @@
           <div class="hero-specs">
             <div class="spec-cell"><strong>20</strong><span>Years</span></div>
             <div class="spec-cell"><strong>30+</strong><span>Projects</span></div>
-            <div class="spec-cell"><strong>12000+</strong><span>Families</span></div>
+            <div class="spec-cell"><strong>12000+</strong><span>Families served</span></div>
           </div>
           <p class="hero-desc" id="heroDesc">San City New Town — a sprawling integrated township with wide roads, green boulevards, and modern community amenities.</p>
           <div class="hero-btns">
@@ -2935,10 +2959,10 @@
 
     <!-- Amenities -->
     <div class="amenities-wrap reveal">
-      <div class="amenities-mobile-head">
-        <span class="amenities-label">Community Amenities</span>
-        <span class="amenities-count" id="amenitiesCount">1 / 6</span>
-      </div>
+      <header class="amenities-head">
+        <h2 class="amenities-title">Our World Class <em>Specialities</em></h2>
+        <span class="amenities-count" id="amenitiesCount" aria-live="polite">1 / 6</span>
+      </header>
       <div class="amenities" id="amenitiesSlider" aria-label="Amenities carousel">
         <div class="amenities-viewport" id="amenitiesViewport">
           <div class="amenities-track" id="amenitiesTrack">
@@ -3041,7 +3065,7 @@
         </article>
         <article class="impact-card">
           <div class="impact-card__icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></div>
-          <div class="impact-num"><span class="impact-counter" data-t="11000" data-suffix="+" data-comma="true">0</span></div>
+          <div class="impact-num"><span class="impact-counter" data-t="12000" data-suffix="+" data-comma="true">0</span></div>
           <p class="impact-label">Happy Clients</p>
         </article>
         <article class="impact-card">
@@ -3110,7 +3134,7 @@
           </div>
           <div class="visit-field">
             <label for="visitPhone">Phone Number</label>
-            <input type="tel" id="visitPhone" name="phone" placeholder="+91 98765 43210" required autocomplete="tel" inputmode="tel" title="Enter a valid 10-digit Indian mobile number" />
+            <input type="tel" id="visitPhone" name="phone" placeholder="9876543210 or +91 9876543210" required autocomplete="tel" inputmode="tel" maxlength="18" title="Indian mobile: 10 digits (6–9 start) or +91 then 10 digits" />
           </div>
           <div class="visit-field">
             <label for="visitCity">Area</label>
@@ -3126,6 +3150,7 @@
 
   </div>
 
+  <script src="js/google-form-submit.js"></script>
   <script>
     /* Mobile drawer */
     const drawer = document.getElementById('mobDrawer');
@@ -3155,26 +3180,74 @@
       link.addEventListener('click', () => closeDrawer());
     });
 
-    /* Site visit booking success popup */
+    /* Site visit booking → Google Forms + success popup */
     (function () {
       const form = document.getElementById('visitForm');
       const modal = document.getElementById('visitModal');
       const backdrop = document.getElementById('visitModalBackdrop');
       const closeBtn = document.getElementById('visitModalClose');
       const message = document.getElementById('visitModalMessage');
+      const submitBtn = form ? form.querySelector('.visit-submit') : null;
       if (!form || !modal) return;
 
-      const INDIAN_PHONE_RE = /^(?:\+?91[\s-]?)?[6-9]\d{9}$/;
+      /* Free Site Visit ONLY — not the career form.
+         Form: San City — Free Site Visit
+         Sheet: https://docs.google.com/spreadsheets/d/1yuFjmNXPRb0IkL_B0gBzeA0Yl3D_L53o_udpRsdVQIc/edit */
+      const GOOGLE_FORM_ACTION =
+        'https://docs.google.com/forms/d/e/1FAIpQLSc43RHLDIaFhAJi1xVm5T_xTZAfyOdfxqpQD3obknOvAfgolA/formResponse';
+      const GOOGLE_FORM_ENTRIES = {
+        name: 'entry.1569661648',
+        email: 'entry.1497707924',
+        phone: 'entry.430972625',
+        area: 'entry.1200512780',
+      };
 
-      function isValidIndianPhone(value) {
-        const normalized = String(value || '').replace(/[\s-]/g, '');
-        return INDIAN_PHONE_RE.test(normalized);
+      function normalizePhoneDigits(value) {
+        let digits = String(value || '').replace(/\D/g, '');
+        if (digits.startsWith('91') && digits.length >= 12) digits = digits.slice(-10);
+        if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
+        return digits;
       }
 
-      function openVisitModal(name) {
-        message.textContent = name
-          ? `Thank you, ${name}! Our team will contact you shortly to confirm your free site visit.`
-          : 'Thank you! Our team will contact you shortly to confirm your free site visit.';
+      function isValidIndianPhone(value) {
+        const digits = normalizePhoneDigits(value);
+        return /^[6-9]\d{9}$/.test(digits);
+      }
+
+      function normalizePhone(value) {
+        const digits = normalizePhoneDigits(value);
+        return digits || String(value || '').trim();
+      }
+
+      function sendToGoogleForm({ name, email, phone, area }) {
+        if (!window.postGoogleForm) return Promise.resolve({ ok: false });
+        return window.postGoogleForm(GOOGLE_FORM_ACTION, {
+          [GOOGLE_FORM_ENTRIES.name]: name,
+          [GOOGLE_FORM_ENTRIES.email]: email,
+          [GOOGLE_FORM_ENTRIES.phone]: phone,
+          [GOOGLE_FORM_ENTRIES.area]: area,
+        });
+      }
+
+      function openVisitModal(name, success) {
+        const iconEl = modal.querySelector('.visit-modal-icon i');
+        const titleEl = document.getElementById('visitModalTitle');
+
+        if (success) {
+          modal.classList.remove('is-error');
+          if (iconEl) iconEl.className = 'fa-solid fa-circle-check';
+          if (titleEl) titleEl.textContent = 'Site Visit Booked!';
+          message.textContent = name
+            ? `Thank you, ${name}! Our team will contact you shortly to confirm your free site visit.`
+            : 'Thank you! Our team will contact you shortly to confirm your free site visit.';
+        } else {
+          modal.classList.add('is-error');
+          if (iconEl) iconEl.className = 'fa-solid fa-circle-xmark';
+          if (titleEl) titleEl.textContent = 'Booking Failed';
+          message.textContent =
+            'Your booking could not be sent. In Google Forms, publish the site visit form, set "Anyone with the link", and turn OFF "Collect email addresses" in Settings. Then try again, or call us using the contact details on this page.';
+        }
+
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -3182,9 +3255,14 @@
       }
 
       function closeVisitModal() {
-        modal.classList.remove('open');
+        modal.classList.remove('open', 'is-error');
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+      }
+
+      const phoneInputEl = form.querySelector('[name="phone"]');
+      if (phoneInputEl) {
+        phoneInputEl.addEventListener('input', () => phoneInputEl.setCustomValidity(''));
       }
 
       form.addEventListener('submit', (e) => {
@@ -3192,14 +3270,16 @@
         const nameInput = form.querySelector('[name="name"]');
         const phoneInput = form.querySelector('[name="phone"]');
         const emailInput = form.querySelector('[name="email"]');
+        const areaInput = form.querySelector('[name="area"]');
         const name = nameInput ? nameInput.value.trim() : '';
+        const area = areaInput ? areaInput.value.trim() : '';
 
         if (phoneInput) phoneInput.setCustomValidity('');
         if (emailInput) emailInput.setCustomValidity('');
 
         if (!phoneInput || !isValidIndianPhone(phoneInput.value.trim())) {
           if (phoneInput) {
-            phoneInput.setCustomValidity('Please enter a valid 10-digit Indian mobile number (e.g. 9876543210 or +91 9876543210).');
+            phoneInput.setCustomValidity('Please enter a valid Indian mobile number — 10 digits (e.g. 9876543210) or with +91 (e.g. +91 9876543210).');
             phoneInput.reportValidity();
           }
           return;
@@ -3216,8 +3296,23 @@
           return;
         }
 
-        form.reset();
-        openVisitModal(name);
+        const phone = normalizePhone(phoneInput.value.trim());
+        const submitLabel = submitBtn ? submitBtn.innerHTML : '';
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Sending...';
+        }
+
+        sendToGoogleForm({ name, email, phone, area })
+          .then((result) => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = submitLabel;
+            }
+            if (result && result.ok) form.reset();
+            openVisitModal(name, !!(result && result.ok));
+          });
       });
 
       closeBtn.addEventListener('click', closeVisitModal);

@@ -144,6 +144,173 @@
     return String(n).padStart(2, '0');
   }
 
+  function formatPresenter(presenter) {
+    return `Presented by :- ${presenter}`;
+  }
+
+  function formatOrgTitle(org, title) {
+    return `${org} - ${title}`;
+  }
+
+  const STRIP_PREVIEW_GAP = 12;
+  const STRIP_PREVIEW_WIDTH = 220;
+  let stripPreviewEl = null;
+  let stripPreviewThumb = null;
+  let stripPreviewListenersBound = false;
+
+  function hideStripPreview() {
+    if (!stripPreviewEl) return;
+    stripPreviewEl.classList.remove('is-visible', 'is-above', 'is-below');
+    stripPreviewEl.setAttribute('aria-hidden', 'true');
+    stripPreviewThumb = null;
+  }
+
+  function ensureStripPreview() {
+    if (stripPreviewEl) return stripPreviewEl;
+
+    stripPreviewEl = document.createElement('div');
+    stripPreviewEl.className = 'awards-strip__preview';
+    stripPreviewEl.id = 'awardsStripPreview';
+    stripPreviewEl.setAttribute('aria-hidden', 'true');
+    stripPreviewEl.innerHTML = `
+      <article class="awards-strip__preview-card">
+        <div class="awards-strip__preview-media">
+          <img src="" alt="" width="200" height="200" />
+        </div>
+        <div class="awards-strip__preview-meta">
+          <strong></strong>
+          <p class="awards-strip__preview-presenter"></p>
+          <span></span>
+        </div>
+      </article>
+    `;
+    document.body.appendChild(stripPreviewEl);
+    return stripPreviewEl;
+  }
+
+  function getStripPreviewPlacement(previewHeight) {
+    if (!stripWrapEl) return 'below';
+
+    const stageRect = stripWrapEl.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const gap = STRIP_PREVIEW_GAP;
+
+    const nextSection = stripWrapEl.nextElementSibling;
+    const nextTop = nextSection
+      ? nextSection.getBoundingClientRect().top
+      : vh;
+
+    const viewportSpaceBelow = vh - stageRect.bottom - gap;
+    const viewportSpaceAbove = stageRect.top - gap;
+    const sectionSpaceBelow = nextTop - stageRect.bottom - gap;
+    const spaceBelow = Math.max(0, Math.min(viewportSpaceBelow, sectionSpaceBelow));
+    const spaceAbove = Math.max(0, viewportSpaceAbove);
+
+    const belowFits = spaceBelow >= previewHeight;
+    const aboveFits = spaceAbove >= previewHeight;
+
+    if (!belowFits && aboveFits) return 'above';
+    if (belowFits && !aboveFits) return 'below';
+    if (!belowFits && !aboveFits) return spaceAbove >= spaceBelow ? 'above' : 'below';
+
+    const stripMid = (stageRect.top + stageRect.bottom) / 2;
+    if (stripMid > vh * 0.52) return 'above';
+    if (stripMid < vh * 0.48) return 'below';
+
+    return spaceBelow >= spaceAbove ? 'below' : 'above';
+  }
+
+  function positionStripPreview(thumb) {
+    if (!stripPreviewEl || !thumb || !stripWrapEl) return;
+
+    const stageRect = stripWrapEl.getBoundingClientRect();
+    const thumbRect = thumb.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const previewHeight = stripPreviewEl.offsetHeight || 280;
+    const previewWidth = stripPreviewEl.offsetWidth || STRIP_PREVIEW_WIDTH;
+    const placement = getStripPreviewPlacement(previewHeight);
+
+    const maxLeft = window.innerWidth - previewWidth - 12;
+    let left = thumbRect.left + thumbRect.width / 2 - previewWidth / 2;
+    left = Math.max(12, Math.min(left, maxLeft));
+
+    const nextSection = stripWrapEl.nextElementSibling;
+    const nextTop = nextSection
+      ? nextSection.getBoundingClientRect().top
+      : vh;
+    const maxBottom = Math.min(vh - 12, nextTop - STRIP_PREVIEW_GAP);
+
+    let top;
+    if (placement === 'above') {
+      top = stageRect.top - previewHeight - STRIP_PREVIEW_GAP;
+      top = Math.max(12, top);
+    } else {
+      top = stageRect.bottom + STRIP_PREVIEW_GAP;
+      top = Math.min(top, maxBottom - previewHeight);
+      top = Math.max(12, top);
+    }
+
+    stripPreviewEl.style.left = `${left}px`;
+    stripPreviewEl.style.top = `${top}px`;
+    stripPreviewEl.classList.remove('is-above', 'is-below');
+    stripPreviewEl.classList.add(placement === 'above' ? 'is-above' : 'is-below');
+  }
+
+  function showStripPreview(thumb) {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    const index = Number(thumb.dataset.index);
+    const award = AWARDS[index];
+    if (Number.isNaN(index) || !award) return;
+
+    const preview = ensureStripPreview();
+    const img = preview.querySelector('.awards-strip__preview-media img');
+    const title = preview.querySelector('.awards-strip__preview-meta strong');
+    const presenter = preview.querySelector('.awards-strip__preview-presenter');
+    const year = preview.querySelector('.awards-strip__preview-meta span');
+
+    img.src = awardImage(index);
+    img.alt = formatOrgTitle(award.org, award.title);
+    title.textContent = formatOrgTitle(award.org, award.title);
+    presenter.textContent = formatPresenter(award.presenter);
+    year.textContent = award.year;
+
+    stripPreviewThumb = thumb;
+    preview.classList.add('is-visible');
+    preview.setAttribute('aria-hidden', 'false');
+
+    const reposition = () => positionStripPreview(thumb);
+    requestAnimationFrame(() => {
+      reposition();
+      requestAnimationFrame(reposition);
+    });
+    img.onload = reposition;
+  }
+
+  function updateStripPreviewPlacement() {
+    if (stripPreviewThumb && stripPreviewEl && stripPreviewEl.classList.contains('is-visible')) {
+      positionStripPreview(stripPreviewThumb);
+    }
+  }
+
+  function bindStripPreview() {
+    if (!stripEl || !stripWrapEl || stripPreviewListenersBound) return;
+    stripPreviewListenersBound = true;
+
+    stripEl.addEventListener('mouseover', (e) => {
+      const thumb = e.target.closest('.awards-strip__thumb');
+      if (!thumb || !stripEl.contains(thumb)) return;
+      showStripPreview(thumb);
+    });
+
+    stripWrapEl.addEventListener('mouseleave', (e) => {
+      if (!stripWrapEl.contains(e.relatedTarget)) hideStripPreview();
+    });
+
+    window.addEventListener('scroll', updateStripPreviewPlacement, { passive: true });
+    window.addEventListener('resize', updateStripPreviewPlacement, { passive: true });
+  }
+
   function syncIndexHeight() {
     if (!indexEl || !featureEl) return;
     if (window.matchMedia('(max-width: 900px)').matches) {
@@ -232,7 +399,6 @@
           </button>
           <img id="awardsFeatureImg" src="" alt="" width="800" height="500" />
           <div class="awards-feature__overlay">
-            <h2 id="awardsFeatureTitle"></h2>
             <p id="awardsFeaturePresenter"></p>
           </div>
         </div>
@@ -257,7 +423,6 @@
       visual: document.getElementById('awardsFeatureVisual'),
       badge: document.getElementById('awardsFeatureBadge'),
       img: document.getElementById('awardsFeatureImg'),
-      title: document.getElementById('awardsFeatureTitle'),
       presenter: document.getElementById('awardsFeaturePresenter'),
       org: document.getElementById('awardsFeatureOrg'),
       counter: document.getElementById('awardsFeatureCounter'),
@@ -296,13 +461,12 @@
     if (!award || !featureRefs) return;
 
     const pos = visible.indexOf(index);
-    const { badge, img, title, presenter, org, counter, prev, next, visual } = featureRefs;
+    const { badge, img, presenter, org, counter, prev, next, visual } = featureRefs;
 
     badge.textContent = award.year;
-    visual.setAttribute('aria-label', `View full size: ${award.title}`);
-    title.textContent = award.title;
-    presenter.textContent = award.presenter;
-    org.innerHTML = `<i class="fa-solid fa-award" aria-hidden="true"></i> ${award.org}`;
+    visual.setAttribute('aria-label', `View full size: ${formatOrgTitle(award.org, award.title)}`);
+    presenter.textContent = formatPresenter(award.presenter);
+    org.innerHTML = `<i class="fa-solid fa-award" aria-hidden="true"></i> ${formatOrgTitle(award.org, award.title)}`;
     counter.textContent = `${padNum(pos + 1)} / ${padNum(visible.length)}`;
     prev.disabled = pos <= 0;
     next.disabled = pos >= visible.length - 1;
@@ -320,7 +484,7 @@
       };
       img.src = nextSrc;
     }
-    img.alt = `${award.title} — ${award.year}`;
+    img.alt = `${formatOrgTitle(award.org, award.title)} — ${award.year}`;
     scheduleSyncIndexHeight();
   }
 
@@ -349,6 +513,7 @@
 
   function renderStripList(visible) {
     if (!stripEl) return;
+    hideStripPreview();
     stripEl.innerHTML = visible
       .map((i) => {
         const award = AWARDS[i];
@@ -428,9 +593,9 @@
     if (!award) return;
 
     imgEl.src = awardImage(index);
-    imgEl.alt = `${award.title} — ${award.year}`;
-    titleEl.textContent = award.title;
-    descEl.textContent = `Receiving award from ${award.presenter}. ${award.org} — ${award.year}.`;
+    imgEl.alt = `${formatOrgTitle(award.org, award.title)} — ${award.year}`;
+    titleEl.textContent = formatOrgTitle(award.org, award.title);
+    descEl.textContent = formatPresenter(award.presenter);
 
     const visible = getVisibleIndices();
     const pos = visible.indexOf(index);
@@ -444,6 +609,7 @@
 
   function openLightbox(index) {
     stopAutoplay();
+    hideStripPreview();
     renderLightbox(index);
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
@@ -518,6 +684,7 @@
   });
 
   renderFilters();
+  bindStripPreview();
   rebuildLists();
   startAutoplay();
   window.addEventListener('resize', scheduleSyncIndexHeight);
