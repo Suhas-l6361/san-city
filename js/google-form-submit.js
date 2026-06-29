@@ -1,46 +1,55 @@
 /* Shared POST helper — each form passes its own Google Form URL.
-   Uses a hidden iframe form POST (not fetch) to avoid browser CORS blocks. */
+   Uses a hidden iframe + form POST (not fetch) — Google Forms blocks CORS from websites. */
 (function () {
+  function appendFields(form, fields) {
+    Object.keys(fields).forEach(function (key) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = fields[key] == null ? '' : String(fields[key]);
+      form.appendChild(input);
+    });
+
+    [
+      ['fvv', '1'],
+      ['draftResponse', '[]'],
+      ['pageHistory', '0'],
+      ['submissionTimestamp', '-1'],
+    ].forEach(function (pair) {
+      var meta = document.createElement('input');
+      meta.type = 'hidden';
+      meta.name = pair[0];
+      meta.value = pair[1];
+      form.appendChild(meta);
+    });
+  }
+
   function postGoogleForm(actionUrl, fields) {
     return new Promise(function (resolve) {
-      const iframeName = 'googleFormTarget_' + Date.now();
-      const iframe = document.createElement('iframe');
+      var iframeName = 'googleFormTarget_' + Date.now();
+      var iframe = document.createElement('iframe');
       iframe.name = iframeName;
       iframe.setAttribute('aria-hidden', 'true');
-      iframe.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+      iframe.title = 'Form submission';
+      iframe.style.cssText =
+        'position:absolute;width:0;height:0;border:0;visibility:hidden;pointer-events:none';
 
-      const relay = document.createElement('form');
+      var relay = document.createElement('form');
       relay.action = actionUrl;
       relay.method = 'POST';
       relay.target = iframeName;
       relay.acceptCharset = 'UTF-8';
       relay.style.display = 'none';
+      appendFields(relay, fields);
 
-      const params = new URLSearchParams();
-      Object.keys(fields).forEach(function (key) {
-        params.append(key, fields[key] == null ? '' : String(fields[key]));
-      });
-      params.set('fvv', '1');
-      params.set('draftResponse', '[]');
-      params.set('pageHistory', '0');
-      params.set('submissionTimestamp', '-1');
-
-      params.forEach(function (value, key) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        relay.appendChild(input);
-      });
-
-      let settled = false;
-      let fallbackTimer = null;
-      let submitted = false;
+      var settled = false;
+      var submitted = false;
+      var fallbackTimer = null;
 
       function finish(ok) {
         if (settled) return;
         settled = true;
-        if (fallbackTimer !== null) clearTimeout(fallbackTimer);
+        if (fallbackTimer !== null) window.clearTimeout(fallbackTimer);
         iframe.remove();
         relay.remove();
         resolve({ ok: ok });
@@ -56,11 +65,33 @@
       submitted = true;
       relay.submit();
 
-      fallbackTimer = setTimeout(function () {
+      fallbackTimer = window.setTimeout(function () {
         finish(false);
-      }, 5000);
+      }, 10000);
     });
   }
 
+  function postAppsScript(url, payload) {
+    return fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    })
+      .then(function (response) {
+        return response.json().catch(function () {
+          return { ok: false };
+        });
+      })
+      .then(function (data) {
+        return { ok: !!(data && data.ok), status: data && data.ok ? 200 : 400 };
+      })
+      .catch(function () {
+        return { ok: false, status: 0 };
+      });
+  }
+
   window.postGoogleForm = postGoogleForm;
+  window.postAppsScript = postAppsScript;
 })();

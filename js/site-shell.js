@@ -297,7 +297,7 @@
         if (iconEl) iconEl.className = 'fa-solid fa-circle-xmark';
         if (titleEl) titleEl.textContent = 'Submission Failed';
         careerMessage.textContent =
-          'Your application could not be sent. In Google Forms, open the career form, turn OFF "Required" on the Resume question, publish the form, and set access to "Anyone with the link". Then try again, or contact us by phone or email.';
+          'Your application could not be saved. Please try again, or email admin@sancity1.com with your resume and the role you applied for.';
       }
 
       careerModal.classList.add('open');
@@ -314,7 +314,10 @@
 
     /* Career page ONLY — not the free site visit form.
        Form: Sancity Job Offer
-       Sheet: https://docs.google.com/spreadsheets/d/19no2WM3t-1ATjRKfNXXf_0_9KKro6F9fb2yb_7Q2uzE/edit */
+       View: https://docs.google.com/forms/d/e/1FAIpQLScxa9ZQdAolZGLp_stDVgg6PNLzf0INs3xcIjhg0cqG7gdCDg/viewform
+       Sheet: https://docs.google.com/spreadsheets/d/19no2WM3t-1ATjRKfNXXf_0_9KKro6F9fb2yb_7Q2uzE/edit
+       Optional Apps Script (required for resume file in sheet): deploy google-apps-script/career-applications.gs and paste Web app URL below. */
+    const GOOGLE_CAREER_APPS_SCRIPT_URL = ''; // Paste Web app URL here after deploy (ends with /exec)
     const GOOGLE_CAREER_FORM_ACTION =
       'https://docs.google.com/forms/d/e/1FAIpQLScxa9ZQdAolZGLp_stDVgg6PNLzf0INs3xcIjhg0cqG7gdCDg/formResponse';
     const GOOGLE_CAREER_FORM_ENTRIES = {
@@ -326,8 +329,28 @@
       about: 'entry.882166686',
     };
 
-    function sendToGoogleCareerForm({ firstName, lastName, email, phone, job, about }) {
+    function readFileAsBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result;
+          if (typeof result !== 'string' || !result.includes(',')) {
+            reject(new Error('Could not read resume file'));
+            return;
+          }
+          resolve(result.split(',')[1]);
+        };
+        reader.onerror = () => reject(new Error('Could not read resume file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function sendToGoogleCareerForm(payload) {
+      if (GOOGLE_CAREER_APPS_SCRIPT_URL && window.postAppsScript) {
+        return window.postAppsScript(GOOGLE_CAREER_APPS_SCRIPT_URL, payload);
+      }
       if (!window.postGoogleForm) return Promise.resolve({ ok: false });
+      const { firstName, lastName, email, phone, job, about } = payload;
       return window.postGoogleForm(GOOGLE_CAREER_FORM_ACTION, {
         [GOOGLE_CAREER_FORM_ENTRIES.firstName]: firstName,
         [GOOGLE_CAREER_FORM_ENTRIES.lastName]: lastName,
@@ -364,19 +387,34 @@
       const aboutText = careerForm.querySelector('[name="about"]')?.value.trim() || '';
       const resumeFile = fileInput?.files?.[0];
       const resumeName = resumeFile ? resumeFile.name : '';
-      const about = resumeName
-        ? `${aboutText}\n\n---\nResume uploaded on website: ${resumeName}\n(Contact applicant at ${email || phone} to request the file.)`
-        : aboutText;
       const jobSelect = careerForm.querySelector('[name="job"]');
       const job = jobSelect && jobSelect.value ? jobSelect.options[jobSelect.selectedIndex].text : '';
       const submitLabel = careerSubmitBtn ? careerSubmitBtn.innerHTML : '';
+      const useAppsScript = !!GOOGLE_CAREER_APPS_SCRIPT_URL;
 
       if (careerSubmitBtn) {
         careerSubmitBtn.disabled = true;
         careerSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Submitting...';
       }
 
-      sendToGoogleCareerForm({ firstName, lastName, email, phone, job, about })
+      const buildPayload = () => {
+        const payload = { firstName, lastName, email, phone, job, about: aboutText };
+        if (!useAppsScript && resumeName) {
+          payload.about = `${aboutText}\n\n---\nResume uploaded on website: ${resumeName}\n(Contact applicant at ${email || phone} to request the file.)`;
+        }
+        if (useAppsScript && resumeFile) {
+          return readFileAsBase64(resumeFile).then((resumeBase64) => ({
+            ...payload,
+            resumeBase64,
+            resumeName: resumeFile.name,
+            resumeMime: resumeFile.type,
+          }));
+        }
+        return Promise.resolve(payload);
+      };
+
+      buildPayload()
+        .then((payload) => sendToGoogleCareerForm(payload))
         .then((result) => {
           if (careerSubmitBtn) {
             careerSubmitBtn.disabled = false;
@@ -392,6 +430,13 @@
             closeJobPanel();
           }
           openCareerModal(firstName, job, !!(result && result.ok));
+        })
+        .catch(() => {
+          if (careerSubmitBtn) {
+            careerSubmitBtn.disabled = false;
+            careerSubmitBtn.innerHTML = submitLabel;
+          }
+          openCareerModal(firstName, job, false);
         });
     });
 

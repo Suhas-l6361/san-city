@@ -283,6 +283,9 @@
   overflow: hidden;
   background: #0a1520;
 }
+.proj-row__visual--empty {
+  background: #eef2f6;
+}
 .proj-row__visual img {
   width: 100%;
   height: 100%;
@@ -525,6 +528,12 @@
   display: block;
   padding: clamp(48px, 5vw, 56px) clamp(14px, 2vw, 20px) clamp(14px, 2vw, 20px);
   text-align: center;
+}
+.project-modal__img-frame.is-empty {
+  background: #eef2f6;
+}
+.project-modal__img-frame.is-empty img {
+  display: none;
 }
 .project-modal__img-frame img {
   display: inline-block;

@@ -1,5 +1,12 @@
 /* San City — Projects showcase & detail modal */
 (function () {
+  const HIGHLIGHTS = {
+    standard: ['DC Converted', 'DTCP Approved'],
+    ekatha: ['DC Converted', 'DTCP Approved', 'E-Katha'],
+    reraApplied: ['DC Converted', 'DTCP Approved', 'RERA Applied'],
+    reraApproved: ['DC Converted', 'DTCP Approved', 'RERA Approved'],
+  };
+
   const PROJECTS = [
     {
       name: 'San City New Town',
@@ -8,7 +15,8 @@
       region: 'Mysore',
       location: 'Mysore District',
       size: '205 Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Club-House', 'Swimming Pool'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 1,
     },
     {
       name: 'San City Kaveri',
@@ -17,7 +25,8 @@
       region: 'Mysore',
       location: 'Mysore District',
       size: 'Est. 10,000 Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 2,
     },
     {
       name: 'San City Rachana',
@@ -26,7 +35,8 @@
       region: 'Mysore',
       location: 'Mysore District',
       size: '150+ Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Club-House', 'Indoor Games', 'Swimming Pool'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 3,
     },
     {
       name: 'Wonder Woods',
@@ -35,7 +45,8 @@
       region: 'Bangalore',
       location: 'Bangalore District',
       size: '480 Plots',
-      highlights: ['BMRDA Approved', 'DC Converted', 'DTCP Approved'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 4,
     },
     {
       name: 'San City Kalpatharu',
@@ -44,7 +55,8 @@
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
       size: '385 Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed', 'World-Class Amenities'],
+      highlights: HIGHLIGHTS.reraApproved,
+      imageSlot: 5,
     },
     {
       name: 'San City Kamal Enclave',
@@ -53,7 +65,8 @@
       region: 'Mysore',
       location: 'Mysore District',
       size: '100+ Plots',
-      highlights: ['DC Converted', 'DTCP Approved', 'Fully Developed', 'Basic Amenities'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 6,
     },
     {
       name: 'San City Orchid',
@@ -62,7 +75,8 @@
       region: 'Tumkur',
       location: 'Tumkur District',
       size: '600 Plots',
-      highlights: ['DTCP Approved', 'DC Converted'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 7,
     },
     {
       name: 'San City Prakruthi',
@@ -71,7 +85,8 @@
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
       size: '160+ Plots',
-      highlights: ['DC Converted', 'DTCP Approved'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 8,
     },
     {
       name: 'San City Gardenia',
@@ -80,7 +95,8 @@
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
       size: '160+ Plots',
-      highlights: ['DC Converted', 'DTCP Approved'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 9,
     },
     {
       name: 'San City Grand',
@@ -89,7 +105,8 @@
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
       size: 'Under Development',
-      highlights: ['DC Converted', 'DTCP Approved'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 10,
     },
     {
       name: 'San City Gold',
@@ -98,7 +115,19 @@
       region: 'Gowribidanur',
       location: 'Chikkaballapur District',
       size: '2300+ Plots',
-      highlights: ['Fully Developed'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 11,
+    },
+    {
+      name: 'San City Vc Gallexy',
+      status: 'ongoing',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.reraApplied,
+      cardImage: '../images/VC Gallexy Logo.png',
+      mapImage: '../images/vc galaxy map.jpg',
     },
     {
       name: 'San City Bhoomi',
@@ -107,11 +136,226 @@
       region: 'Mysore',
       location: 'Mysore District',
       size: '2300+ Plots',
-      highlights: ['DTCP Approved', 'DC Converted'],
+      highlights: HIGHLIGHTS.standard,
+      imageSlot: 12,
+    },
+    {
+      name: 'San City Blue Bell',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/bluebell.png',
+      mapImage: '../images/blue bell map.png',
+    },
+    {
+      name: 'San City Comfort',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/comfort.png',
+      mapImage: '../images/comfort map.png',
+    },
+    {
+      name: 'San City Diamond',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/sancity diamond.png',
+    },
+    {
+      name: 'San City Disha',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/disha.png',
+    },
+    {
+      name: 'San City Lake View',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/lake view.png',
+    },
+    {
+      name: 'San City Prerana',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/prerana.png',
+    },
+    {
+      name: 'San City Sky City',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/skycity.png',
+    },
+    {
+      name: 'San City Sun Flower',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+      cardImage: '../images/sunflower.png',
+    },
+    {
+      name: 'San City Elegance',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Fortune',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Green',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Nature',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Pride',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Silver Shine',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Sun Shine',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.ekatha,
+    },
+    {
+      name: 'San City MCC',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.ekatha,
+    },
+    {
+      name: 'San City Wapour',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City Violet',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
+    },
+    {
+      name: 'San City White Lotus',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
     },
   ];
 
   const STATUS_LABELS = { completed: 'Completed', ongoing: 'Ongoing' };
+
+  function padNum(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function cardImage(project) {
+    if (project.cardImage) return project.cardImage;
+    if (project.imageSlot) return `../images/p${project.imageSlot}.jpg`;
+    return null;
+  }
+
+  function detailImage(project) {
+    if (project.mapImage || project.detailImage) return project.mapImage || project.detailImage;
+    if (project.imageSlot) return `../images/pp${project.imageSlot}.jpg`;
+    if (project.cardImage) return project.cardImage;
+    return null;
+  }
+
+  function projectSlug(name) {
+    return 'project-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  function heroImage(project) {
+    const src = cardImage(project);
+    if (!src) return null;
+    return src.replace(/^\.\.\//, '');
+  }
+
+  window.SanCityProjects = {
+    PROJECTS,
+    projectSlug,
+    heroImage,
+  };
 
   const showcase = document.getElementById('projectsShowcase');
   const filtersEl = document.getElementById('projectsFilters');
@@ -141,22 +385,6 @@
   const ongoingCount = PROJECTS.filter((p) => p.status === 'ongoing').length;
 
   const CITIES = [...new Set(PROJECTS.map((p) => p.city))].sort((a, b) => a.localeCompare(b));
-
-  function padNum(n) {
-    return String(n).padStart(2, '0');
-  }
-
-  function cardImage(i) {
-    return `../images/p${i + 1}.jpg`;
-  }
-
-  function detailImage(i) {
-    return `../images/pp${i + 1}.jpg`;
-  }
-
-  function projectSlug(name) {
-    return 'project-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  }
 
   function resetFiltersForDeepLink() {
     activeStatus = 'all';
@@ -291,12 +519,18 @@
         .map((tag) => `<span class="proj-row__chip">${tag}</span>`)
         .join('');
 
+      const cardSrc = cardImage(project);
+      const visualClass = cardSrc ? 'proj-row__visual' : 'proj-row__visual proj-row__visual--empty';
+      const visualImg = cardSrc
+        ? `<img src="${cardSrc}" alt="${project.name}" loading="lazy" width="720" height="440" />`
+        : '';
+
       return `
         <article class="proj-row reveal${flip}" id="${projectSlug(project.name)}" data-index="${i}" data-status="${project.status}" data-city="${project.city}">
           <div class="proj-row__btn">
             <button type="button" class="proj-row__visual-btn" aria-label="View details for ${project.name}">
-              <div class="proj-row__visual">
-                <img src="${cardImage(i)}" alt="${project.name}" loading="lazy" width="720" height="440" />
+              <div class="${visualClass}">
+                ${visualImg}
                 <span class="proj-row__num" aria-hidden="true">${num}</span>
                 <span class="proj-row__status proj-row__status--${project.status}">${statusLabel}</span>
               </div>
@@ -346,8 +580,23 @@
     if (!project) return;
 
     currentIndex = index;
-    imgEl.src = detailImage(index);
-    imgEl.alt = `${project.name} — project brochure`;
+    const detailSrc = detailImage(project);
+    const imgFrame = modal.querySelector('.project-modal__img-frame');
+    if (detailSrc) {
+      imgEl.src = detailSrc;
+      imgEl.hidden = false;
+      imgFrame?.classList.remove('is-empty');
+      imgEl.alt = project.mapImage
+        ? `${project.name} — site map`
+        : project.cardImage
+          ? `${project.name} — project view`
+          : `${project.name} — project brochure`;
+    } else {
+      imgEl.removeAttribute('src');
+      imgEl.alt = '';
+      imgEl.hidden = true;
+      imgFrame?.classList.add('is-empty');
+    }
     eyebrowEl.textContent = `Project ${padNum(index + 1)} · ${project.city}`;
     statusEl.textContent = STATUS_LABELS[project.status];
     statusEl.className = `project-modal__status project-modal__status--${project.status}`;

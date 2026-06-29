@@ -266,10 +266,10 @@
   padding: 8px;
 }
 .who-chapter__lottie dotlottie-wc {
-  width: min(300px, 100%);
-  height: min(300px, 100%);
+  width: min(350px, 100%);
+  height: min(350px, 100%);
   max-width: 100%;
-  min-height: 200px;
+  min-height: 230px;
   display: block;
 }
 .who-chapter__card {
@@ -513,8 +513,8 @@
 @media (max-width: 1180px) {
   .who-we-are__wrap { max-width: 960px; }
   .who-chapter__lottie dotlottie-wc {
-    width: min(280px, 100%);
-    height: min(280px, 100%);
+    width: min(320px, 100%);
+    height: min(320px, 100%);
   }
 }
 
@@ -564,8 +564,8 @@
     border-bottom: 1px solid var(--border);
   }
   .who-chapter__lottie dotlottie-wc {
-    width: min(240px, 76vw);
-    height: min(240px, 76vw);
+    width: min(280px, 80vw);
+    height: min(280px, 80vw);
     margin: 0 auto;
   }
   .who-chapter__card {
@@ -629,8 +629,8 @@
     border-radius: 18px;
   }
   .who-chapter__lottie dotlottie-wc {
-    width: min(220px, 74vw);
-    height: min(220px, 74vw);
+    width: min(260px, 78vw);
+    height: min(260px, 78vw);
   }
   .who-chapter__card h3 {
     font-size: 1.05rem;
@@ -716,8 +716,8 @@
     padding: 16px 14px 12px;
   }
   .who-chapter__lottie dotlottie-wc {
-    width: min(200px, 70vw);
-    height: min(200px, 70vw);
+    width: min(240px, 76vw);
+    height: min(240px, 76vw);
   }
   .who-chapter__card {
     padding: 14px 14px 18px;

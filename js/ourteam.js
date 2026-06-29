@@ -9,9 +9,12 @@
 
   if (!mediaBlocks.length || reduced) return;
 
-  const base = mediaBlocks[0].querySelector('img').src.replace(/t\d+\.jpg.*$/, '');
-  const images = Array.from({ length: 8 }, (_, i) => `${base}t${i + 1}.jpg`);
-  const indices = [0, 3, 6];
+  const base = mediaBlocks[0].querySelector('img').src.replace(/newt\d+\.(png|jpg).*$/, '');
+  const images = Array.from({ length: 8 }, (_, i) => {
+    const ext = i < 7 ? 'png' : 'jpg';
+    return `${base}newt${i + 1}.${ext}`;
+  });
+  const indices = [0, 1, 2];
   const INTERVAL_MS = 3200;
 
   images.forEach((src) => {
