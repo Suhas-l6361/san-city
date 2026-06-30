@@ -117,7 +117,22 @@
       <div class="project-modal__layout">
         <div class="project-modal__visual">
           <div class="project-modal__img-frame">
-            <img id="projectModalImg" src="" alt="" />
+            <div class="project-modal__img-stage">
+              <img id="projectModalImg" src="" alt="" />
+              <p class="project-modal__img-empty" id="projectModalImgEmpty" hidden>
+                <i class="fa-regular fa-image" aria-hidden="true"></i>
+                No image available for this project yet.
+              </p>
+            </div>
+          </div>
+          <div class="project-modal__map-nav" id="projectModalMapNav" hidden>
+            <button type="button" class="project-modal__map-btn" id="projectModalMapPrev" aria-label="Previous map">
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <span class="project-modal__map-counter" id="projectModalMapCounter"></span>
+            <button type="button" class="project-modal__map-btn" id="projectModalMapNext" aria-label="Next map">
+              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
         <div class="project-modal__body">

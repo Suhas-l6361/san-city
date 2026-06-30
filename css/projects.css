@@ -518,6 +518,53 @@
   overflow: hidden;
   background: #eef4f9;
   border-right: 1px solid var(--border);
+  position: relative;
+}
+.project-modal__map-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(0deg, rgba(238, 244, 249, 0.98) 0%, rgba(238, 244, 249, 0.88) 70%, transparent 100%);
+  pointer-events: none;
+}
+.project-modal__map-nav > * {
+  pointer-events: auto;
+}
+.project-modal__map-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+  box-shadow: 0 4px 14px rgba(12, 74, 110, 0.2);
+}
+.project-modal__map-btn:hover:not(:disabled) {
+  background: var(--green-mid);
+  transform: translateY(-1px);
+}
+.project-modal__map-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.project-modal__map-counter {
+  min-width: 52px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--green);
 }
 .project-modal__img-frame {
   flex: 1;
@@ -526,14 +573,41 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: block;
-  padding: clamp(48px, 5vw, 56px) clamp(14px, 2vw, 20px) clamp(14px, 2vw, 20px);
+  padding: clamp(48px, 5vw, 56px) clamp(14px, 2vw, 20px) clamp(56px, 6vw, 64px);
   text-align: center;
 }
 .project-modal__img-frame.is-empty {
   background: #eef2f6;
 }
-.project-modal__img-frame.is-empty img {
-  display: none;
+.project-modal__img-stage {
+  position: relative;
+  width: 100%;
+  min-height: 180px;
+}
+.project-modal__img-frame.is-empty img,
+.project-modal__img-frame img.is-hidden {
+  display: none !important;
+}
+.project-modal__img-empty[hidden] {
+  display: none !important;
+}
+.project-modal__img-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  background: #eef2f6;
+}
+.project-modal__img-empty i {
+  font-size: 2rem;
+  color: #b8c5d0;
 }
 .project-modal__img-frame img {
   display: inline-block;
@@ -866,8 +940,12 @@
   }
   .project-modal__img-frame {
     height: 100%;
-    padding: 44px 10px 10px;
+    padding: 44px 10px 52px;
     min-height: 180px;
+  }
+  .project-modal__map-btn {
+    width: 36px;
+    height: 36px;
   }
   .project-modal__img-frame img {
     width: 100%;

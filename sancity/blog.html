@@ -108,80 +108,9 @@
     </div>
   </div>
 
-  <div class="blog-cinema" id="blogCinema" role="dialog" aria-modal="true" aria-labelledby="blogCinemaTitle" aria-hidden="true">
-    <div class="blog-cinema__backdrop" id="blogCinemaBackdrop"></div>
-    <div class="blog-cinema__box">
-      <button type="button" class="blog-cinema__close" id="blogCinemaClose" aria-label="Close video">
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-      <div class="blog-cinema__screen">
-        <video id="blogCinemaVideo" controls playsinline></video>
-      </div>
-      <p class="blog-cinema__title" id="blogCinemaTitle"></p>
-    </div>
-  </div>
-
   <div class="main">
 
     <section class="blog-page" aria-label="San City video stories">
-
-      <div class="blog-toolbar reveal">
-        <div class="blog-format-filters" id="blogFormatFilters" role="tablist" aria-label="Filter by format"></div>
-        <div class="blog-cat-filters" id="blogCatFilters" aria-label="Filter by category"></div>
-      </div>
-
-      <div class="blog-theater reveal" id="blogTheater">
-        <nav class="blog-playlist" id="blogPlaylist" aria-label="Video playlist"></nav>
-        <div class="blog-theater__stage">
-          <div class="blog-screen blog-screen--landscape" id="blogScreen">
-            <video id="blogPlayer" playsinline preload="metadata">
-              <source id="blogPlayerSource" src="" type="video/mp4" />
-            </video>
-            <div class="blog-player-error" id="blogPlayerError" hidden>
-              <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
-              <p>Video file not found. Add the file to <strong>Frontend/videos/</strong> or update <strong>manifest.json</strong>.</p>
-              <code id="blogPlayerErrorPath"></code>
-            </div>
-            <button type="button" class="blog-screen__hit" id="blogPlayerHit" aria-label="Play or pause video"></button>
-            <div class="blog-screen__bar" id="blogPlayerBar">
-              <button type="button" class="blog-screen__ctrl" id="blogPlayerPlayBtn" aria-label="Play or pause">
-                <i class="fa-solid fa-play" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="blog-screen__ctrl" id="blogPlayerMuteBtn" aria-label="Unmute">
-                <i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>
-              </button>
-              <input type="range" class="blog-screen__seek" id="blogPlayerSeek" min="0" max="100" value="0" step="0.1" aria-label="Seek video" />
-              <span class="blog-screen__time" id="blogPlayerTime" aria-live="off">0:00 / 0:00</span>
-              <button type="button" class="blog-screen__ctrl blog-screen__ctrl--expand" id="blogExpandBtn" aria-label="Fullscreen video">
-                <i class="fa-solid fa-expand" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-          <div class="blog-theater__meta">
-            <span class="blog-theater__cat" id="blogPlayerCat"></span>
-            <h2 id="blogPlayerTitle"></h2>
-            <p id="blogPlayerDesc"></p>
-            <div class="blog-theater__nav">
-              <button type="button" id="blogPlayerPrev" aria-label="Previous video">
-                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-                <span>Prev</span>
-              </button>
-              <button type="button" id="blogPlayerNext" aria-label="Next video">
-                <span>Next</span>
-                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section class="blog-section reveal" id="blogReelsSection" aria-label="Portrait videos">
-        <div class="blog-section__head">
-          <h2>Reels &amp; Shorts</h2>
-          <p>Vertical stories — mobile-first moments</p>
-        </div>
-        <div class="blog-reels" id="blogReels"></div>
-      </section>
 
       <section class="blog-section blog-projects reveal" id="blogProjectsSection" aria-label="San City project videos on YouTube">
         <div class="blog-section__head">
@@ -232,6 +161,14 @@
             <div class="proj-showcase__strip" id="blogProjectsStrip" role="list" aria-label="Project video gallery"></div>
           </div>
         </div>
+      </section>
+
+      <section class="blog-section reveal" id="blogReelsSection" aria-label="Portrait videos">
+        <div class="blog-section__head">
+          <h2>Reels &amp; Shorts</h2>
+          <p>Vertical stories — mobile-first moments</p>
+        </div>
+        <div class="blog-reels" id="blogReels"></div>
       </section>
 
     </section>

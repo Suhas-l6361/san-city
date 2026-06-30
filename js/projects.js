@@ -127,7 +127,6 @@
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.reraApplied,
       cardImage: '../images/VC Gallexy Logo.png',
-      mapImage: '../images/vc galaxy map.jpg',
     },
     {
       name: 'San City Bhoomi',
@@ -148,7 +147,6 @@
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/bluebell.png',
-      mapImage: '../images/blue bell map.png',
     },
     {
       name: 'San City Comfort',
@@ -159,7 +157,6 @@
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/comfort.png',
-      mapImage: '../images/comfort map.png',
     },
     {
       name: 'San City Diamond',
@@ -220,6 +217,15 @@
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/sunflower.png',
+    },
+    {
+      name: 'San City Wapour',
+      status: 'ongoing',
+      city: 'Karnataka',
+      region: 'Karnataka',
+      location: 'Karnataka',
+      size: 'Details coming soon',
+      highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Elegance',
@@ -294,15 +300,6 @@
       highlights: HIGHLIGHTS.ekatha,
     },
     {
-      name: 'San City Wapour',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
-      size: 'Details coming soon',
-      highlights: HIGHLIGHTS.standard,
-    },
-    {
       name: 'San City Violet',
       status: 'ongoing',
       city: 'Karnataka',
@@ -329,16 +326,128 @@
   }
 
   function cardImage(project) {
-    if (project.cardImage) return project.cardImage;
-    if (project.imageSlot) return `../images/p${project.imageSlot}.jpg`;
+    if (project.cardImage) return encodeImagePath(project.cardImage);
+    if (project.imageSlot) return encodeImagePath(`../images/p${project.imageSlot}.jpg`);
     return null;
   }
 
+  const MAP_PREFIX_BY_PROJECT = {
+    'San City Wapour': 'Vapour',
+    'San City Violet': 'Voilet',
+    'San City Elegance': 'Elegance',
+    'San City Fortune': 'Fortune',
+    'San City Green': 'Green',
+    'San City Nature': 'Nature',
+    'San City Pride': 'Pride',
+    'San City Silver Shine': 'Silver',
+    'San City MCC': 'MCC',
+    'San City White Lotus': 'White Lotus',
+    'San City Bhoomi': 'Bhoomi',
+    'San City Blue Bell': 'Blue Bell',
+    'San City Comfort': 'comfort',
+    'San City Vc Gallexy': 'vc galaxy',
+  };
+
+  const MAP1_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
+  const MAP2_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
+
+  function encodeImagePath(path) {
+    if (!path) return path;
+    return String(path).replace(/ /g, '%20');
+  }
+
+  function mapFilePath(prefix, slot, ext) {
+    const label = slot === 2 ? ' map2' : ' map';
+    return encodeImagePath(`../images/${prefix}${label}${ext}`);
+  }
+
+  function getMapCandidateGroups(project) {
+    if (project.mapImages && project.mapImages.length) {
+      return project.mapImages.map((path) => [encodeImagePath(path)]);
+    }
+
+    const prefix = project.mapPrefix || MAP_PREFIX_BY_PROJECT[project.name];
+    if (prefix) {
+      return [
+        MAP1_EXTENSIONS.map((ext) => mapFilePath(prefix, 1, ext)),
+        MAP2_EXTENSIONS.map((ext) => mapFilePath(prefix, 2, ext)),
+      ];
+    }
+
+    const legacy = project.mapImage || project.detailImage;
+    if (legacy) return [[encodeImagePath(legacy)]];
+
+    if (project.imageSlot) {
+      return [[encodeImagePath(`../images/pp${project.imageSlot}.jpg`)]];
+    }
+
+    if (project.cardImage) return [[encodeImagePath(project.cardImage)]];
+
+    return [];
+  }
+
+  function probeImageUrl(src) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = src;
+    });
+  }
+
+  async function resolveMapImages(project) {
+    const groups = getMapCandidateGroups(project);
+    const resolved = [];
+
+    for (const candidates of groups) {
+      let found = null;
+      for (const src of candidates) {
+        if (await probeImageUrl(src)) {
+          found = src;
+          break;
+        }
+      }
+      if (found) {
+        resolved.push(found);
+      } else {
+        break;
+      }
+    }
+
+    return resolved;
+  }
+
+  function projectHasLayoutMaps(project) {
+    return !!(
+      (project.mapImages && project.mapImages.length) ||
+      project.mapImage ||
+      project.detailImage ||
+      project.mapPrefix ||
+      MAP_PREFIX_BY_PROJECT[project.name]
+    );
+  }
+
+  function detailImages(project) {
+    let images = [];
+    if (project.mapImages && project.mapImages.length) {
+      images = project.mapImages.filter(Boolean);
+    } else {
+      const prefix = project.mapPrefix || MAP_PREFIX_BY_PROJECT[project.name];
+      if (prefix) {
+        images = [mapFilePath(prefix, 1, '.png'), mapFilePath(prefix, 2, '.jpg')];
+      } else {
+        const single = project.mapImage || project.detailImage;
+        if (single) images = [single];
+        else if (project.imageSlot) images = [`../images/pp${project.imageSlot}.jpg`];
+        else if (project.cardImage) images = [project.cardImage];
+      }
+    }
+    return images.map(encodeImagePath);
+  }
+
   function detailImage(project) {
-    if (project.mapImage || project.detailImage) return project.mapImage || project.detailImage;
-    if (project.imageSlot) return `../images/pp${project.imageSlot}.jpg`;
-    if (project.cardImage) return project.cardImage;
-    return null;
+    const images = detailImages(project);
+    return images.length ? images[0] : null;
   }
 
   function projectSlug(name) {
@@ -369,6 +478,11 @@
   const prevBtn = document.getElementById('projectModalPrev');
   const nextBtn = document.getElementById('projectModalNext');
   const imgEl = document.getElementById('projectModalImg');
+  const imgEmptyEl = document.getElementById('projectModalImgEmpty');
+  const mapNavEl = document.getElementById('projectModalMapNav');
+  const mapPrevBtn = document.getElementById('projectModalMapPrev');
+  const mapNextBtn = document.getElementById('projectModalMapNext');
+  const mapCounterEl = document.getElementById('projectModalMapCounter');
   const counterEl = document.getElementById('projectModalCounter');
   const eyebrowEl = document.getElementById('projectModalEyebrow');
   const statusEl = document.getElementById('projectModalStatus');
@@ -378,6 +492,10 @@
   const tagsEl = document.getElementById('projectModalTags');
 
   let currentIndex = 0;
+  let modalMapIndex = 0;
+  let modalImages = [];
+  let modalRenderId = 0;
+  let modalImageLoadId = 0;
   let activeStatus = 'all';
   let activeCity = 'all';
 
@@ -575,28 +693,102 @@
     counterEl.textContent = `${padNum(pos + 1)} / ${padNum(visible.length)}`;
   }
 
+  function setModalImageEmpty(show, variant) {
+    const imgFrame = modal.querySelector('.project-modal__img-frame');
+    if (imgEmptyEl) {
+      const text =
+        variant === 'missing-file'
+          ? 'Map image not found. Check the file name in Frontend/images/.'
+          : 'No image available for this project yet.';
+      const icon = imgEmptyEl.querySelector('i');
+      imgEmptyEl.textContent = '';
+      if (icon) imgEmptyEl.appendChild(icon);
+      imgEmptyEl.append(document.createTextNode(text));
+    }
+    if (show) {
+      imgEl.removeAttribute('src');
+      imgEl.alt = '';
+      imgEl.classList.add('is-hidden');
+      imgFrame?.classList.add('is-empty');
+      if (imgEmptyEl) imgEmptyEl.hidden = false;
+    } else {
+      imgEl.classList.remove('is-hidden');
+      imgFrame?.classList.remove('is-empty');
+      if (imgEmptyEl) imgEmptyEl.hidden = true;
+    }
+  }
+
+  function loadModalImage(src) {
+    const loadId = ++modalImageLoadId;
+
+    return new Promise((resolve) => {
+      if (!src) {
+        resolve(false);
+        return;
+      }
+
+      const probe = new Image();
+      probe.onload = () => {
+        if (loadId !== modalImageLoadId) return;
+        imgEl.src = src;
+        imgEl.classList.remove('is-hidden');
+        resolve(true);
+      };
+      probe.onerror = () => {
+        if (loadId !== modalImageLoadId) return;
+        resolve(false);
+      };
+      probe.src = src;
+    });
+  }
+
+  function updateModalImageView(project) {
+    const src = modalImages[modalMapIndex];
+    const hasMaps = projectHasLayoutMaps(project);
+
+    if (!src) {
+      setModalImageEmpty(true, 'no-image');
+      if (mapNavEl) mapNavEl.hidden = true;
+      return;
+    }
+
+    loadModalImage(src).then((ok) => {
+      if (ok) {
+        setModalImageEmpty(false);
+        if (hasMaps && modalImages.length > 1) {
+          imgEl.alt = `${project.name} — site map ${modalMapIndex + 1} of ${modalImages.length}`;
+        } else if (hasMaps) {
+          imgEl.alt = `${project.name} — site map`;
+        } else if (project.cardImage) {
+          imgEl.alt = `${project.name} — project view`;
+        } else {
+          imgEl.alt = `${project.name} — project brochure`;
+        }
+      } else {
+        setModalImageEmpty(true, 'missing-file');
+      }
+
+      const showMapNav = modalImages.length > 1;
+      if (mapNavEl) mapNavEl.hidden = !showMapNav;
+      if (showMapNav && mapCounterEl) {
+        mapCounterEl.textContent = `${padNum(modalMapIndex + 1)} / ${padNum(modalImages.length)}`;
+      }
+      if (mapPrevBtn) mapPrevBtn.disabled = modalMapIndex <= 0;
+      if (mapNextBtn) mapNextBtn.disabled = modalMapIndex >= modalImages.length - 1;
+    });
+  }
+
   function renderModal(index) {
     const project = PROJECTS[index];
     if (!project) return;
 
+    const renderId = ++modalRenderId;
     currentIndex = index;
-    const detailSrc = detailImage(project);
-    const imgFrame = modal.querySelector('.project-modal__img-frame');
-    if (detailSrc) {
-      imgEl.src = detailSrc;
-      imgEl.hidden = false;
-      imgFrame?.classList.remove('is-empty');
-      imgEl.alt = project.mapImage
-        ? `${project.name} — site map`
-        : project.cardImage
-          ? `${project.name} — project view`
-          : `${project.name} — project brochure`;
-    } else {
-      imgEl.removeAttribute('src');
-      imgEl.alt = '';
-      imgEl.hidden = true;
-      imgFrame?.classList.add('is-empty');
-    }
+    modalMapIndex = 0;
+    modalImages = [];
+    setModalImageEmpty(true, 'no-image');
+    if (mapNavEl) mapNavEl.hidden = true;
+
     eyebrowEl.textContent = `Project ${padNum(index + 1)} · ${project.city}`;
     statusEl.textContent = STATUS_LABELS[project.status];
     statusEl.className = `project-modal__status project-modal__status--${project.status}`;
@@ -610,6 +802,13 @@
     updateNavState();
     const frame = modal.querySelector('.project-modal__img-frame');
     if (frame) frame.scrollTop = 0;
+
+    resolveMapImages(project).then((resolved) => {
+      if (renderId !== modalRenderId) return;
+      modalImages = resolved;
+      modalMapIndex = 0;
+      updateModalImageView(project);
+    });
   }
 
   function openModal(index) {
@@ -640,10 +839,28 @@
     if (pos < visible.length - 1) renderModal(visible[pos + 1]);
   }
 
+  function goMapPrev() {
+    if (modalMapIndex <= 0) return;
+    modalMapIndex -= 1;
+    updateModalImageView(PROJECTS[currentIndex]);
+    const frame = modal.querySelector('.project-modal__img-frame');
+    if (frame) frame.scrollTop = 0;
+  }
+
+  function goMapNext() {
+    if (modalMapIndex >= modalImages.length - 1) return;
+    modalMapIndex += 1;
+    updateModalImageView(PROJECTS[currentIndex]);
+    const frame = modal.querySelector('.project-modal__img-frame');
+    if (frame) frame.scrollTop = 0;
+  }
+
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
   prevBtn.addEventListener('click', goPrev);
   nextBtn.addEventListener('click', goNext);
+  if (mapPrevBtn) mapPrevBtn.addEventListener('click', goMapPrev);
+  if (mapNextBtn) mapNextBtn.addEventListener('click', goMapNext);
 
   document.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('open')) return;

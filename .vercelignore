@@ -1,0 +1,8 @@
+.git
+.gitignore
+*.bat
+google-apps-script
+scripts/check-assets.mjs
+node_modules
+.env
+.env.*

@@ -520,9 +520,10 @@
   margin-top: 4px;
 }
 
-/* Our Projects — cinema showcase (distinct from theater playlist) */
+/* Our Projects — cinema showcase */
 .blog-projects {
   position: relative;
+  margin-top: 0;
 }
 .proj-showcase {
   position: relative;

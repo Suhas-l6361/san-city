@@ -1,63 +1,5 @@
-/* San City — Blog / video studio */
+/* San City — Blog: project films + reels */
 (function () {
-  const FALLBACK_VIDEOS = [
-    {
-      file: 'A.mp4',
-      title: 'San City — Brand Film',
-      category: 'brand',
-      desc: "Discover San City's vision, townships, and legacy across Karnataka.",
-    },
-    {
-      file: 'MR.mp4',
-      title: 'Media & Recognition',
-      category: 'media',
-      desc: 'Highlights from awards, press coverage, and industry honors.',
-    },
-    {
-      file: 't1.mp4',
-      title: 'San City Stories — Part 1',
-      category: 'events',
-      desc: 'Moments from site visits, events, and life at San City townships.',
-      orientation: 'landscape',
-    },
-    {
-      file: 't2.mp4',
-      title: 'San City Stories — Part 2',
-      category: 'events',
-      desc: 'More glimpses of our communities, customers, and celebrations.',
-      orientation: 'landscape',
-    },
-    {
-      file: 't3.mp4',
-      title: 'San City Stories — Part 3',
-      category: 'testimonials',
-      desc: 'Experiences and voices from the San City family.',
-      orientation: 'landscape',
-    },
-    {
-      file: 't4.mp4',
-      title: 'San City Stories — Part 4',
-      category: 'testimonials',
-      desc: 'Closing highlights from our townships and customer journeys.',
-      orientation: 'landscape',
-    },
-  ];
-
-  const CATEGORIES = [
-    { id: 'all', label: 'All Stories' },
-    { id: 'brand', label: 'Brand' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'events', label: 'Events' },
-    { id: 'testimonials', label: 'Testimonials' },
-    { id: 'media', label: 'Media' },
-  ];
-
-  const FORMATS = [
-    { id: 'all', label: 'All Formats' },
-    { id: 'landscape', label: 'Landscape' },
-    { id: 'portrait', label: 'Portrait' },
-  ];
-
   const YOUTUBE_SHORTS = [
     {
       id: 'Q8kikdj9cNo',
@@ -157,74 +99,10 @@
     },
   ];
 
-  const theaterEl = document.getElementById('blogTheater');
-  const playerEl = document.getElementById('blogPlayer');
-  const playerSourceEl = document.getElementById('blogPlayerSource');
-  const playerErrorEl = document.getElementById('blogPlayerError');
-  const playerErrorPathEl = document.getElementById('blogPlayerErrorPath');
-  const screenEl = document.getElementById('blogScreen');
-  const titleEl = document.getElementById('blogPlayerTitle');
-  const descEl = document.getElementById('blogPlayerDesc');
-  const catEl = document.getElementById('blogPlayerCat');
-  const playlistEl = document.getElementById('blogPlaylist');
   const reelsEl = document.getElementById('blogReels');
-  const formatFiltersEl = document.getElementById('blogFormatFilters');
-  const catFiltersEl = document.getElementById('blogCatFilters');
-  const cinema = document.getElementById('blogCinema');
-  const cinemaVideo = document.getElementById('blogCinemaVideo');
-  const cinemaClose = document.getElementById('blogCinemaClose');
-  const cinemaBackdrop = document.getElementById('blogCinemaBackdrop');
-  const cinemaTitle = document.getElementById('blogCinemaTitle');
-  const playerHitEl = document.getElementById('blogPlayerHit');
-  const playerBarEl = document.getElementById('blogPlayerBar');
-  const playerPlayBtn = document.getElementById('blogPlayerPlayBtn');
-  const playerMuteBtn = document.getElementById('blogPlayerMuteBtn');
-  const playerSeekEl = document.getElementById('blogPlayerSeek');
-  const playerTimeEl = document.getElementById('blogPlayerTime');
-
-  if (!theaterEl || !playerEl || !playlistEl) return;
-
-  let activeFormat = 'all';
-  let activeCategory = 'all';
-  let currentIndex = 0;
-  let meta = [];
 
   function padNum(n) {
     return String(n).padStart(2, '0');
-  }
-
-  function videoSrc(i) {
-    return meta[i]?.src || '';
-  }
-
-  function filePath(i) {
-    return meta[i] ? `Frontend/videos/${meta[i].file}` : '';
-  }
-
-  function getOrientation(i) {
-    return meta[i]?.orientation || 'landscape';
-  }
-
-  function matchesFilter(i) {
-    const v = meta[i];
-    const fmt = getOrientation(i);
-    if (activeFormat !== 'all' && fmt !== activeFormat) return false;
-    if (activeCategory !== 'all' && v.category !== activeCategory) return false;
-    return true;
-  }
-
-  function getFilteredIndices() {
-    return meta.map((_, i) => i).filter(matchesFilter);
-  }
-
-  function getTheaterIndices(filtered = getFilteredIndices()) {
-    return filtered.filter((i) => getOrientation(i) === 'landscape');
-  }
-
-  function shouldShowReels() {
-    if (activeFormat === 'landscape') return false;
-    if (activeCategory !== 'all' && activeCategory !== 'testimonials') return false;
-    return true;
   }
 
   function buildYoutubeEmbed(id, autoplay) {
@@ -253,17 +131,6 @@
     return `https://www.youtube.com/shorts/${encodeURIComponent(id)}`;
   }
 
-  function ensureTheaterIndex(filtered = getFilteredIndices()) {
-    const theaterIndices = getTheaterIndices(filtered);
-    if (theaterIndices.includes(currentIndex)) return currentIndex;
-    return theaterIndices[0] ?? currentIndex;
-  }
-
-  function syncTheaterVisibility(filtered = getFilteredIndices()) {
-    if (!theaterEl) return;
-    theaterEl.hidden = getTheaterIndices(filtered).length === 0;
-  }
-
   function observeReveal(root) {
     if (!root) return;
     root.querySelectorAll('.reveal').forEach((el) => {
@@ -277,99 +144,6 @@
       );
       obs.observe(el);
     });
-  }
-
-  function formatTime(sec) {
-    if (!Number.isFinite(sec) || sec < 0) return '0:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${String(s).padStart(2, '0')}`;
-  }
-
-  function syncTheaterControls() {
-    if (!playerPlayBtn || !playerMuteBtn) return;
-    const playIcon = playerPlayBtn.querySelector('i');
-    if (playIcon) {
-      playIcon.className = playerEl.paused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
-    }
-    const muteIcon = playerMuteBtn.querySelector('i');
-    if (muteIcon) {
-      muteIcon.className = playerEl.muted || playerEl.volume === 0
-        ? 'fa-solid fa-volume-xmark'
-        : 'fa-solid fa-volume-high';
-    }
-    playerMuteBtn.setAttribute('aria-label', playerEl.muted || playerEl.volume === 0 ? 'Unmute' : 'Mute');
-    playerPlayBtn.setAttribute('aria-label', playerEl.paused ? 'Play' : 'Pause');
-  }
-
-  function syncTheaterProgress() {
-    if (!playerSeekEl || !playerTimeEl) return;
-    const duration = playerEl.duration;
-    const current = playerEl.currentTime;
-    if (Number.isFinite(duration) && duration > 0) {
-      playerSeekEl.value = String((current / duration) * 100);
-      playerTimeEl.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
-    } else {
-      playerSeekEl.value = '0';
-      playerTimeEl.textContent = `${formatTime(current)} / 0:00`;
-    }
-  }
-
-  function toggleTheaterPlay() {
-    if (playerEl.paused) {
-      playerEl.play().catch(() => {
-        playerEl.muted = true;
-        playerEl.play().catch(() => {});
-      });
-    } else {
-      playerEl.pause();
-    }
-    syncTheaterControls();
-  }
-
-  function wireTheaterControls() {
-    playerHitEl?.addEventListener('click', (e) => {
-      if (e.target.closest('.blog-screen__bar')) return;
-      toggleTheaterPlay();
-    });
-
-    playerPlayBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleTheaterPlay();
-    });
-
-    playerMuteBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      playerEl.muted = !playerEl.muted;
-      if (!playerEl.muted && playerEl.volume === 0) playerEl.volume = 1;
-      syncTheaterControls();
-    });
-
-    playerSeekEl?.addEventListener('input', () => {
-      const duration = playerEl.duration;
-      if (!Number.isFinite(duration) || duration <= 0) return;
-      playerEl.currentTime = (Number(playerSeekEl.value) / 100) * duration;
-      syncTheaterProgress();
-    });
-
-    ['play', 'pause', 'volumechange', 'loadedmetadata'].forEach((evt) => {
-      playerEl.addEventListener(evt, syncTheaterControls);
-    });
-    ['timeupdate', 'loadedmetadata', 'durationchange'].forEach((evt) => {
-      playerEl.addEventListener(evt, syncTheaterProgress);
-    });
-
-    screenEl?.addEventListener('mouseenter', () => {
-      screenEl.classList.add('is-controls-visible');
-    });
-    screenEl?.addEventListener('mouseleave', () => {
-      if (!playerEl.paused) screenEl.classList.remove('is-controls-visible');
-    });
-    screenEl?.addEventListener('touchstart', () => {
-      screenEl.classList.add('is-controls-visible');
-    }, { passive: true });
-    playerEl.addEventListener('play', () => screenEl?.classList.add('is-controls-visible'));
-    playerEl.addEventListener('pause', () => screenEl?.classList.add('is-controls-visible'));
   }
 
   let activeReelPhone = null;
@@ -403,7 +177,6 @@
     }
 
     stopAllInlineReels();
-    playerEl.pause();
 
     const thumb = phoneEl.querySelector('.blog-reel__thumb');
     const embedWrap = phoneEl.querySelector('.blog-reel__embed');
@@ -424,173 +197,8 @@
     `;
   }
 
-  function showPlayerError(index) {
-    playerEl.classList.add('is-error');
-    if (playerErrorEl) playerErrorEl.hidden = false;
-    if (playerErrorPathEl) playerErrorPathEl.textContent = filePath(index);
-  }
-
-  function hidePlayerError() {
-    playerEl.classList.remove('is-error');
-    if (playerErrorEl) playerErrorEl.hidden = true;
-  }
-
-  async function loadManifest() {
-    try {
-      const res = await fetch('../videos/manifest.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('manifest missing');
-      const data = await res.json();
-      if (!Array.isArray(data) || !data.length) throw new Error('manifest empty');
-      return data;
-    } catch {
-      return FALLBACK_VIDEOS;
-    }
-  }
-
-  function buildMeta(list) {
-    meta = list.map((v) => ({
-      ...v,
-      src: `../videos/${v.file.replace(/\\/g, '/').split('/').map(encodeURIComponent).join('/')}`,
-      orientation: v.orientation || null,
-    }));
-  }
-
-  function isTheaterLocalFile(file) {
-    return /^t[1-4]\.mp4$/i.test(file || '');
-  }
-
-  function guessOrientation(file) {
-    if (isTheaterLocalFile(file)) return 'landscape';
-    if (/vertical|portrait|reel|short/i.test(file)) return 'portrait';
-    if (/horizontal|landscape|wide/i.test(file)) return 'landscape';
-    return 'landscape';
-  }
-
-  function probeOrientations() {
-    return Promise.all(
-      meta.map(
-        (v, i) =>
-          new Promise((resolve) => {
-            if (v.orientation) {
-              resolve();
-              return;
-            }
-            const probe = document.createElement('video');
-            probe.preload = 'metadata';
-            probe.muted = true;
-            probe.playsInline = true;
-            const done = (orientation) => {
-              meta[i].orientation = orientation;
-              resolve();
-            };
-            probe.onloadedmetadata = () => {
-              if (isTheaterLocalFile(v.file)) {
-                done('landscape');
-                return;
-              }
-              done(probe.videoWidth >= probe.videoHeight ? 'landscape' : 'portrait');
-            };
-            probe.onerror = () => done(guessOrientation(v.file));
-            probe.src = v.src;
-          })
-      )
-    );
-  }
-
-  function renderFilters() {
-    formatFiltersEl?.closest('.blog-toolbar')?.setAttribute('hidden', '');
-  }
-
-  function setScreenOrientation(i) {
-    const fmt = getOrientation(i);
-    screenEl.classList.toggle('blog-screen--portrait', fmt === 'portrait');
-    screenEl.classList.toggle('blog-screen--landscape', fmt === 'landscape');
-  }
-
-  function setPlayerSource(index) {
-    const src = videoSrc(index);
-    hidePlayerError();
-    playerEl.pause();
-    playerEl.src = src;
-    if (playerSourceEl) playerSourceEl.src = src;
-    playerEl.load();
-  }
-
-  function playInTheater(i, scrollTo) {
-    if (getOrientation(i) === 'portrait') return;
-
-    stopAllInlineReels();
-    const v = meta[i];
-    setScreenOrientation(i);
-    setPlayerSource(i);
-
-    titleEl.textContent = v.title;
-    descEl.textContent = v.desc;
-    const catLabel = CATEGORIES.find((c) => c.id === v.category);
-    catEl.textContent = catLabel ? catLabel.label : v.category;
-    catEl.dataset.format = getOrientation(i);
-
-    currentIndex = i;
-    playlistEl.querySelectorAll('.blog-playlist__item').forEach((btn) => {
-      btn.classList.toggle('is-active', Number(btn.dataset.index) === i);
-    });
-
-    playerEl.onloadeddata = () => {
-      playerEl.onloadeddata = null;
-      hidePlayerError();
-    };
-
-    playerEl.onerror = () => {
-      showPlayerError(i);
-    };
-
-    if (scrollTo && window.matchMedia('(max-width: 900px)').matches) {
-      theaterEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  function thumbSrc(i) {
-    return videoSrc(i);
-  }
-
-  function renderPlaylist(filtered) {
-    const theaterIndices = getTheaterIndices(filtered);
-    playlistEl.innerHTML = theaterIndices
-      .map((i, pos) => {
-        const v = meta[i];
-        const active = i === currentIndex ? ' is-active' : '';
-        return `
-          <button type="button" class="blog-playlist__item${active}" data-index="${i}">
-            <span class="blog-playlist__thumb blog-playlist__thumb--landscape">
-              <video muted playsinline preload="metadata" src="${thumbSrc(i)}" aria-hidden="true"></video>
-              <span class="blog-playlist__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span>
-            </span>
-            <span class="blog-playlist__meta">
-              <span class="blog-playlist__num">${padNum(pos + 1)}</span>
-              <strong>${v.title}</strong>
-              <em>Landscape</em>
-            </span>
-          </button>
-        `;
-      })
-      .join('');
-
-    playlistEl.onclick = (e) => {
-      const btn = e.target.closest('.blog-playlist__item');
-      if (btn) playInTheater(Number(btn.dataset.index), true);
-    };
-  }
-
   function renderReels() {
     if (!reelsEl) return;
-    const section = document.getElementById('blogReelsSection');
-    const show = shouldShowReels();
-    if (section) section.hidden = !show;
-    if (!show) {
-      stopAllInlineReels();
-      reelsEl.innerHTML = '';
-      return;
-    }
 
     reelsEl.innerHTML = YOUTUBE_SHORTS.map((short, i) => `
       <article class="blog-reel reveal" data-short-index="${i}">
@@ -622,78 +230,6 @@
       playYtShort(Number(reel.dataset.shortIndex), phone);
     };
   }
-
-  function openCinema(i) {
-    stopAllInlineReels();
-    const v = meta[i];
-    const fmt = getOrientation(i);
-    cinema.classList.add('open');
-    cinema.classList.toggle('blog-cinema--portrait', fmt === 'portrait');
-    cinema.classList.toggle('blog-cinema--landscape', fmt === 'landscape');
-    cinema.setAttribute('aria-hidden', 'false');
-    cinemaVideo.src = videoSrc(i);
-    cinemaTitle.textContent = v.title;
-    cinemaVideo.load();
-    cinemaVideo.play().catch(() => {});
-    document.body.style.overflow = 'hidden';
-    playerEl.pause();
-  }
-
-  function closeCinema() {
-    cinema.classList.remove('open', 'blog-cinema--portrait', 'blog-cinema--landscape');
-    cinema.setAttribute('aria-hidden', 'true');
-    cinemaVideo.pause();
-    cinemaVideo.removeAttribute('src');
-    cinemaVideo.load();
-    document.body.style.overflow = '';
-  }
-
-  function rebuild() {
-    const filtered = getFilteredIndices();
-    currentIndex = ensureTheaterIndex(filtered);
-    syncTheaterVisibility(filtered);
-    renderPlaylist(filtered);
-    renderReels();
-    const theaterIndices = getTheaterIndices(filtered);
-    if (theaterIndices.length) playInTheater(currentIndex, false);
-    else playerEl.pause();
-    observeReveal(document.querySelector('.blog-page'));
-  }
-
-  playerEl.addEventListener('error', () => {
-    showPlayerError(currentIndex);
-  });
-
-  document.getElementById('blogExpandBtn')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    openCinema(currentIndex);
-  });
-
-  wireTheaterControls();
-  syncTheaterControls();
-  syncTheaterProgress();
-
-  document.getElementById('blogPlayerPrev')?.addEventListener('click', () => {
-    const theaterIndices = getTheaterIndices();
-    const pos = theaterIndices.indexOf(currentIndex);
-    if (pos > 0) playInTheater(theaterIndices[pos - 1], false);
-  });
-
-  document.getElementById('blogPlayerNext')?.addEventListener('click', () => {
-    const theaterIndices = getTheaterIndices();
-    const pos = theaterIndices.indexOf(currentIndex);
-    if (pos < theaterIndices.length - 1) playInTheater(theaterIndices[pos + 1], false);
-  });
-
-  cinemaClose?.addEventListener('click', closeCinema);
-  cinemaBackdrop?.addEventListener('click', closeCinema);
-
-  document.addEventListener('keydown', (e) => {
-    if (!cinema.classList.contains('open')) return;
-    if (e.key === 'Escape') closeCinema();
-  });
-
-  renderFilters();
 
   function initProjectsSection() {
     const stripEl = document.getElementById('blogProjectsStrip');
@@ -849,11 +385,6 @@
   }
 
   initProjectsSection();
-
-  loadManifest()
-    .then((list) => {
-      buildMeta(list);
-      return probeOrientations();
-    })
-    .then(() => rebuild());
+  renderReels();
+  observeReveal(document.querySelector('.blog-page'));
 })();
