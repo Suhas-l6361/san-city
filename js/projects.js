@@ -20,7 +20,7 @@
     },
     {
       name: 'San City Kaveri',
-      status: 'completed',
+      status: 'ongoing',
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
@@ -70,7 +70,7 @@
     },
     {
       name: 'San City Orchid',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Tumkur',
       region: 'Tumkur',
       location: 'Tumkur District',
@@ -90,7 +90,7 @@
     },
     {
       name: 'San City Gardenia',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
@@ -100,7 +100,7 @@
     },
     {
       name: 'San City Grand',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
@@ -130,7 +130,7 @@
     },
     {
       name: 'San City Bhoomi',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
@@ -140,20 +140,20 @@
     },
     {
       name: 'San City Blue Bell',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/bluebell.png',
     },
     {
       name: 'San City Comfort',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/comfort.png',
@@ -161,84 +161,84 @@
     {
       name: 'San City Diamond',
       status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/sancity diamond.png',
     },
     {
       name: 'San City Disha',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Bangalore',
+      region: 'Bangalore',
+      location: 'Bangalore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/disha.png',
     },
     {
       name: 'San City Lake View',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/lake view.png',
     },
     {
       name: 'San City Prerana',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/prerana.png',
     },
     {
       name: 'San City Sky City',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/skycity.png',
     },
     {
       name: 'San City Sun Flower',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/sunflower.png',
     },
     {
       name: 'San City Wapour',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Elegance',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Fortune',
-      status: 'ongoing',
+      status: 'completed',
       city: 'Karnataka',
       region: 'Karnataka',
       location: 'Karnataka',
@@ -247,73 +247,73 @@
     },
     {
       name: 'San City Green',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Nature',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Pride',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Bangalore',
+      region: 'Bangalore',
+      location: 'Bangalore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Silver Shine',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City Sun Shine',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Ramanagara',
+      region: 'Ramanagara',
+      location: 'Ramanagara District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.ekatha,
     },
     {
       name: 'San City MCC',
       status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      city: 'Chikkaballapur',
+      region: 'Chikkaballapur',
+      location: 'Chikkaballapur District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.ekatha,
     },
     {
       name: 'San City Violet',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
     {
       name: 'San City White Lotus',
-      status: 'ongoing',
-      city: 'Karnataka',
-      region: 'Karnataka',
-      location: 'Karnataka',
+      status: 'completed',
+      city: 'Mysore',
+      region: 'Mysore',
+      location: 'Mysore District',
       size: 'Details coming soon',
       highlights: HIGHLIGHTS.standard,
     },
@@ -325,10 +325,52 @@
     return String(n).padStart(2, '0');
   }
 
-  function cardImage(project) {
+  function hasArchCardImage(project) {
+    return !!(project.cardImage || project.imageSlot);
+  }
+
+  function archCardImage(project) {
     if (project.cardImage) return encodeImagePath(project.cardImage);
     if (project.imageSlot) return encodeImagePath(`../images/p${project.imageSlot}.jpg`);
     return null;
+  }
+
+  function cardImage(project) {
+    return archCardImage(project);
+  }
+
+  function mapCardCandidates(project) {
+    if (hasArchCardImage(project)) return [];
+    if (!projectHasLayoutMaps(project)) return [];
+    const groups = getMapCandidateGroups(project);
+    return groups[0] || [];
+  }
+
+  const cardThumbCache = new Map();
+
+  async function resolveListCardThumb(project, index) {
+    const arch = archCardImage(project);
+    if (arch) return arch;
+    const candidates = mapCardCandidates(project);
+    for (const src of candidates) {
+      if (await probeImageUrl(src)) return src;
+    }
+    return null;
+  }
+
+  async function warmListCardThumbs() {
+    await Promise.all(
+      PROJECTS.map(async (project, index) => {
+        const thumb = await resolveListCardThumb(project, index);
+        if (thumb) cardThumbCache.set(index, thumb);
+      })
+    );
+  }
+
+  function listCardImage(project, index) {
+    const arch = archCardImage(project);
+    if (arch) return arch;
+    return cardThumbCache.get(index) || null;
   }
 
   const MAP_PREFIX_BY_PROJECT = {
@@ -455,7 +497,7 @@
   }
 
   function heroImage(project) {
-    const src = cardImage(project);
+    const src = archCardImage(project);
     if (!src) return null;
     return src.replace(/^\.\.\//, '');
   }
@@ -637,8 +679,10 @@
         .map((tag) => `<span class="proj-row__chip">${tag}</span>`)
         .join('');
 
-      const cardSrc = cardImage(project);
-      const visualClass = cardSrc ? 'proj-row__visual' : 'proj-row__visual proj-row__visual--empty';
+      const cardSrc = listCardImage(project, i);
+      const visualClass = cardSrc
+        ? `proj-row__visual${hasArchCardImage(project) ? '' : ' proj-row__visual--map'}`
+        : 'proj-row__visual proj-row__visual--empty';
       const visualImg = cardSrc
         ? `<img src="${cardSrc}" alt="${project.name}" loading="lazy" width="720" height="440" />`
         : '';
@@ -871,7 +915,7 @@
 
   renderCitySelect();
   renderStatusFilters();
-  renderShowcase();
+  warmListCardThumbs().then(() => renderShowcase());
 
   window.addEventListener('hashchange', focusProjectFromHash);
   if (window.location.hash) {
