@@ -71,15 +71,35 @@ for (const file of diskFiles.filter((f) => SCAN_EXT.has(path.extname(f).toLowerC
   }
 }
 
-// Project slots & maps (from projects.js logic)
+// Project card slots & popup brochures (from projects.js logic)
 for (let i = 1; i <= 12; i += 1) {
   refs.set(norm(path.join(ROOT, 'images', `p${i}.jpg`)), { ref: `images/p${i}.jpg`, from: 'projects.js slots' });
-  refs.set(norm(path.join(ROOT, 'images', `pp${i}.jpg`)), { ref: `images/pp${i}.jpg`, from: 'projects.js slots' });
+}
+
+const popupStems = [
+  'san sity popup', 'new town popup', 'kaveri popup', 'rachana popup', 'wonder wood popup', 'kalapataru popup',
+  'kamal enclave popup', 'orchid popup', 'prakruthi popup', 'gardenia popup', 'grand popup',
+  'gold popup', 'vc galaxy popup', 'bhoomi popup', 'blue bell popup', 'comfort popup',
+  'diamond popup', 'disha popup', 'lave view popup', 'lake view popup', 'prerana popup', 'sky city popup',
+  'sun flower popup', 'nature popup', 'sun shine popup', 'mcc popup',
+];
+for (const stem of popupStems) {
+  const candidates = ['.png', '.jpg', '.jpeg'].map((ext) => path.join(ROOT, 'images', `${stem}${ext}`));
+  const found = candidates.find((p) => existsOnDisk(p));
+  if (!found) {
+    refs.set(norm(candidates[0]), {
+      ref: `images/${stem}.png (or .jpg)`,
+      from: 'projects.js popups',
+    });
+  }
 }
 
 const mapPrefixes = [
+  'New Town', 'Kaveri', 'Rachana', 'Wonder Wood', 'Kalapataru', 'Kamal Enclave', 'Orchid',
+  'Prakruthi', 'Gardenia', 'Grand', 'Gold', 'vc galaxy', 'Bhoomi', 'Blue Bell', 'comfort',
+  'sancity diamond', 'Disha', 'lake view', 'prerana', 'sky city', 'sun flower', 'Sun Shine',
   'Vapour', 'Voilet', 'Elegance', 'Fortune', 'Green', 'Nature', 'Pride', 'Silver',
-  'MCC', 'White Lotus', 'Bhoomi', 'Blue Bell', 'comfort', 'vc galaxy',
+  'MCC', 'White Lotus',
 ];
 const map1Ext = ['.png', '.jpg', '.jpeg'];
 for (const prefix of mapPrefixes) {

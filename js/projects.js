@@ -373,23 +373,95 @@
     return cardThumbCache.get(index) || null;
   }
 
-  const MAP_PREFIX_BY_PROJECT = {
-    'San City Wapour': 'Vapour',
-    'San City Violet': 'Voilet',
-    'San City Elegance': 'Elegance',
-    'San City Fortune': 'Fortune',
-    'San City Green': 'Green',
-    'San City Nature': 'Nature',
-    'San City Pride': 'Pride',
-    'San City Silver Shine': 'Silver',
-    'San City MCC': 'MCC',
-    'San City White Lotus': 'White Lotus',
-    'San City Bhoomi': 'Bhoomi',
-    'San City Blue Bell': 'Blue Bell',
-    'San City Comfort': 'comfort',
-    'San City Vc Gallexy': 'vc galaxy',
+  /** Map file prefix(es) — probes `{prefix} map.png` + `{prefix} map2.jpg` (and ext variants). */
+  const MAP_PREFIX_CANDIDATES_BY_PROJECT = {
+    'San City New Town': ['New Town', 'new town', 'san sity'],
+    'San City Kaveri': ['Kaveri', 'kaveri'],
+    'San City Rachana': ['Rachana', 'rachana'],
+    'Wonder Woods': ['Wonder Wood', 'Wonder Woods', 'wonder wood'],
+    'San City Kalpatharu': ['Kalapataru', 'Kalpatharu', 'kalapataru'],
+    'San City Kamal Enclave': ['Kamal Enclave'],
+    'San City Orchid': ['Orchid'],
+    'San City Prakruthi': ['Prakruthi', 'prakruthi'],
+    'San City Gardenia': ['Gardenia', 'gardenia'],
+    'San City Grand': ['Grand', 'grand'],
+    'San City Gold': ['Gold', 'gold'],
+    'San City Vc Gallexy': ['vc galaxy', 'VC Gallexy', 'Vc Gallexy'],
+    'San City Bhoomi': ['Bhoomi', 'bhoomi'],
+    'San City Blue Bell': ['Blue Bell', 'bluebell'],
+    'San City Comfort': ['comfort', 'Comfort'],
+    'San City Diamond': ['sancity diamond', 'diamond', 'Diamond'],
+    'San City Disha': ['Disha', 'disha', 'Deesha', 'deesha'],
+    'San City Lake View': ['lake view', 'Lake View', 'lakeview'],
+    'San City Prerana': ['prerana', 'Prerana'],
+    'San City Sky City': ['sky city', 'Sky City', 'skycity'],
+    'San City Sun Flower': ['sun flower', 'Sun Flower', 'sunflower'],
+    'San City Wapour': ['Vapour'],
+    'San City Violet': ['Voilet'],
+    'San City Elegance': ['Elegance'],
+    'San City Fortune': ['Fortune'],
+    'San City Green': ['Green'],
+    'San City Nature': ['Nature'],
+    'San City Pride': ['Pride'],
+    'San City Silver Shine': ['Silver'],
+    'San City Sun Shine': ['Sun Shine', 'sun shine', 'sunshine'],
+    'San City MCC': ['MCC', 'mcc'],
+    'San City White Lotus': ['White Lotus'],
   };
 
+  function getMapPrefixCandidates(project) {
+    if (project.mapPrefix) return [project.mapPrefix];
+    return MAP_PREFIX_CANDIDATES_BY_PROJECT[project.name] || [];
+  }
+
+  function buildMapSlotGroups(prefix) {
+    return [
+      MAP1_EXTENSIONS.map((ext) => mapFilePath(prefix, 1, ext)),
+      MAP2_EXTENSIONS.map((ext) => mapFilePath(prefix, 2, ext)),
+    ];
+  }
+
+  /** Modal shows map carousel only for these 8; all others use popup brochure images. */
+  const MAP_ONLY_MODAL_PROJECTS = new Set([
+    'San City Wapour',
+    'San City Elegance',
+    'San City Fortune',
+    'San City Green',
+    'San City Pride',
+    'San City Silver Shine',
+    'San City Violet',
+    'San City White Lotus',
+  ]);
+
+  /** Filename stems (without extension) under Frontend/images/ — e.g. "kaveri popup.png". */
+  const POPUP_STEMS_BY_PROJECT = {
+    'San City New Town': ['san sity popup', 'new town popup', 'newtown popup'],
+    'San City Kaveri': ['kaveri popup'],
+    'San City Rachana': ['rachana popup'],
+    'Wonder Woods': ['wonder wood popup', 'wonder woods popup'],
+    'San City Kalpatharu': ['kalapataru popup', 'kalpatharu popup'],
+    'San City Kamal Enclave': ['kamal enclave popup', 'kamal popup'],
+    'San City Orchid': ['orchid popup', 'san city orchid popup'],
+    'San City Prakruthi': ['prakruthi popup'],
+    'San City Gardenia': ['gardenia popup'],
+    'San City Grand': ['grand popup'],
+    'San City Gold': ['gold popup'],
+    'San City Vc Gallexy': ['vc galaxy popup', 'vc gallexy popup', 'VC Gallexy popup'],
+    'San City Bhoomi': ['bhoomi popup'],
+    'San City Blue Bell': ['blue bell popup'],
+    'San City Comfort': ['comfort popup'],
+    'San City Diamond': ['diamond popup', 'sancity diamond popup'],
+    'San City Disha': ['disha popup', 'deesha popup'],
+    'San City Lake View': ['lave view popup', 'lake view popup', 'lakeview popup'],
+    'San City Prerana': ['prerana popup'],
+    'San City Sky City': ['sky city popup', 'skycity popup'],
+    'San City Sun Flower': ['sun flower popup', 'sunflower popup'],
+    'San City Nature': ['nature popup'],
+    'San City Sun Shine': ['sun shine popup', 'sunshine popup'],
+    'San City MCC': ['mcc popup', 'MCC popup'],
+  };
+
+  const POPUP_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
   const MAP1_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
   const MAP2_EXTENSIONS = ['.jpg', '.jpeg', '.png'];
 
@@ -408,24 +480,79 @@
       return project.mapImages.map((path) => [encodeImagePath(path)]);
     }
 
-    const prefix = project.mapPrefix || MAP_PREFIX_BY_PROJECT[project.name];
-    if (prefix) {
-      return [
-        MAP1_EXTENSIONS.map((ext) => mapFilePath(prefix, 1, ext)),
-        MAP2_EXTENSIONS.map((ext) => mapFilePath(prefix, 2, ext)),
-      ];
-    }
+    const prefixes = getMapPrefixCandidates(project);
+    if (prefixes.length) return buildMapSlotGroups(prefixes[0]);
 
     const legacy = project.mapImage || project.detailImage;
     if (legacy) return [[encodeImagePath(legacy)]];
 
-    if (project.imageSlot) {
-      return [[encodeImagePath(`../images/pp${project.imageSlot}.jpg`)]];
-    }
-
     if (project.cardImage) return [[encodeImagePath(project.cardImage)]];
 
     return [];
+  }
+
+  async function resolveMapSlotGroups(groups) {
+    const resolved = [];
+    for (const candidates of groups) {
+      let found = null;
+      for (const src of candidates) {
+        if (await probeImageUrl(src)) {
+          found = src;
+          break;
+        }
+      }
+      if (found) resolved.push(found);
+      else break;
+    }
+    return resolved;
+  }
+
+  async function resolveMapsForProject(project) {
+    if (project.mapImages && project.mapImages.length) {
+      const resolved = [];
+      for (const path of project.mapImages) {
+        const src = encodeImagePath(path);
+        if (await probeImageUrl(src)) resolved.push(src);
+        else break;
+      }
+      if (resolved.length) return resolved;
+    }
+
+    for (const prefix of getMapPrefixCandidates(project)) {
+      const resolved = await resolveMapSlotGroups(buildMapSlotGroups(prefix));
+      if (resolved.length) return resolved;
+    }
+
+    const legacy = project.mapImage || project.detailImage;
+    if (legacy) {
+      const src = encodeImagePath(legacy);
+      if (await probeImageUrl(src)) return [src];
+    }
+
+    return [];
+  }
+
+  function popupImageCandidates(project) {
+    const stems = POPUP_STEMS_BY_PROJECT[project.name];
+    if (!stems) return [];
+    const out = [];
+    for (const stem of stems) {
+      for (const ext of POPUP_EXTENSIONS) {
+        out.push(encodeImagePath(`../images/${stem}${ext}`));
+      }
+    }
+    return out;
+  }
+
+  function projectUsesPopupModal(project) {
+    return !MAP_ONLY_MODAL_PROJECTS.has(project.name) && !!POPUP_STEMS_BY_PROJECT[project.name];
+  }
+
+  async function resolvePopupImage(project) {
+    for (const src of popupImageCandidates(project)) {
+      if (await probeImageUrl(src)) return src;
+    }
+    return null;
   }
 
   function probeImageUrl(src) {
@@ -438,25 +565,20 @@
   }
 
   async function resolveMapImages(project) {
-    const groups = getMapCandidateGroups(project);
-    const resolved = [];
-
-    for (const candidates of groups) {
-      let found = null;
-      for (const src of candidates) {
-        if (await probeImageUrl(src)) {
-          found = src;
-          break;
-        }
-      }
-      if (found) {
-        resolved.push(found);
-      } else {
-        break;
-      }
+    if (projectUsesPopupModal(project)) {
+      const popup = await resolvePopupImage(project);
+      if (popup) return { images: [popup], source: 'popup' };
     }
 
-    return resolved;
+    const maps = await resolveMapsForProject(project);
+    if (maps.length) return { images: maps, source: 'map' };
+
+    if (project.cardImage) {
+      const src = encodeImagePath(project.cardImage);
+      if (await probeImageUrl(src)) return { images: [src], source: 'popup' };
+    }
+
+    return { images: [], source: 'none' };
   }
 
   function projectHasLayoutMaps(project) {
@@ -464,8 +586,7 @@
       (project.mapImages && project.mapImages.length) ||
       project.mapImage ||
       project.detailImage ||
-      project.mapPrefix ||
-      MAP_PREFIX_BY_PROJECT[project.name]
+      getMapPrefixCandidates(project).length
     );
   }
 
@@ -474,14 +595,20 @@
     if (project.mapImages && project.mapImages.length) {
       images = project.mapImages.filter(Boolean);
     } else {
-      const prefix = project.mapPrefix || MAP_PREFIX_BY_PROJECT[project.name];
-      if (prefix) {
-        images = [mapFilePath(prefix, 1, '.png'), mapFilePath(prefix, 2, '.jpg')];
+      const prefixes = getMapPrefixCandidates(project);
+      if (prefixes.length) {
+        images = [
+          mapFilePath(prefixes[0], 1, '.png'),
+          mapFilePath(prefixes[0], 2, '.jpg'),
+        ];
       } else {
         const single = project.mapImage || project.detailImage;
         if (single) images = [single];
-        else if (project.imageSlot) images = [`../images/pp${project.imageSlot}.jpg`];
         else if (project.cardImage) images = [project.cardImage];
+        else {
+          const popupStems = POPUP_STEMS_BY_PROJECT[project.name];
+          if (popupStems) images = popupStems.map((stem) => `../images/${stem}.png`);
+        }
       }
     }
     return images.map(encodeImagePath);
@@ -536,6 +663,7 @@
   let currentIndex = 0;
   let modalMapIndex = 0;
   let modalImages = [];
+  let modalImageSource = 'none';
   let modalRenderId = 0;
   let modalImageLoadId = 0;
   let activeStatus = 'all';
@@ -788,7 +916,7 @@
 
   function updateModalImageView(project) {
     const src = modalImages[modalMapIndex];
-    const hasMaps = projectHasLayoutMaps(project);
+    const isMapView = modalImageSource === 'map' || MAP_ONLY_MODAL_PROJECTS.has(project.name);
 
     if (!src) {
       setModalImageEmpty(true, 'no-image');
@@ -799,12 +927,10 @@
     loadModalImage(src).then((ok) => {
       if (ok) {
         setModalImageEmpty(false);
-        if (hasMaps && modalImages.length > 1) {
+        if (isMapView && modalImages.length > 1) {
           imgEl.alt = `${project.name} — site map ${modalMapIndex + 1} of ${modalImages.length}`;
-        } else if (hasMaps) {
+        } else if (isMapView) {
           imgEl.alt = `${project.name} — site map`;
-        } else if (project.cardImage) {
-          imgEl.alt = `${project.name} — project view`;
         } else {
           imgEl.alt = `${project.name} — project brochure`;
         }
@@ -830,6 +956,7 @@
     currentIndex = index;
     modalMapIndex = 0;
     modalImages = [];
+    modalImageSource = 'none';
     setModalImageEmpty(true, 'no-image');
     if (mapNavEl) mapNavEl.hidden = true;
 
@@ -849,7 +976,8 @@
 
     resolveMapImages(project).then((resolved) => {
       if (renderId !== modalRenderId) return;
-      modalImages = resolved;
+      modalImages = resolved.images;
+      modalImageSource = resolved.source;
       modalMapIndex = 0;
       updateModalImageView(project);
     });
