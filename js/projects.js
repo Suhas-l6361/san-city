@@ -346,31 +346,11 @@
     return groups[0] || [];
   }
 
-  const cardThumbCache = new Map();
-
-  async function resolveListCardThumb(project, index) {
+  function listCardImage(project) {
     const arch = archCardImage(project);
     if (arch) return arch;
     const candidates = mapCardCandidates(project);
-    for (const src of candidates) {
-      if (await probeImageUrl(src)) return src;
-    }
-    return null;
-  }
-
-  async function warmListCardThumbs() {
-    await Promise.all(
-      PROJECTS.map(async (project, index) => {
-        const thumb = await resolveListCardThumb(project, index);
-        if (thumb) cardThumbCache.set(index, thumb);
-      })
-    );
-  }
-
-  function listCardImage(project, index) {
-    const arch = archCardImage(project);
-    if (arch) return arch;
-    return cardThumbCache.get(index) || null;
+    return candidates[0] || null;
   }
 
   /** Map file prefix(es) — probes `{prefix} map.png` + `{prefix} map2.jpg` (and ext variants). */
@@ -491,16 +471,18 @@
     return [];
   }
 
+  async function probeFirstExisting(urls) {
+    if (!urls.length) return null;
+    const results = await Promise.all(
+      urls.map(async (src) => ((await probeImageUrl(src)) ? src : null))
+    );
+    return results.find(Boolean) || null;
+  }
+
   async function resolveMapSlotGroups(groups) {
     const resolved = [];
     for (const candidates of groups) {
-      let found = null;
-      for (const src of candidates) {
-        if (await probeImageUrl(src)) {
-          found = src;
-          break;
-        }
-      }
+      const found = await probeFirstExisting(candidates);
       if (found) resolved.push(found);
       else break;
     }
@@ -532,53 +514,73 @@
     return [];
   }
 
-  function popupImageCandidates(project) {
-    const stems = POPUP_STEMS_BY_PROJECT[project.name];
-    if (!stems) return [];
-    const out = [];
-    for (const stem of stems) {
-      for (const ext of POPUP_EXTENSIONS) {
-        out.push(encodeImagePath(`../images/${stem}${ext}`));
-      }
-    }
-    return out;
-  }
-
   function projectUsesPopupModal(project) {
     return !MAP_ONLY_MODAL_PROJECTS.has(project.name) && !!POPUP_STEMS_BY_PROJECT[project.name];
   }
 
   async function resolvePopupImage(project) {
-    for (const src of popupImageCandidates(project)) {
-      if (await probeImageUrl(src)) return src;
+    const stems = POPUP_STEMS_BY_PROJECT[project.name];
+    if (!stems) return null;
+    for (const stem of stems) {
+      const urls = POPUP_EXTENSIONS.map((ext) => encodeImagePath(`../images/${stem}${ext}`));
+      const found = await probeFirstExisting(urls);
+      if (found) return found;
     }
     return null;
   }
 
+  const probeCache = new Map();
+  const modalImageCache = new Map();
+
   function probeImageUrl(src) {
-    return new Promise((resolve) => {
+    if (probeCache.has(src)) return probeCache.get(src);
+    const promise = new Promise((resolve) => {
       const img = new Image();
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
       img.src = src;
+    }).then((ok) => {
+      probeCache.set(src, Promise.resolve(ok));
+      return ok;
     });
+    probeCache.set(src, promise);
+    return promise;
   }
 
   async function resolveMapImages(project) {
+    const cached = modalImageCache.get(project.name);
+    if (cached) return cached;
+
+    let result = { images: [], source: 'none' };
+
     if (projectUsesPopupModal(project)) {
       const popup = await resolvePopupImage(project);
-      if (popup) return { images: [popup], source: 'popup' };
+      if (popup) result = { images: [popup], source: 'popup' };
     }
 
-    const maps = await resolveMapsForProject(project);
-    if (maps.length) return { images: maps, source: 'map' };
+    if (!result.images.length) {
+      const maps = await resolveMapsForProject(project);
+      if (maps.length) result = { images: maps, source: 'map' };
+    }
 
-    if (project.cardImage) {
+    if (!result.images.length && project.cardImage) {
       const src = encodeImagePath(project.cardImage);
-      if (await probeImageUrl(src)) return { images: [src], source: 'popup' };
+      if (await probeImageUrl(src)) result = { images: [src], source: 'popup' };
     }
 
-    return { images: [], source: 'none' };
+    if (!result.images.length) {
+      const arch = archCardImage(project);
+      if (arch) result = { images: [arch], source: 'card' };
+    }
+
+    if (result.images.length) modalImageCache.set(project.name, result);
+    return result;
+  }
+
+  function prefetchModalForProject(index) {
+    const project = PROJECTS[index];
+    if (!project || modalImageCache.has(project.name)) return;
+    resolveMapImages(project);
   }
 
   function projectHasLayoutMaps(project) {
@@ -807,12 +809,17 @@
         .map((tag) => `<span class="proj-row__chip">${tag}</span>`)
         .join('');
 
-      const cardSrc = listCardImage(project, i);
+      const cardSrc = listCardImage(project);
+      const mapCandidates = hasArchCardImage(project) ? [] : mapCardCandidates(project);
       const visualClass = cardSrc
         ? `proj-row__visual${hasArchCardImage(project) ? '' : ' proj-row__visual--map'}`
         : 'proj-row__visual proj-row__visual--empty';
+      const fallbackAttr =
+        mapCandidates.length > 1
+          ? ` data-fallback-candidates="${mapCandidates.slice(1).join('|')}"`
+          : '';
       const visualImg = cardSrc
-        ? `<img src="${cardSrc}" alt="${project.name}" loading="lazy" width="720" height="440" />`
+        ? `<img src="${cardSrc}" alt="${project.name}" loading="lazy" decoding="async" width="720" height="440"${fallbackAttr} />`
         : '';
 
       return `
@@ -846,15 +853,38 @@
     showcase.querySelectorAll('.proj-row').forEach((row) => {
       const index = Number(row.dataset.index);
       const openProject = () => openModal(index);
+      const warmModal = () => prefetchModalForProject(index);
 
       row.querySelector('.proj-row__visual-btn')?.addEventListener('click', openProject);
       row.querySelector('.proj-row__cta')?.addEventListener('click', (e) => {
         e.preventDefault();
         openProject();
       });
+      row.addEventListener('mouseenter', warmModal, { once: true });
+      row.addEventListener('focusin', warmModal, { once: true });
+
+      const img = row.querySelector('.proj-row__visual img[data-fallback-candidates]');
+      if (img) attachListCardFallback(img, row);
     });
 
     observeReveal(showcase);
+  }
+
+  function attachListCardFallback(img, row) {
+    const extras = (img.dataset.fallbackCandidates || '').split('|').filter(Boolean);
+    if (!extras.length) return;
+    let ci = 0;
+    img.addEventListener('error', function onErr() {
+      if (ci >= extras.length) {
+        img.removeEventListener('error', onErr);
+        const visual = row.querySelector('.proj-row__visual');
+        visual?.classList.remove('proj-row__visual--map');
+        visual?.classList.add('proj-row__visual--empty');
+        img.remove();
+        return;
+      }
+      img.src = extras[ci++];
+    });
   }
 
   function updateNavState() {
@@ -890,6 +920,15 @@
     }
   }
 
+  function sameImageSrc(current, next) {
+    if (!current || !next) return false;
+    try {
+      return new URL(current, window.location.href).href === new URL(next, window.location.href).href;
+    } catch {
+      return current === next;
+    }
+  }
+
   function loadModalImage(src) {
     const loadId = ++modalImageLoadId;
 
@@ -899,18 +938,36 @@
         return;
       }
 
-      const probe = new Image();
-      probe.onload = () => {
+      const finish = (ok) => {
         if (loadId !== modalImageLoadId) return;
-        imgEl.src = src;
+        resolve(ok);
+      };
+
+      const onLoad = () => {
+        cleanup();
         imgEl.classList.remove('is-hidden');
-        resolve(true);
+        finish(true);
       };
-      probe.onerror = () => {
-        if (loadId !== modalImageLoadId) return;
-        resolve(false);
+      const onError = () => {
+        cleanup();
+        finish(false);
       };
-      probe.src = src;
+      const cleanup = () => {
+        imgEl.removeEventListener('load', onLoad);
+        imgEl.removeEventListener('error', onError);
+      };
+
+      if (sameImageSrc(imgEl.getAttribute('src') || imgEl.src, src) && imgEl.complete && imgEl.naturalWidth > 0) {
+        imgEl.classList.remove('is-hidden');
+        finish(true);
+        return;
+      }
+
+      imgEl.addEventListener('load', onLoad);
+      imgEl.addEventListener('error', onError);
+      imgEl.src = src;
+      if (imgEl.complete && imgEl.naturalWidth > 0) onLoad();
+      else if (imgEl.complete) onError();
     });
   }
 
@@ -957,7 +1014,16 @@
     modalMapIndex = 0;
     modalImages = [];
     modalImageSource = 'none';
-    setModalImageEmpty(true, 'no-image');
+    const previewSrc = archCardImage(project);
+    if (previewSrc) {
+      loadModalImage(previewSrc).then((ok) => {
+        if (renderId !== modalRenderId) return;
+        if (ok) setModalImageEmpty(false);
+        else setModalImageEmpty(true, 'no-image');
+      });
+    } else {
+      setModalImageEmpty(true, 'no-image');
+    }
     if (mapNavEl) mapNavEl.hidden = true;
 
     eyebrowEl.textContent = `Project ${padNum(index + 1)} · ${project.city}`;
@@ -979,8 +1045,39 @@
       modalImages = resolved.images;
       modalImageSource = resolved.source;
       modalMapIndex = 0;
+      const finalSrc = modalImages[modalMapIndex];
+      if (
+        finalSrc &&
+        previewSrc &&
+        modalImages.length === 1 &&
+        sameImageSrc(previewSrc, finalSrc)
+      ) {
+        updateModalImageMeta(project);
+        return;
+      }
       updateModalImageView(project);
     });
+  }
+
+  function updateModalImageMeta(project) {
+    const isMapView = modalImageSource === 'map' || MAP_ONLY_MODAL_PROJECTS.has(project.name);
+    const src = modalImages[modalMapIndex];
+    if (!src) return;
+    setModalImageEmpty(false);
+    if (isMapView && modalImages.length > 1) {
+      imgEl.alt = `${project.name} — site map ${modalMapIndex + 1} of ${modalImages.length}`;
+    } else if (isMapView) {
+      imgEl.alt = `${project.name} — site map`;
+    } else {
+      imgEl.alt = `${project.name} — project brochure`;
+    }
+    const showMapNav = modalImages.length > 1;
+    if (mapNavEl) mapNavEl.hidden = !showMapNav;
+    if (showMapNav && mapCounterEl) {
+      mapCounterEl.textContent = `${padNum(modalMapIndex + 1)} / ${padNum(modalImages.length)}`;
+    }
+    if (mapPrevBtn) mapPrevBtn.disabled = modalMapIndex <= 0;
+    if (mapNextBtn) mapNextBtn.disabled = modalMapIndex >= modalImages.length - 1;
   }
 
   function openModal(index) {
@@ -1043,7 +1140,7 @@
 
   renderCitySelect();
   renderStatusFilters();
-  warmListCardThumbs().then(() => renderShowcase());
+  renderShowcase();
 
   window.addEventListener('hashchange', focusProjectFromHash);
   if (window.location.hash) {
