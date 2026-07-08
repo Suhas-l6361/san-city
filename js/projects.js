@@ -124,7 +124,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.reraApplied,
       cardImage: '../images/VC Gallexy Logo.png',
     },
@@ -144,7 +144,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/bluebell.png',
     },
@@ -154,7 +154,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/comfort.png',
     },
@@ -164,7 +164,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/sancity diamond.png',
     },
@@ -174,7 +174,7 @@
       city: 'Bangalore',
       region: 'Bangalore',
       location: 'Bangalore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/disha.png',
     },
@@ -184,7 +184,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/lake view.png',
     },
@@ -194,7 +194,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/prerana.png',
     },
@@ -204,7 +204,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/skycity.png',
     },
@@ -214,7 +214,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
       cardImage: '../images/sunflower.png',
     },
@@ -224,7 +224,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -233,7 +233,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -242,7 +242,7 @@
       city: 'Karnataka',
       region: 'Karnataka',
       location: 'Karnataka',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -251,7 +251,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -260,7 +260,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -269,7 +269,7 @@
       city: 'Bangalore',
       region: 'Bangalore',
       location: 'Bangalore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -278,7 +278,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -287,7 +287,7 @@
       city: 'Ramanagara',
       region: 'Ramanagara',
       location: 'Ramanagara District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.ekatha,
     },
     {
@@ -296,7 +296,7 @@
       city: 'Chikkaballapur',
       region: 'Chikkaballapur',
       location: 'Chikkaballapur District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.ekatha,
     },
     {
@@ -305,7 +305,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
     {
@@ -314,7 +314,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: 'Details coming soon',
+      size: '',
       highlights: HIGHLIGHTS.standard,
     },
   ];
@@ -837,7 +837,7 @@
               <h3>${project.name}</h3>
               <div class="proj-row__meta">
                 <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>${project.location}</span>
-                <span><i class="fa-solid fa-chart-area" aria-hidden="true"></i>${project.size}</span>
+                ${project.size ? `<span><i class="fa-solid fa-chart-area" aria-hidden="true"></i>${project.size}</span>` : ''}
               </div>
               <div class="proj-row__chips">${chips}</div>
               <div class="proj-row__actions">
@@ -1031,7 +1031,12 @@
     statusEl.className = `project-modal__status project-modal__status--${project.status}`;
     titleEl.textContent = project.name;
     locationEl.textContent = project.location;
-    sizeEl.textContent = project.size;
+    if (sizeEl) {
+      sizeEl.textContent = project.size || '';
+      const sizeFact = sizeEl.closest('.project-modal__fact');
+      if (sizeFact) sizeFact.hidden = !project.size;
+      else sizeEl.hidden = !project.size;
+    }
     tagsEl.innerHTML = project.highlights
       .map((tag) => `<span class="project-modal__tag">${tag}</span>`)
       .join('');

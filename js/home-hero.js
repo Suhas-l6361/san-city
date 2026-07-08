@@ -21,7 +21,9 @@
     name: project.name,
     projectId: catalog.projectSlug(project.name),
     loc: `${project.city}, Karnataka`,
-    desc: `${project.name} — ${project.size} in ${project.location}.`,
+    desc: project.size
+      ? `${project.name} — ${project.size} in ${project.location}.`
+      : `${project.name} — ${project.location}.`,
     highlights: project.highlights || [],
     cropWide: project.imageSlot === 1,
   }));
