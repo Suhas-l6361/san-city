@@ -1,0 +1,37 @@
+# San City — security headers & HTTPS (GoDaddy Apache)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Block git metadata and deploy-only folders from the web
+  RewriteRule (^|/)\.git(/|$) - [F,L]
+  RewriteRule ^(scripts|google-apps-script)/ - [F,L]
+  RewriteRule \.(mjs|gs|bat|env)$ - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header unset Server
+  Header unset X-Powered-By
+
+  # CSP — tuned for San City (fonts, CDN, YouTube, Lottie/dotlottie WASM, Google Forms)
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://lottie.host https://*.lottie.host https://unpkg.com https://cdn.jsdelivr.net https://script.google.com https://script.googleusercontent.com https://docs.google.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://docs.google.com; worker-src 'self' blob: https://unpkg.com; form-action 'self' https://docs.google.com https://script.google.com; upgrade-insecure-requests"
+</IfModule>
+
+# Block access to hidden / sensitive paths
+<FilesMatch "(^\.|\.env|\.git|\.htaccess|\.htpasswd|push-to-github\.bat|fix-and-push\.bat)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>
+
+Options -Indexes

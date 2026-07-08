@@ -13,11 +13,12 @@
   <link rel="dns-prefetch" href="https://lottie.host" />
   <link rel="dns-prefetch" href="https://unpkg.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="../css/site-shell.css" />
   <link rel="stylesheet" href="../css/float-contact.css" />
   <link rel="stylesheet" href="../css/butterfly-fly.css" />
   <link rel="stylesheet" href="../css/contactus.css" />
+  <link rel="stylesheet" href="../css/site-security.css" />
 </head>
 <body>
 
@@ -177,20 +178,20 @@
             <div class="cu-form__pair">
               <div class="cu-field">
                 <label for="contactName">Your Name</label>
-                <input type="text" id="contactName" name="name" placeholder="Your Name" required autocomplete="name" />
+                <input type="text" id="contactName" name="name" placeholder="Your Name" required autocomplete="name" maxlength="120" />
               </div>
               <div class="cu-field">
                 <label for="contactEmail">Your Email</label>
-                <input type="email" id="contactEmail" name="email" placeholder="Your Email" required autocomplete="email" />
+                <input type="email" id="contactEmail" name="email" placeholder="Your Email" required autocomplete="email" maxlength="254" />
               </div>
             </div>
             <div class="cu-field">
               <label for="contactSubject">Subject</label>
-              <input type="text" id="contactSubject" name="subject" placeholder="Subject" required />
+              <input type="text" id="contactSubject" name="subject" placeholder="Subject" required maxlength="120" />
             </div>
             <div class="cu-field">
               <label for="contactMessage">Message</label>
-              <textarea id="contactMessage" name="message" placeholder="Message" required></textarea>
+              <textarea id="contactMessage" name="message" placeholder="Message" required maxlength="2000"></textarea>
             </div>
             <button type="submit" class="cu-form__send" id="contactSubmit">
               Send Message
@@ -203,6 +204,8 @@
 
   </div>
 
+  <script src="../js/site-security.js" defer></script>
+  <script src="../js/google-form-submit.js" defer></script>
   <script src="../js/dotlottie-loader.js" defer></script>
   <script src="../js/site-shell.js" defer></script>
   <script src="../js/butterfly-fly.js" defer></script>

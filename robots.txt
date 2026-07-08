@@ -1,0 +1,9 @@
+# San City — crawler rules
+User-agent: *
+Allow: /
+
+# Discourage indexing of deploy / tooling paths (if exposed)
+Disallow: /scripts/
+Disallow: /google-apps-script/
+
+Sitemap: https://www.sancity1.com/sitemap.xml

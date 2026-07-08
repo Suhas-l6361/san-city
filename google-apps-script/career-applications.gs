@@ -15,6 +15,8 @@
  */
 var CAREER_SHEET_ID = '19no2WM3t-1ATjRKfNXXf_0_9KKro6F9fb2yb_7Q2uzE';
 var RESUME_FOLDER_NAME = 'San City Career Resumes';
+var MAX_RESUME_BYTES = 5 * 1024 * 1024;
+var ALLOWED_RESUME_EXT = /\.(pdf|doc|docx)$/i;
 
 function doGet() {
   return jsonOutput({ ok: true, message: 'San City career endpoint ready' });
@@ -22,45 +24,81 @@ function doGet() {
 
 function doPost(e) {
   try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonOutput({ ok: false, error: 'Invalid request' });
+    }
+
+    if (e.postData.contents.length > 8 * 1024 * 1024) {
+      return jsonOutput({ ok: false, error: 'Payload too large' });
+    }
+
     var data = JSON.parse(e.postData.contents);
     var resumeUrl = saveResumeToDrive(data);
     var sheet = SpreadsheetApp.openById(CAREER_SHEET_ID).getSheets()[0];
 
-    // Match sheet columns: Timestamp | First | Last | Email | Phone | Job | Resume link | About
     sheet.appendRow([
       new Date(),
-      data.firstName || '',
-      data.lastName || '',
-      data.email || '',
-      data.phone || '',
-      data.job || '',
+      sanitizeField_(data.firstName),
+      sanitizeField_(data.lastName),
+      sanitizeField_(data.email),
+      sanitizeField_(data.phone),
+      sanitizeField_(data.job),
       resumeUrl || '',
-      data.about || '',
+      sanitizeField_(data.about),
     ]);
 
     return jsonOutput({ ok: true, resumeUrl: resumeUrl || '' });
   } catch (err) {
-    return jsonOutput({ ok: false, error: String(err) });
+    return jsonOutput({ ok: false, error: 'Submission failed' });
   }
+}
+
+function sanitizeField_(value) {
+  return String(value || '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/javascript:/gi, '')
+    .slice(0, 5000);
 }
 
 function saveResumeToDrive(data) {
   if (!data.resumeBase64 || !data.resumeName) return '';
 
-  var folder = getOrCreateResumeFolder_();
+  var resumeName = String(data.resumeName || '');
+  if (!ALLOWED_RESUME_EXT.test(resumeName)) {
+    throw new Error('Invalid resume type');
+  }
+
   var bytes = Utilities.base64Decode(data.resumeBase64);
-  var mime = data.resumeMime || guessMime_(data.resumeName);
+  if (!bytes || bytes.length > MAX_RESUME_BYTES) {
+    throw new Error('Resume too large');
+  }
+
+  var folder = getOrCreateResumeFolder_();
+  var mime = data.resumeMime || guessMime_(resumeName);
+  if (!isAllowedResumeMime_(mime, resumeName)) {
+    throw new Error('Invalid resume mime');
+  }
+
   var safeName =
-    (data.firstName || 'Applicant') +
+    sanitizeField_(data.firstName || 'Applicant') +
     '_' +
-    (data.lastName || '') +
+    sanitizeField_(data.lastName || '') +
     '_' +
-    data.resumeName;
+    resumeName;
   safeName = safeName.replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, '_');
 
   var file = folder.createFile(Utilities.newBlob(bytes, mime, safeName));
-  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   return file.getUrl();
+}
+
+function isAllowedResumeMime_(mime, name) {
+  var allowed = {
+    'application/pdf': true,
+    'application/msword': true,
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': true,
+  };
+  if (allowed[mime]) return true;
+  return ALLOWED_RESUME_EXT.test(name);
 }
 
 function getOrCreateResumeFolder_() {

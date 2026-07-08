@@ -1,12 +1,20 @@
 /* Shared POST helper — each form passes its own Google Form URL.
    Uses a hidden iframe + form POST (not fetch) — Google Forms blocks CORS from websites. */
 (function () {
+  function sanitizeValue(val) {
+    if (window.SanCitySecurity && window.SanCitySecurity.sanitizeText) {
+      return window.SanCitySecurity.sanitizeText(val);
+    }
+    if (val == null) return '';
+    return String(val);
+  }
+
   function appendFields(form, fields) {
     Object.keys(fields).forEach(function (key) {
       var input = document.createElement('input');
       input.type = 'hidden';
       input.name = key;
-      input.value = fields[key] == null ? '' : String(fields[key]);
+      input.value = sanitizeValue(fields[key]);
       form.appendChild(input);
     });
 
@@ -25,6 +33,9 @@
   }
 
   function postGoogleForm(actionUrl, fields) {
+    if (!isAllowedGoogleFormUrl(actionUrl)) {
+      return Promise.resolve({ ok: false, status: 403 });
+    }
     return new Promise(function (resolve) {
       var iframeName = 'googleFormTarget_' + Date.now();
       var iframe = document.createElement('iframe');
@@ -71,13 +82,56 @@
     });
   }
 
+  function sanitizePayload(payload) {
+    if (!payload || typeof payload !== 'object') return payload;
+    var out = {};
+    Object.keys(payload).forEach(function (key) {
+      var val = payload[key];
+      if (key === 'resumeBase64' || key === 'resumeMime') {
+        out[key] = val;
+      } else {
+        out[key] = sanitizeValue(val);
+      }
+    });
+    return out;
+  }
+
+  function isAllowedGoogleFormUrl(url) {
+    try {
+      var u = new URL(String(url));
+      return (
+        u.protocol === 'https:' &&
+        u.hostname === 'docs.google.com' &&
+        u.pathname.indexOf('/forms/') !== -1
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function isAllowedAppsScriptUrl(url) {
+    try {
+      var u = new URL(String(url));
+      return (
+        u.protocol === 'https:' &&
+        u.hostname === 'script.google.com' &&
+        /\/macros\/s\/[^/]+\/exec$/.test(u.pathname)
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+
   function postAppsScript(url, payload) {
+    if (!isAllowedAppsScriptUrl(url)) {
+      return Promise.resolve({ ok: false, status: 403 });
+    }
     return fetch(url, {
       method: 'POST',
       mode: 'cors',
       credentials: 'omit',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(sanitizePayload(payload)),
     })
       .then(function (response) {
         return response.json().catch(function () {

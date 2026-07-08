@@ -275,6 +275,28 @@
       return /^[6-9]\d{9}$/.test(digits);
     }
 
+    const RESUME_MAX_BYTES = 5 * 1024 * 1024;
+    const RESUME_NAME_RE = /\.(pdf|doc|docx)$/i;
+    const RESUME_MIMES = new Set([
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ]);
+
+    function validateResumeFile(file) {
+      if (!file) return { ok: false, message: 'Please attach your resume (PDF, DOC, or DOCX).' };
+      if (file.size > RESUME_MAX_BYTES) {
+        return { ok: false, message: 'Resume must be 5 MB or smaller.' };
+      }
+      if (!RESUME_NAME_RE.test(file.name)) {
+        return { ok: false, message: 'Resume must be a PDF, DOC, or DOCX file.' };
+      }
+      if (file.type && !RESUME_MIMES.has(file.type)) {
+        return { ok: false, message: 'Invalid resume file type.' };
+      }
+      return { ok: true };
+    }
+
     const careerPhoneInput = careerForm.querySelector('[name="phone"]');
     if (careerPhoneInput) {
       careerPhoneInput.addEventListener('input', () => careerPhoneInput.setCustomValidity(''));
@@ -380,12 +402,18 @@
         return;
       }
 
+      const resumeFile = fileInput?.files?.[0];
+      const resumeCheck = validateResumeFile(resumeFile);
+      if (!resumeCheck.ok) {
+        window.alert(resumeCheck.message);
+        return;
+      }
+
       const firstName = careerForm.querySelector('[name="firstName"]')?.value.trim() || '';
       const lastName = careerForm.querySelector('[name="lastName"]')?.value.trim() || '';
       const email = careerForm.querySelector('[name="email"]')?.value.trim() || '';
       const phone = normalizeCareerPhoneDigits(phoneInput.value.trim());
       const aboutText = careerForm.querySelector('[name="about"]')?.value.trim() || '';
-      const resumeFile = fileInput?.files?.[0];
       const resumeName = resumeFile ? resumeFile.name : '';
       const jobSelect = careerForm.querySelector('[name="job"]');
       const job = jobSelect && jobSelect.value ? jobSelect.options[jobSelect.selectedIndex].text : '';
@@ -584,65 +612,6 @@
       syncJobPickerMode();
       jobSelect.addEventListener('change', updateJobTriggerLabel);
     }
-  }
-
-  /* Contact form — success popup */
-  const contactForm = document.getElementById('contactForm');
-  const contactModal = document.getElementById('contactModal');
-  if (contactForm && contactModal) {
-    const contactBackdrop = document.getElementById('contactModalBackdrop');
-    const contactCloseBtn = document.getElementById('contactModalClose');
-    const contactMessage = document.getElementById('contactModalMessage');
-    const contactSubmitBtn = document.getElementById('contactSubmit');
-
-    function openContactModal(name) {
-      if (contactMessage) {
-        contactMessage.textContent = name
-          ? `Thank you, ${name}! Your message has been received. Our team will get back to you shortly.`
-          : 'Thank you! Your message has been received. Our team will get back to you shortly.';
-      }
-      contactModal.classList.add('open');
-      contactModal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      if (contactCloseBtn) contactCloseBtn.focus();
-    }
-
-    function closeContactModal() {
-      contactModal.classList.remove('open');
-      contactModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!contactForm.checkValidity()) {
-        contactForm.reportValidity();
-        return;
-      }
-
-      const name = contactForm.querySelector('[name="name"]')?.value.trim() || '';
-      const submitLabel = contactSubmitBtn ? contactSubmitBtn.textContent : '';
-
-      if (contactSubmitBtn) {
-        contactSubmitBtn.disabled = true;
-        contactSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
-      }
-
-      setTimeout(() => {
-        contactForm.reset();
-        if (contactSubmitBtn) {
-          contactSubmitBtn.disabled = false;
-          contactSubmitBtn.textContent = submitLabel;
-        }
-        openContactModal(name);
-      }, 600);
-    });
-
-    if (contactCloseBtn) contactCloseBtn.addEventListener('click', closeContactModal);
-    if (contactBackdrop) contactBackdrop.addEventListener('click', closeContactModal);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && contactModal.classList.contains('open')) closeContactModal();
-    });
   }
 
   /* Floating Free Site Visit — all subpages except Contact */
