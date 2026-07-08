@@ -119,7 +119,7 @@
       imageSlot: 11,
     },
     {
-      name: 'San City Vc Gallexy',
+      name: 'San City VC Galaxy',
       status: 'ongoing',
       city: 'Mysore',
       region: 'Mysore',
@@ -134,7 +134,7 @@
       city: 'Mysore',
       region: 'Mysore',
       location: 'Mysore District',
-      size: '2300+ Plots',
+      size: '16 Acres',
       highlights: HIGHLIGHTS.standard,
       imageSlot: 12,
     },
@@ -219,7 +219,7 @@
       cardImage: '../images/sunflower.png',
     },
     {
-      name: 'San City Wapour',
+      name: 'San City Vapour',
       status: 'completed',
       city: 'Mysore',
       region: 'Mysore',
@@ -366,7 +366,7 @@
     'San City Gardenia': ['Gardenia', 'gardenia'],
     'San City Grand': ['Grand', 'grand'],
     'San City Gold': ['Gold', 'gold'],
-    'San City Vc Gallexy': ['vc galaxy', 'VC Gallexy', 'Vc Gallexy'],
+    'San City VC Galaxy': ['vc galaxy', 'VC Gallexy', 'Vc Gallexy'],
     'San City Bhoomi': ['Bhoomi', 'bhoomi'],
     'San City Blue Bell': ['Blue Bell', 'bluebell'],
     'San City Comfort': ['comfort', 'Comfort'],
@@ -376,7 +376,7 @@
     'San City Prerana': ['prerana', 'Prerana'],
     'San City Sky City': ['sky city', 'Sky City', 'skycity'],
     'San City Sun Flower': ['sun flower', 'Sun Flower', 'sunflower'],
-    'San City Wapour': ['Vapour'],
+    'San City Vapour': ['Vapour'],
     'San City Violet': ['Voilet'],
     'San City Elegance': ['Elegance'],
     'San City Fortune': ['Fortune'],
@@ -403,7 +403,7 @@
 
   /** Modal shows map carousel only for these 8; all others use popup brochure images. */
   const MAP_ONLY_MODAL_PROJECTS = new Set([
-    'San City Wapour',
+    'San City Vapour',
     'San City Elegance',
     'San City Fortune',
     'San City Green',
@@ -426,7 +426,7 @@
     'San City Gardenia': ['gardenia popup'],
     'San City Grand': ['grand popup'],
     'San City Gold': ['gold popup'],
-    'San City Vc Gallexy': ['vc galaxy popup', 'vc gallexy popup', 'VC Gallexy popup'],
+    'San City VC Galaxy': ['vc galaxy popup', 'vc gallexy popup', 'VC Gallexy popup'],
     'San City Bhoomi': ['bhoomi popup'],
     'San City Blue Bell': ['blue bell popup'],
     'San City Comfort': ['comfort popup'],

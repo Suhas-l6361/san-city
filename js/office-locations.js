@@ -1,4 +1,4 @@
-/* San City — office addresses & Google Maps links */
+/* San City — office addresses & Google Maps links (single source for footer + contact page) */
 window.SanCityOffices = [
   {
     name: 'Sheshadripuram',
@@ -12,12 +12,13 @@ window.SanCityOffices = [
   },
   {
     name: 'Mysore',
-    address: '#1, 1st St, Vijay Nagar 2nd Stage, Mysuru 570017',
-    map: 'https://maps.app.goo.gl/FnRaGXf3H83ijVEg6',
+    address:
+      '#1, 1st St, Manchegowdana Koppalu, Vijay Nagar 2nd Stage, Vijayanagar, Mysuru 570017',
+    map: 'https://maps.app.goo.gl/XRB4xmn2qUnYYLXL6',
   },
   {
     name: 'Bylakuppe',
-    address: '#115, 1st Floor, Bylsan City Complex, Kushalnagar 571104',
-    map: 'https://maps.app.goo.gl/1zZc4Lu2wGyDR8cQ9',
+    address: 'Bylakuppe, Karnataka',
+    map: 'https://maps.app.goo.gl/vpP9wNq1XyjwZ1GD7',
   },
 ];

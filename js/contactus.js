@@ -1,5 +1,22 @@
-/* Contact Us — sends to Google Forms (same pattern as site visit booking) */
+/* Contact Us — office list + Google Forms submit */
 (function () {
+  const officesEl = document.getElementById('cuOfficesList');
+  const offices = window.SanCityOffices || [];
+
+  if (officesEl && offices.length) {
+    officesEl.innerHTML = offices
+      .map(
+        (office) => `
+        <li class="cu-office">
+          <a class="cu-office__link" href="${office.map}" target="_blank" rel="noopener noreferrer" aria-label="Open ${office.name} office in Google Maps">
+            <strong>${office.name}</strong>
+            <p>${office.address}</p>
+          </a>
+        </li>`
+      )
+      .join('');
+  }
+
   const form = document.getElementById('contactForm');
   const modal = document.getElementById('contactModal');
   if (!form || !modal) return;
